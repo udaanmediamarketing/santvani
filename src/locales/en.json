@@ -1,0 +1,18 @@
+{
+  "navbar": {
+    "home": "Home",
+    "videos": "Videos",
+    "blogs": "Blogs",
+    "photos": "Photos",
+    "about": "About",
+    "help": "Help"
+  },
+  "dashboard": {
+    "welcome": "Welcome to {name}'s dashboard",
+  "videos": "Videos",
+  "photos": "Photos",
+  "blogs": "Blogs",
+  "about": "About",
+  "help": "Help"
+  }
+}

@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  i18n: {
+    locales: ["mr", "hi", "en"], // Marathi + English
+    defaultLocale: "mr",   // Marathi is default
+  },
 };
 
 export default nextConfig;
