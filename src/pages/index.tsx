@@ -1,8 +1,7 @@
-
-
+'use client'
+import { useState } from "react";
 import Navbar from "../components/navbar";
 import Home from "../components/home";
-import { useState } from "react";
 
 export default function HomePage() {
   const [activeMenu, setActiveMenu] = useState("home");
@@ -10,7 +9,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <Home />
+      <Home setActiveMenu={setActiveMenu} />
     </>
   );
 }

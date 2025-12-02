@@ -1,18 +1,29 @@
 {
   "navbar": {
+    "title": "🕉️ SantVani",
     "home": "Home",
+    "createArticle": "Create Article",
+    "listArticles": "List Articles",
     "videos": "Videos",
-    "blogs": "Blogs",
     "photos": "Photos",
+    "blogs": "Blogs",
     "about": "About",
-    "help": "Help"
+    "help": "Help",
+      "organizations": "Organizations",
+    "sants": {
+      "tukaram": "Tukaram",
+      "eknath": "Eknath",
+      "namdev": "Namdev",
+      "dnyaneshwar": "Dnyaneshwar"
+    }
   },
+
   "dashboard": {
     "welcome": "Welcome to {name}'s dashboard",
-  "videos": "Videos",
-  "photos": "Photos",
-  "blogs": "Blogs",
-  "about": "About",
-  "help": "Help"
+    "videos": "Videos",
+    "photos": "Photos",
+    "blogs": "Blogs",
+    "about": "About",
+    "help": "Help"
   }
 }

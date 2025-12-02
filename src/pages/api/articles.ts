@@ -1,15 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {db} from "../../../db";
 import { articles } from "../../../schema/articles";
-
+import { eq } from "drizzle-orm";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const authorId = "00000000-0000-0000-0000-000000000001";
   if (req.method === "POST") {
     try {
       const { category, title, content } = req.body;
 
       console.log({ category, title, content });
-
-      const authorId = "00000000-0000-0000-0000-000000000001";
 
       await db.insert(articles).values({
         category,
@@ -27,7 +26,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "GET") {
-    return res.status(200).json({ message: "Fetched articles" });
+    try {
+      const userArticles = await db
+        .select()
+        .from(articles)
+        .where(eq(articles.authorId, authorId))
+        .orderBy(articles.createdAt);
+
+      return res.status(200).json(userArticles);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Failed to fetch articles" });
+    }
   }
 
   return res.status(405).json({ error: "Method not allowed" });
