@@ -1,54 +1,65 @@
-// // scripts/seedAdmin.ts
-// import dotenv from "dotenv";
-// dotenv.config();
-// import bcrypt from "bcryptjs";
-// import { pool } from "../src/config/db.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-// (async () => {
-//   try {
-//     const adminEmail = process.env.SEED_ADMIN_EMAIL || "admin@udaan.com";
-//     const adminName = process.env.SEED_ADMIN_NAME || "Admin";
-//     const adminPassword = process.env.SEED_ADMIN_PASS || "AdminPass123";
-
-//     const hashed = await bcrypt.hash(adminPassword, 10);
-//     const q = `INSERT INTO users (name, email, password, role, status) 
-//                VALUES ($1,$2,$3,$4,$5)
-//                ON CONFLICT (email) DO UPDATE SET role=EXCLUDED.role, status=EXCLUDED.status RETURNING *`;
-//     const r = await pool.query(q, [adminName, adminEmail, hashed, "admin", "approved"]);
-//     console.log("Seed admin created/updated:", r.rows[0]);
-//     process.exit(0);
-//   } catch (err) {
-//     console.error(err);
-//     process.exit(1);
-//   }
-// })();
-import pool from "../src/config/db.js";
 import bcrypt from "bcryptjs";
+import pool from "../src/config/db.ts";
 
-async function seedAdmin() {
-  const email = "admin@santvani.com";
-  const password = "Admin@123"; // change later
-  const hashedPassword = await bcrypt.hash(password, 10);
+const isBcryptHash = (password: string) =>
+  password.startsWith("$2a$") ||
+  password.startsWith("$2b$") ||
+  password.startsWith("$2y$");
 
+(async () => {
   try {
-    const existing = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-    if (existing.rows.length > 0) {
-      console.log("⚠️ Admin already exists");
-      process.exit(0);
-    }
+    const adminEmail = process.env.ADMIN_EMAIL || "hello@gmail.com";
+    const adminName = process.env.ADMIN_NAME || "Admin";
+    const adminPassword = process.env.ADMIN_PASSWORD || "hello@123";
 
-    await pool.query(
-      `INSERT INTO users (name, email, password, role, status)
-       VALUES ($1, $2, $3, 'admin', 'approved')`,
-      ["SantVani Admin", email, hashedPassword]
+    const existing = await pool.query(
+      "SELECT id, password FROM users WHERE email = $1",
+      [adminEmail]
     );
 
-    console.log("✅ Admin user seeded successfully!");
-  } catch (err) {
-    console.error("❌ Error seeding admin:", err);
-  } finally {
-    pool.end();
-  }
-}
+    let finalPassword: string;
 
-seedAdmin();
+    if (existing.rowCount === 0) {
+      finalPassword = await bcrypt.hash(adminPassword, 10);
+      console.log("🔐 Admin created with hashed password");
+    } else {
+      const dbPassword = existing.rows[0].password;
+
+      if (isBcryptHash(dbPassword)) {
+        finalPassword = dbPassword;
+        console.log("♻️ Existing bcrypt password preserved");
+      } else {
+        finalPassword = await bcrypt.hash(dbPassword, 10);
+        console.log("🔁 Plain password detected → rehashed");
+      }
+    }
+
+    const q = `
+      INSERT INTO users (name, email, password, role, status)
+      VALUES ($1,$2,$3,'admin','approved')
+      ON CONFLICT (email)
+      DO UPDATE SET
+        name = EXCLUDED.name,
+        password = $3,
+        role = 'admin',
+        status = 'approved'
+      RETURNING id, name, email, role, status
+    `;
+
+    const r = await pool.query(q, [
+      adminName,
+      adminEmail,
+      finalPassword,
+    ]);
+
+    console.log("✅ Admin ready:", r.rows[0]);
+    process.exit(0);
+
+  } catch (err) {
+    console.error("❌ Seed error:", err);
+    process.exit(1);
+  }
+})();

@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -10,9 +9,10 @@ import SantDashboard from "./pages/sant/santdashboard";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
-import Dashboard from "./pages/Dashboard"; 
+import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/admin/adminDashboard";
 
+import ProtectedRoute from "./routes/ProtectedRoute"; 
 
 export default function App() {
   const [activeMenu, setActiveMenu] = useState("home");
@@ -21,7 +21,7 @@ export default function App() {
     <Router>
       <Routes>
 
-        {/* 🏠 Home Route */}
+        {}
         <Route
           path="/"
           element={
@@ -32,7 +32,7 @@ export default function App() {
           }
         />
 
-        {/* 🙏 Sant Dashboard Route */}
+        {}
         <Route
           path="/sant/:name"
           element={
@@ -49,17 +49,32 @@ export default function App() {
           }
         />
 
-        {/* 🔐 Authentication Routes */}
+        {}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/dashboard" element={<Dashboard />} /> 
-        <Route path="/adminDashboard" element={<AdminDashboard />} />
 
+        {}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
+        {}
+        <Route
+          path="/adminDashboard"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </Router>
   );
 }
-

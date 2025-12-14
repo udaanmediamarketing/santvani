@@ -1,5 +1,7 @@
 // src/models/userModel.ts
-import pool from "../config/db"; // ✅ Remove .js
+import pool from "../config/db.js";
+
+export type UserStatus = "pending" | "approved" | "rejected";
 
 export interface UserRow {
   id: string;
@@ -7,68 +9,98 @@ export interface UserRow {
   email: string;
   password: string;
   role: string;
-  status: string;
+  status: UserStatus;
   created_at: string;
 }
 
-/**
- * Create user → status 'pending'
- */
+
 export const createUser = async (
   name: string,
   email: string,
   hashedPassword: string,
-  role = "user"
-) => {
-  const res = await pool.query(
-    `INSERT INTO users (name, email, password, role, status)
-     VALUES ($1, $2, $3, $4, 'pending') RETURNING *`,
-    [name, email, hashedPassword, role]
+  role: string = "user"
+): Promise<UserRow> => {
+  const result = await pool.query(
+    `INSERT INTO users (name, email, password, role)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [name, email.toLowerCase(), hashedPassword, role]
   );
-  return res.rows[0] as UserRow;
+
+  return result.rows[0] as UserRow;
 };
 
-/** Find by email */
-export const findUserByEmail = async (email: string) => {
-  const res = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-  return res.rows[0] as UserRow | undefined;
+
+export const findUserByEmail = async (
+  email: string
+): Promise<UserRow | null> => {
+  const result = await pool.query(
+    `SELECT * FROM users
+     WHERE LOWER(email) = LOWER($1)
+     LIMIT 1`,
+    [email]
+  );
+
+  return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
 
-/** Find by id */
-export const findUserById = async (id: string) => {
-  const res = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
-  return res.rows[0] as UserRow | undefined;
+
+export const findUserById = async (
+  id: string
+): Promise<UserRow | null> => {
+  const result = await pool.query(
+    `SELECT * FROM users WHERE id = $1 LIMIT 1`,
+    [id]
+  );
+
+  return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
 
-/** List all users with pending status */
-export const listPendingUsers = async () => {
-  const res = await pool.query(
+
+export const listPendingUsers = async (): Promise<
+  Pick<UserRow, "id" | "name" | "email" | "role" | "status" | "created_at">[]
+> => {
+  const result = await pool.query(
     `SELECT id, name, email, role, status, created_at
      FROM users
      WHERE status = 'pending'
-     ORDER BY created_at DESC`
+     ORDER BY created_at ASC`
   );
-  return res.rows as Partial<UserRow>[];
+
+  return result.rows;
 };
 
-/** Approve user */
-export const approveUserById = async (id: string) => {
-  return await setUserStatus(id, "approved");
+
+export const approveUserById = async (
+  id: string
+): Promise<UserRow | null> => {
+  const result = await pool.query(
+    `UPDATE users
+     SET status = 'approved'
+     WHERE id = $1
+     RETURNING *`,
+    [id]
+  );
+
+  return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
 
-/** Reject user */
-export const rejectUserById = async (id: string) => {
-  return await setUserStatus(id, "rejected");
-};
 
-/**
- * Generic status change helper
- * Now RETURNS updated user directly
- */
-export const setUserStatus = async (id: string, status: string) => {
-  const res = await pool.query(
-    `UPDATE users SET status = $1 WHERE id = $2 RETURNING *`,
+export const setUserStatus = async (
+  id: string,
+  status: UserStatus
+): Promise<UserRow | null> => {
+  const result = await pool.query(
+    `UPDATE users
+     SET status = $1
+     WHERE id = $2
+     RETURNING *`,
     [status, id]
   );
-  return res.rows[0] as UserRow;
+
+  return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
+
+
+
+//-------------------------approve & reject user

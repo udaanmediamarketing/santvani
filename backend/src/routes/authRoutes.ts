@@ -1,37 +1,74 @@
 // src/routes/authRoutes.ts
-import express from "express";
-import pool from "../config/db"; // ✅ Remove .js
-import jwt from "jsonwebtoken";
+
+import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import pool from "../config/db.js";
 
 const router = express.Router();
 
-// 🧠 Sign In Route
-router.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
-  }
+router.post("/signin", async (req: Request, res: Response) => {
+  const { email, password } = req.body as {
+    email?: string;
+    password?: string;
+  };
 
   try {
-    const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-    const user = result.rows[0];
-
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    // Approval check (admin bypass)
-    if (user.role !== "admin" && user.status !== "approved") {
-      return res.status(403).json({ message: "Account not approved by admin" });
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
     }
 
-    // Compare password
+    const { rows, rowCount } = await pool.query(
+      `
+      SELECT id, name, email, password, role, status
+      FROM users
+      WHERE LOWER(email) = LOWER($1)
+      LIMIT 1
+      `,
+      [email]
+    );
+
+    if (!rowCount) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const user = rows[0];
+
+    if (user.status !== "approved") {
+      return res.status(403).json({
+        message: "Account not approved by admin",
+      });
+    }
+
+    if (!user.password) {
+      console.error("❌ Password missing for user:", user.email);
+      return res.status(500).json({
+        message: "Password not set for user",
+      });
+    }
+
+    console.log("📧 Email:", email);
+    console.log("🔐 Entered Password:", password);
+    console.log("🗄️ Stored Hash:", user.password);
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    console.log("✅ Password Match:", isMatch);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
 
     if (!process.env.JWT_SECRET) {
-      console.error("JWT_SECRET missing in environment!");
-      return res.status(500).json({ message: "Server configuration error" });
+      console.error("❌ JWT_SECRET missing in .env");
+      return res.status(500).json({
+        message: "Server configuration error",
+      });
     }
 
     const token = jwt.sign(
@@ -40,7 +77,7 @@ router.post("/signin", async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Login successful",
       token,
       user: {
@@ -52,8 +89,10 @@ router.post("/signin", async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("❌ Login Error:", err);
-    res.status(500).json({ message: "Server error" });
+    console.error("❌ Signin error:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 });
 

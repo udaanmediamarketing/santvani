@@ -1,3 +1,4 @@
-// src/models/index.ts
+// // src/models/index.ts
+
 export * from "./userModel.js";
 export * from "./postModel.js";
