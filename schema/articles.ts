@@ -13,6 +13,7 @@ export const articles = pgTable("articles", {
   content: text("content"),
   pdfUrl: text("pdf_url"),
   status: articleStatusEnum("status").default("pending").notNull(),
+  // TODO: Foreign key relation with users table
   authorId: uuid("author_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
 });

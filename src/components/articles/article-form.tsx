@@ -133,16 +133,16 @@ export default function CreateArticleForm() {
       if (data.content) formData.append("content", data.content);
       if (data.pdf?.[0]) formData.append("pdf", data.pdf[0]);
 
-      const res = await fetch("/app/api/articles", {
+      const res = await fetch("/api/articles", {
         method: "POST",
         body: formData,
       });
-
       if (!res.ok) throw new Error("Failed to upload");
       alert("लेख पुनरावलोकनासाठी पाठवण्यात आला!");
       reset();
     } catch (err) {
       console.error(err);
+      console.log(err);
       alert("काहीतरी चूक झाली.");
     } finally {
       setUploading(false);
@@ -159,7 +159,7 @@ export default function CreateArticleForm() {
 
         <Input type="hidden" {...register("category", { required: true })} />
 
-        <Select onValueChange={(val) => setValue("category", val, { shouldValidate: true })}>
+        <Select onValueChange={(val) => setValue("category", val, { shouldValidate: true, shouldDirty: true  })}>
           <SelectTrigger className="w-full rounded-lg border border-gray-300 bg-white shadow-sm focus:ring-2">
             <SelectValue placeholder="संत निवडा" />
           </SelectTrigger>
@@ -188,8 +188,8 @@ export default function CreateArticleForm() {
       </div>
 
       <div>
-        <Label className="font-sans">किंवा PDF अपलोड करा</Label>
-        <Input type="file" accept=".pdf" {...register("pdf")} />
+        <Label className="font-sans">किंवा PDF, images अपलोड करा</Label>
+        <Input type="file" accept=".pdf, .jpg, .jpeg, .png" {...register("pdf")} />
       </div>
 
       <Button
