@@ -58,22 +58,22 @@ export default function Home({ setActiveMenu }: { setActiveMenu: React.Dispatch<
     {
       name: "तुकाराम",
       description: "अभंगांच्या माध्यमातून भक्ती व प्रेमाचे संदेश देणारे पूजनीय मराठी संत.",
-      image: "/images/tukaram.jpg",
+      image: "/images/santTukaram.jpg",
     },
     {
       name: "ज्ञानेश्वर",
       description: "भगवद्गीतेचे मराठीत सुलभ भाष्य करणाऱ्या ज्ञानेश्वरीचे महान लेखक.",
-      image: "/images/dnyaneshwar.jpg",
+      image: "/images/santDyaneshwar.jpeg",
     },
     {
       name: "नामदेव",
       description: "ज्यांच्या रचनांचा समावेश गुरु ग्रंथ साहिबमध्येही आहे असे भक्तिसंत.",
-      image: "/images/namdev.jpg",
+      image: "/images/santNamdev.jpg",
     },
     {
       name: "एकनाथ",
       description: "एकात्मता, करुणा आणि मानवतेचे संदेश देणारे विद्वान संत.",
-      image: "/images/eknath.jpg",
+      image: "/images/santEknath.jpg",
     },
   ];
 
