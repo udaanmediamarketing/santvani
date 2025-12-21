@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/pending-users", authenticate, authorizeAdmin, getPendingUsersController);
 router.put("/approve-user/:id", authenticate, authorizeAdmin, approveUserController);
 router.put("/reject-user/:id", authenticate, authorizeAdmin, rejectUserController);
+router.put("/reject-user/:id", authenticate, authorizeAdmin, rejectUserController);
 
 router.get("/pending-posts", authenticate, authorizeAdmin, getPendingPostsController);
 router.put("/publish-post/:id", authenticate, authorizeAdmin, publishPostController);

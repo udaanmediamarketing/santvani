@@ -5,6 +5,7 @@ import {
   listPendingUsers,
   approveUserById,
   rejectUserById,
+  rejectUserById,
   findUserById,
 } from "../models/userModel.js";
 

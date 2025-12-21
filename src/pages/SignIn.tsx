@@ -50,7 +50,11 @@ const SignIn = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       router.replace(
+<<<<<<< HEAD
         data.user.role === "admin" ? "/admin/dashboard" : "/"
+=======
+        data.user.role === "admin" ? "/admin/dashboard" : "/dashboard"
+>>>>>>> 2c1541e (feat(code): approve & reject user code)
       );
     } catch (error) {
       console.error(error);

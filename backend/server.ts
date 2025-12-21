@@ -17,15 +17,6 @@ app.use(cors());
 app.use("/api/admin", adminRoutes);
 app.use("/api/posts", postRoutes);
 
-if (
-  !process.env.CLOUDFLARE_R2_ACCOUNT_ID ||
-  !process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ||
-  !process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY
-) {
-  throw new Error('R2 environment variables not configured');
-}
-
-
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL missing");
 }
