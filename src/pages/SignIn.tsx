@@ -17,15 +17,6 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setMessage("");
-
     try {
       const res = await fetch("http://localhost:5000/api/auth/signin", {
         method: "POST",
@@ -120,4 +111,4 @@ const SignIn = () => {
   );
 };
 
-// export default SignIn;
+export default SignIn;
