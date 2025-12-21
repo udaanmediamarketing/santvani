@@ -6,13 +6,16 @@ import { Pool } from "pg";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import adminRoutes from "./src/routes/adminRoutes";
+import postRoutes from "./src/routes/postRoutes";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.use("/api/admin", adminRoutes);
+app.use("/api/posts", postRoutes);
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL missing");
@@ -90,9 +93,15 @@ app.post("/api/auth/signin", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined");
+}
+
     const token = jwt.sign(
       { id: user.id, role: user.role },
-      process.env.JWT_SECRET || "secret",
+      JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -113,7 +122,7 @@ app.post("/api/auth/signin", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/", (_req, res) => res.send("API OK"));
+// app.get("/", (_req, res) => res.send("API OK"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>

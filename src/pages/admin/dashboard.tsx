@@ -29,7 +29,7 @@ export default function AdminDashboard() {
         <button className="px-6 py-2 rounded-full bg-blue-600 text-white shadow">
           Manage Posts / Articles
         </button>
-        <button className="px-6 py-2 rounded-full bg-gray-200 text-gray-700">
+        <button onClick={() => router.replace("/admin/manage-users")}className="px-6 py-2 rounded-full bg-gray-200 text-gray-700">
           Manage Users
         </button>
       </div>

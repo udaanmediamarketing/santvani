@@ -3,13 +3,17 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Button } from "../components/ui/button";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
 
 const SignIn = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -23,7 +27,7 @@ const SignIn = () => {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signin", {
+      const res = await fetch("http://localhost:5000/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -32,51 +36,82 @@ const SignIn = () => {
         }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
-        if (response.status === 401) setMessage("❌ Invalid credentials.");
-        else if (response.status === 403) setMessage("⚠️ Your account is pending admin approval.");
-        else if (response.status === 404) setMessage("❌ User not found.");
-        else setMessage(`❌ ${data.error || "Something went wrong"}`);
+      if (!res.ok) {
+        if (res.status === 401) setMessage("❌ Invalid credentials");
+        else if (res.status === 403) setMessage("⚠️ Account pending admin approval");
+        else if (res.status === 404) setMessage("❌ User not found");
+        else setMessage(data.error || "❌ Something went wrong");
         return;
       }
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      const redirectPath = data.user.role === "admin" ? "/adminDashboard" : "/dashboard";
-      router.replace(redirectPath);
-
-    } catch (err) {
-      console.error(err);
-      setMessage("⚠️ Server not responding.");
+      router.replace(
+        data.user.role === "admin" ? "/admin/dashboard" : "/dashboard"
+      );
+    } catch (error) {
+      console.error(error);
+      setMessage("⚠️ Server not responding");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-400 to-orange-600 p-4">
-      <motion.div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-orange-600 mb-6">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-300 to-orange-500 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl"
+      >
+        <h1 className="mb-6 text-center text-2xl font-bold text-orange-600">
           Welcome Back 👋
-        </h2>
+        </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
-          <input type="password" name="password" value={formData.password} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg" />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email address"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:outline-none"
+          />
 
-          <Button type="submit" disabled={loading} className="w-full bg-orange-500 text-white">
-            <LogIn size={18} /> {loading ? "Signing In..." : "Sign In"}
-          </Button>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:outline-none"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 py-2 font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+          >
+            <LogIn size={18} />
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
         </form>
 
-        {message && <p className="text-center mt-4">{message}</p>}
+        {message && (
+          <p className="mt-4 text-center text-sm text-red-600">{message}</p>
+        )}
 
-        <p className="text-sm text-center mt-6">
+        <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link href="/signup" className="text-orange-600 font-semibold">
+          <Link
+            href="/signup"
+            className="font-semibold text-orange-600 hover:underline"
+          >
             Sign Up
           </Link>
         </p>

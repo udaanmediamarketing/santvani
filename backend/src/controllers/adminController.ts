@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import {
   listPendingUsers,
   approveUserById,
+  rejectUserById,
   findUserById,
 } from "../models/userModel.js";
 
@@ -69,6 +70,41 @@ export const approveUserController = async (
   }
 };
 
+export const rejectUserController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+    console.log("sahkjsalsakl ", id);
+    const updatedUser = await rejectUserById(id);
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    try {
+      await sendEmailPlaceholder(
+        updatedUser.email,
+        approvalEmail(updatedUser.name)
+      );
+    } catch (mailErr) {
+      console.warn("⚠️ Email sending failed:", mailErr);
+    }
+
+    return res.status(200).json({
+      message: "User approved successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("❌ Approve user error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
 
 export const getPendingPostsController = async (
   req: Request,

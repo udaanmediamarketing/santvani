@@ -1,17 +1,13 @@
-// import { useEffect, useState } from "react";
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from "../../components/NotificationBell";
-import { useEffect, useState } from "react";
 
 export default function UserDashboard() {
   const { user, logout } = useAuth();
-  const [notification, setNotification] = useState("");
 
-  useEffect(() => {
-    if (user?.status === "approved") {
-      setNotification("🎉 Your account has been approved! You can now access all features.");
-    }
-  }, [user]);
+  const notification =
+    user?.status === "approved"
+      ? "🎉 Your account has been approved! You can now access all features."
+      : "";
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
