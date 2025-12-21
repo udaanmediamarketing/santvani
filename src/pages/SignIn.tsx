@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -17,14 +17,14 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+//     setMessage("");
 
     try {
       const res = await fetch("http://localhost:5000/api/auth/signin", {
@@ -46,8 +46,8 @@ const SignIn = () => {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+//       localStorage.setItem("token", data.token);
+//       localStorage.setItem("user", JSON.stringify(data.user));
 
       router.replace(
         data.user.role === "admin" ? "/admin/dashboard" : "/dashboard"
@@ -120,4 +120,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+// export default SignIn;
