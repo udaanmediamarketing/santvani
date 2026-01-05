@@ -331,6 +331,8 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
+import { useAuth } from "../../pages/context/AuthContext";
+import { toast } from "sonner";
 
 type FormData = {
   category: string;
@@ -378,6 +380,16 @@ export default function CreateArticleForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
+      if (!token) {
+      throw new Error("User not authenticated");
+    }
+     const file = data.pdf?.[0];
+    if (file && /\s/.test(file.name)) {
+      toast.error("फाइल नावात space वापरू नका", {
+        description: "कृपया फाइलचे नाव बदलून पुन्हा अपलोड करा (उदा. image-194.png)",
+      });
+      return;
+    }
       setUploading(true);
 
       const formData = new FormData();
@@ -386,22 +398,31 @@ export default function CreateArticleForm() {
       if (data.content) formData.append("content", data.content);
       if (data.pdf?.[0]) formData.append("pdf", data.pdf[0]);
 
-      const res = await fetch("/api/articles", {
+      const res = await fetch("http://localhost:5000/api/posts/create-post", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
       if (!res.ok) throw new Error("Failed to upload");
 
-      alert("लेख पुनरावलोकनासाठी पाठवण्यात आला!");
+      toast.success("लेख यशस्वीरित्या पाठवण्यात आला!", {
+      description: "आपला लेख पुनरावलोकनासाठी पाठवण्यात आला आहे.",
+    });
       reset();
     } catch (err) {
       console.error(err);
-      alert("काहीतरी चूक झाली.");
+       toast.error("काहीतरी चूक झाली", {
+      description: "लेख सबमिट करता आला नाही. कृपया पुन्हा प्रयत्न करा.",
+    });
     } finally {
       setUploading(false);
     }
   };
+  const countWords = (text: string) =>
+  text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
 
   return (
     <div className="flex justify-center px-4">
@@ -471,6 +492,7 @@ export default function CreateArticleForm() {
           />
         </div>
 
+        {/* Content */}
         {/* Content */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">

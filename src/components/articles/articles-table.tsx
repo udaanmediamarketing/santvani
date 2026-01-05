@@ -96,34 +96,50 @@ import {
   TableRow,
 } from "../ui/table";
 import { Badge } from "../ui/badge";
+import { useAuth } from "../../pages/context/AuthContext";
 
 interface Article {
   id: string;
   title: string;
   category: string;
-  status: "pending" | "approved" | "cancelled";
-  createdAt: string;
+  status: "pending" | "published" | "rejected";
+  created_at: string;
 }
-
+const statusMap: Record<string, string> = {
+  published: "प्रकाशित",
+  rejected: "नाकारले",
+  pending: "प्रलंबित",
+};
 export default function ArticlesTable() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const { user } = useAuth();
+  const id = user?.id;
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const res = await fetch("/api/articles");
-        const data = await res.json();
-        setArticles(data);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchArticles = async () => {
+    const res = await fetch(`http://localhost:5000/api/posts/list-posts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    });
 
-    fetchArticles();
-  }, []);
+    const data = await res.json();
+    const articlesArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data.posts)
+        ? data.posts
+        : [];
+    setArticles(articlesArray || []);
+    setLoading(false);
+  };
+
+  fetchArticles();
+}, []);
+
+  if (loading) return <p className="text-center py-8">Loading articles...</p>;
+  console.log("Articles:", articles[0].status);
+  if (articles.length === 0)
+    return <p className="text-center py-8 text-gray-500">No articles found</p>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 mt-10">

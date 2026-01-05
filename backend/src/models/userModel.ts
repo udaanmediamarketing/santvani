@@ -12,8 +12,6 @@ export interface UserRow {
   status: UserStatus;
   created_at: string;
 }
-
-
 export const createUser = async (
   name: string,
   email: string,
@@ -85,22 +83,16 @@ export const approveUserById = async (
   return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
 
-
-export const setUserStatus = async (
-  id: string,
-  status: UserStatus
+export const rejectUserById = async (
+  id: string
 ): Promise<UserRow | null> => {
   const result = await pool.query(
     `UPDATE users
-     SET status = $1
-     WHERE id = $2
+     SET status = 'rejected'
+     WHERE id = $1
      RETURNING *`,
-    [status, id]
+    [id]
   );
 
   return result.rows.length ? (result.rows[0] as UserRow) : null;
 };
-
-
-
-//-------------------------approve & reject user

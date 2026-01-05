@@ -2,8 +2,8 @@ import { pgTable, text, timestamp, uuid, pgEnum } from "drizzle-orm/pg-core";
 
 export const articleStatusEnum = pgEnum("article_status", [
   "pending",
-  "approved",
-  "cancelled"
+  "published",
+  "rejected"
 ]);
 
 export const articles = pgTable("articles", {
@@ -11,9 +11,10 @@ export const articles = pgTable("articles", {
   title: text("title").notNull(),
   category: text("category").notNull(),
   content: text("content"),
-  pdfUrl: text("pdf_url"),
+  imageUrl: text("image_url"),
   status: articleStatusEnum("status").default("pending").notNull(),
   // TODO: Foreign key relation with users table
   authorId: uuid("author_id"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow()
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow()
 });
