@@ -348,7 +348,9 @@ export default function CreateArticleForm() {
     useForm<FormData>();
   const [uploading, setUploading] = useState(false);
   const [translating, setTranslating] = useState(false);
-
+  const [wordCount, setWordCount] = useState(0);
+  const MAX_WORDS = 500;
+  const { token } = useAuth();
   const contentValue = watch("content") || "";
 
   const translateContent = async (lang: string) => {
@@ -363,7 +365,7 @@ export default function CreateArticleForm() {
       );
       const data = await res.json();
       const translatedText = data[0]
-        .map((item: any) => item[0])
+        .map((item: string) => item[0])
         .join("");
 
       // 🔥 Replace textarea content with translated text
@@ -495,14 +497,55 @@ export default function CreateArticleForm() {
         {/* Content */}
         {/* Content */}
         <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">
+          {/* <Label className="text-sm font-semibold text-gray-700">
             लेख मजकूर
           </Label>
           <Textarea
             {...register("content")}
             placeholder="येथे आपला लेख लिहा..."
             className="min-h-[180px] rounded-xl border-gray-300"
-          />
+          /> */}
+  <Label className="text-sm font-semibold text-gray-700">
+    लेख मजकूर
+  </Label>
+
+  <Textarea
+    {...register("content")}
+    placeholder="येथे आपला लेख लिहा..."
+    className="
+      min-h-[180px]
+      rounded-xl
+      border-gray-300
+      focus:ring-2 focus:ring-orange-400
+      transition-all
+    "
+    onChange={(e) => {
+      const text = e.target.value;
+      const words = countWords(text);
+
+      if (words <= MAX_WORDS) {
+        setWordCount(words);
+        setValue("content", text, { shouldDirty: true });
+      }
+    }}
+  />
+
+  {/* Word Counter */}
+  <div className="flex justify-between text-xs">
+    <span
+      className={`${
+        wordCount >= MAX_WORDS ? "text-red-600" : "text-gray-500"
+      }`}
+    >
+      {wordCount} / {MAX_WORDS} शब्द
+    </span>
+
+    {wordCount >= MAX_WORDS && (
+      <span className="text-red-600">
+        कमाल शब्द मर्यादा गाठली आहे
+      </span>
+    )}
+  </div>
 
           {/* 🔽 Language Dropdown (NEW) */}
           <Select onValueChange={translateContent}>
@@ -526,17 +569,17 @@ export default function CreateArticleForm() {
         {/* Upload */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">
-            PDF किंवा Image अपलोड करा
+            Image अपलोड करा
           </Label>
 
           <div className="border-2 border-dashed border-orange-300 rounded-xl p-4 text-center">
             <Input
               type="file"
-              accept=".pdf,.jpg,.jpeg,.png"
+              accept=".jpg,.jpeg,.png"
               {...register("pdf")}
             />
             <p className="text-xs text-gray-500 mt-2">
-              PDF / JPG / PNG समर्थित
+              JPG / PNG समर्थित
             </p>
           </div>
         </div>

@@ -115,6 +115,7 @@ export default function ArticlesTable() {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const id = user?.id;
+
   useEffect(() => {
   const fetchArticles = async () => {
     const res = await fetch(`http://localhost:5000/api/posts/list-posts/${id}`, {
@@ -217,21 +218,21 @@ export default function ArticlesTable() {
                     </TableCell>
 
                     <TableCell className="px-4 py-3 text-center">
-                      <Badge
+                      {/* <Badge
                         className={
-                          article.status === "approved"
+                          article.status == "approved"
                             ? "bg-green-100 text-green-700"
                             : article.status === "cancelled"
                             ? "bg-red-100 text-red-700"
                             : "bg-yellow-100 text-yellow-700"
                         }
-                      >
-                        {article.status}
-                      </Badge>
+                      > */}
+                         <span>{statusMap[article.status] ?? article.status}</span>
+                      {/* </Badge> */}
                     </TableCell>
 
                     <TableCell className="px-4 py-3 text-center text-sm text-gray-600">
-                      {new Date(article.createdAt).toLocaleDateString("en-IN")}
+                      {new Date(article.created_at).toLocaleDateString("mr-IN")}
                     </TableCell>
                   </TableRow>
                 ))}
