@@ -1,208 +1,3 @@
-// "use client";
-// import { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { Input } from "../ui/input";
-// import { Textarea } from "../ui/textarea";
-// import { Button } from "../ui/button";
-// import { Label } from "../ui/label";
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
-
-// type FormData = {
-//   category: string;
-//   title: string;
-//   content?: string;
-//   pdf?: FileList;
-// };
-
-// const sants = ["Tukaram", "Eknath", "Namdev", "Dnyaneshwar"];
-
-// export default function CreateArticleForm() {
-//   const { register, handleSubmit, setValue, reset } = useForm<FormData>();
-//   const [uploading, setUploading] = useState(false);
-
-//   const onSubmit = async (data: FormData) => {
-//     try {
-//       setUploading(true);
-
-//       // Prepare JSON payload
-//       const payload = {
-//         category: data.category,
-//         title: data.title,
-//         content: data.content || "",
-//       };
-
-//       const res = await fetch("/api/articles", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(payload),
-//       });
-
-//       const result = await res.json();
-//       console.log(result);
-
-//       if (!res.ok) throw new Error("Failed to upload");
-//       alert("Article submitted for review!");
-//       reset();
-//     } catch (err) {
-//       console.error(err);
-//       alert("Something went wrong.");
-//     } finally {
-//       setUploading(false);
-//     }
-//   };
-
-//   return (
-//     <form
-//       onSubmit={handleSubmit(onSubmit)}
-//       className="max-w-xl mx-auto p-6 bg-white shadow-md shadow-orange-200 rounded-xl space-y-4 mt-5"
-//     >
-//       <div className="space-y-2 mt-4">
-//         <Label className="text-sm font-medium font-sans">Category (Sant)</Label>
-//         <Input type="hidden" {...register("category", { required: true })} />
-//         <Select onValueChange={(val) => setValue("category", val, { shouldValidate: true })}>
-//           <SelectTrigger className="w-full rounded-lg border border-gray-300 bg-white shadow-sm focus:ring-2">
-//             <SelectValue placeholder="Select Sant" />
-//           </SelectTrigger>
-//           <SelectContent className="rounded-lg shadow-lg bg-white">
-//             {sants.map((sant) => (
-//               <SelectItem key={sant} value={sant} className="hover:bg-gray-100">
-//                 {sant}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
-//       </div>
-
-//       <div>
-//         <Label className="font-sans mb-2">Title</Label>
-//         <Input {...register("title", { required: true })} placeholder="Enter article title" />
-//       </div>
-
-//       <div>
-//         <Label className="font-sans mb-2">Write Article</Label>
-//         <Textarea {...register("content")} placeholder="Write your article here..." className="min-h-[150px]" />
-//       </div>
-
-//       <div>
-//         <Label className="font-sans mb-2">Or Upload as PDF</Label>
-//         <Input type="file" accept=".pdf" {...register("pdf")} />
-//       </div>
-
-//       <Button
-//         type="submit"
-//         disabled={uploading}
-//         className="w-full font-sans bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 rounded-lg hover:text-base"
-//       >
-//         {uploading ? "Submitting..." : "Submit Article"}
-//       </Button>
-//     </form>
-//   );
-// }
-
-// ----- san code below one
-
-// "use client";
-// import { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import { Input } from "../ui/input";
-// import { Textarea } from "../ui/textarea";
-// import { Button } from "../ui/button";
-// import { Label } from "../ui/label";
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../ui/select";
-
-// type FormData = {
-//   category: string;
-//   title: string;
-//   content?: string;
-//   pdf?: FileList;
-// };
-
-// const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
-
-// export default function CreateArticleForm() {
-//   const { register, handleSubmit, setValue, reset } = useForm<FormData>();
-//   const [uploading, setUploading] = useState(false);
-
-//   const onSubmit = async (data: FormData) => {
-//     try {
-//       setUploading(true);
-//       const formData = new FormData();
-//       formData.append("category", data.category);
-//       formData.append("title", data.title);
-//       if (data.content) formData.append("content", data.content);
-//       if (data.pdf?.[0]) formData.append("pdf", data.pdf[0]);
-
-//       const res = await fetch("/api/articles", {
-//         method: "POST",
-//         body: formData,
-//       });
-//       if (!res.ok) throw new Error("Failed to upload");
-//       alert("लेख पुनरावलोकनासाठी पाठवण्यात आला!");
-//       reset();
-//     } catch (err) {
-//       console.error(err);
-//       console.log(err);
-//       alert("काहीतरी चूक झाली.");
-//     } finally {
-//       setUploading(false);
-//     }
-//   };
-
-//   return (
-//     <form
-//       onSubmit={handleSubmit(onSubmit)}
-//       className="max-w-xl mx-auto p-6 bg-white shadow-md shadow-orange-200 rounded-xl space-y-4 mt-5"
-//     >
-//       <div className="space-y-2 mt-4">
-//         <Label className="text-sm font-medium font-sans">विभाग (संत)</Label>
-
-//         <Input type="hidden" {...register("category", { required: true })} />
-
-//         <Select onValueChange={(val) => setValue("category", val, { shouldValidate: true, shouldDirty: true  })}>
-//           <SelectTrigger className="w-full rounded-lg border border-gray-300 bg-white shadow-sm focus:ring-2">
-//             <SelectValue placeholder="संत निवडा" />
-//           </SelectTrigger>
-//           <SelectContent className="rounded-lg shadow-lg bg-white">
-//             {sants.map((sant) => (
-//               <SelectItem key={sant} value={sant} className="hover:bg-gray-100">
-//                 {sant}
-//               </SelectItem>
-//             ))}
-//           </SelectContent>
-//         </Select>
-//       </div>
-
-//       <div>
-//         <Label className="font-sans">शीर्षक</Label>
-//         <Input {...register("title", { required: true })} placeholder="लेखाचे शीर्षक लिहा" />
-//       </div>
-
-//       <div>
-//         <Label className="font-sans">लेख लिहा</Label>
-//         <Textarea
-//           {...register("content")}
-//           placeholder="येथे आपला लेख लिहा..."
-//           className="min-h-[150px]"
-//         />
-//       </div>
-
-//       <div>
-//         <Label className="font-sans">किंवा PDF, images अपलोड करा</Label>
-//         <Input type="file" accept=".pdf, .jpg, .jpeg, .png" {...register("pdf")} />
-//       </div>
-
-//       <Button
-//         type="submit"
-//         disabled={uploading}
-//         className="w-full font-sans bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 rounded-lg hover:text-base"
-//       >
-//         {uploading ? "सबमिट करत आहोत..." : "लेख सबमिट करा"}
-//       </Button>
-//     </form>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
@@ -218,6 +13,8 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
+import { useAuth } from "../../pages/context/AuthContext";
+import { toast } from "sonner";
 
 type FormData = {
   category: string;
@@ -231,9 +28,21 @@ const sants = ["तुकाराम", "एकनाथ", "नामदेव",
 export default function CreateArticleForm() {
   const { register, handleSubmit, setValue, reset } = useForm<FormData>();
   const [uploading, setUploading] = useState(false);
-
+const [wordCount, setWordCount] = useState(0);
+  const { token } = useAuth();
+  const MAX_WORDS = 500;
   const onSubmit = async (data: FormData) => {
     try {
+      if (!token) {
+      throw new Error("User not authenticated");
+    }
+     const file = data.pdf?.[0];
+    if (file && /\s/.test(file.name)) {
+      toast.error("फाइल नावात space वापरू नका", {
+        description: "कृपया फाइलचे नाव बदलून पुन्हा अपलोड करा (उदा. image-194.png)",
+      });
+      return;
+    }
       setUploading(true);
 
       const formData = new FormData();
@@ -242,22 +51,31 @@ export default function CreateArticleForm() {
       if (data.content) formData.append("content", data.content);
       if (data.pdf?.[0]) formData.append("pdf", data.pdf[0]);
 
-      const res = await fetch("/api/articles", {
+      const res = await fetch("http://localhost:5000/api/posts/create-post", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
       if (!res.ok) throw new Error("Failed to upload");
 
-      alert("लेख पुनरावलोकनासाठी पाठवण्यात आला!");
+      toast.success("लेख यशस्वीरित्या पाठवण्यात आला!", {
+      description: "आपला लेख पुनरावलोकनासाठी पाठवण्यात आला आहे.",
+    });
       reset();
     } catch (err) {
       console.error(err);
-      alert("काहीतरी चूक झाली.");
+       toast.error("काहीतरी चूक झाली", {
+      description: "लेख सबमिट करता आला नाही. कृपया पुन्हा प्रयत्न करा.",
+    });
     } finally {
       setUploading(false);
     }
   };
+  const countWords = (text: string) =>
+  text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
 
   return (
     <div className="flex justify-center px-4">
@@ -344,22 +162,50 @@ export default function CreateArticleForm() {
         </div>
 
         {/* Content */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">
-            लेख मजकूर
-          </Label>
-          <Textarea
-            {...register("content")}
-            placeholder="येथे आपला लेख लिहा..."
-            className="
-              min-h-[180px]
-              rounded-xl
-              border-gray-300
-              focus:ring-2 focus:ring-orange-400
-              transition-all
-            "
-          />
-        </div>
+        {/* Content */}
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700">
+    लेख मजकूर
+  </Label>
+
+  <Textarea
+    {...register("content")}
+    placeholder="येथे आपला लेख लिहा..."
+    className="
+      min-h-[180px]
+      rounded-xl
+      border-gray-300
+      focus:ring-2 focus:ring-orange-400
+      transition-all
+    "
+    onChange={(e) => {
+      const text = e.target.value;
+      const words = countWords(text);
+
+      if (words <= MAX_WORDS) {
+        setWordCount(words);
+        setValue("content", text, { shouldDirty: true });
+      }
+    }}
+  />
+
+  {/* Word Counter */}
+  <div className="flex justify-between text-xs">
+    <span
+      className={`${
+        wordCount >= MAX_WORDS ? "text-red-600" : "text-gray-500"
+      }`}
+    >
+      {wordCount} / {MAX_WORDS} शब्द
+    </span>
+
+    {wordCount >= MAX_WORDS && (
+      <span className="text-red-600">
+        कमाल शब्द मर्यादा गाठली आहे
+      </span>
+    )}
+  </div>
+</div>
 
         {/* Upload */}
         <div className="space-y-2">

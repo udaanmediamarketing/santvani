@@ -18,7 +18,7 @@ import {
   approvalEmail,
   postApprovedEmail,
 } from "../utils/emailTemplates.js";
-
+import { updatePostStatus } from "../models/postModel.js";
 
 export const getPendingUsersController = async (
   req: Request,
@@ -80,7 +80,6 @@ export const rejectUserController = async (
     if (!id) {
       return res.status(400).json({ error: "User ID is required" });
     }
-    console.log("sahkjsalsakl ", id);
     const updatedUser = await rejectUserById(id);
 
     if (!updatedUser) {
@@ -120,45 +119,42 @@ export const getPendingPostsController = async (
 };
 
 
-export const approvePostController = async (
-  req: Request,
-  res: Response
-) => {
+export const publishPostController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).json({ error: "Post ID is required" });
-    }
+    const post = await updatePostStatus(id, "published");
 
-    const updatedPost = await approvePostById(id);
-
-    if (!updatedPost) {
+    if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if (updatedPost.author_id) {
-      const author = await findUserById(updatedPost.author_id);
-
-      if (author) {
-        try {
-          await sendEmailPlaceholder(
-            author.email,
-            postApprovedEmail(author.name, updatedPost.title)
-          );
-        } catch (mailErr) {
-          console.warn("⚠️ Post approval email failed:", mailErr);
-        }
-      }
-    }
-
-    return res.status(200).json({
-      message: "Post approved successfully",
-      post: updatedPost,
+    res.json({
+      message: "Post published successfully",
+      post,
     });
   } catch (error) {
-    console.error("❌ Approve post error:", error);
-    return res.status(500).json({ error: "Server error" });
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
-  
+};
+
+export const rejectPostController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const post = await updatePostStatus(id, "rejected");
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json({
+      message: "Post rejected successfully",
+      post,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
 };
