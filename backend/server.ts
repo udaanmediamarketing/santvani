@@ -2,8 +2,8 @@
 import express from "express";
 import type { Request, Response } from "express";
 import cors from "cors";
-import { Pool } from "pg";
 import dotenv from "dotenv";
+import pool from "./src/config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import adminRoutes from "./src/routes/adminRoutes";
@@ -30,15 +30,24 @@ if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL missing");
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-});
+if (!process.env.RESEND_API_KEY) {
+  console.log("❌ RESEND_API_KEY is missing in environment variables");
+  throw new Error("❌ RESEND_API_KEY is missing in environment variables");
+}
 
-pool
-  .connect()
-  .then(() => console.log("✅ Neon DB connected"))
-  .catch(console.error);
+if (!process.env.FROM_EMAIL) {
+  throw new Error("❌ FROM_EMAIL is missing in environment variables");
+}
+
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: { rejectUnauthorized: false },
+// });
+
+// pool
+//   .connect()
+//   .then(() => console.log("✅ Neon DB connected"))
+//   .catch(console.error);
 
 
 app.post("/api/auth/signup", async (req: Request, res: Response) => {

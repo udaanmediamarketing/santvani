@@ -2,11 +2,17 @@
 import { Request, Response } from "express";
 import { createPost, getPosts, getPostsBySantName } from "../models/postModel.js";
 
-export const createPostController = async (req: Request, res: Response) => {
+interface AuthRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
+
+export const createPostController = async (req: AuthRequest, res: Response) => {
   try {
     const { title, category, content, image_url } = req.body;
 
-    const author_id = (req as any).user?.id;
+    const author_id = (req as AuthRequest).user?.id;
     if (!author_id) {
       return res.status(401).json({ error: "Unauthorized" });
     }

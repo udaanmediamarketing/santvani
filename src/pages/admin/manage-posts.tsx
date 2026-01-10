@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
+import { AdminTopNav } from "../../components/admin-navbar";
 
 type Post = {
   id: number;
@@ -43,7 +44,7 @@ const paginatedPosts = filteredPosts?.slice(
   useEffect(() => {
     if (!user) return;
     if (user.role !== "admin") {
-      router.replace("/dashboard");
+      router.replace("/signin");
     }
   }, [user, router]);
 
@@ -125,15 +126,10 @@ const paginatedPosts = filteredPosts?.slice(
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
+      <AdminTopNav active="posts" onLogout={logout} />
       {/* Header */}
       <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow mb-6">
         <h1 className="text-xl font-bold">Manage Posts</h1>
-        <button
-          onClick={logout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg"
-        >
-          Logout
-        </button>
       </div>
       <div className="flex justify-between items-center mb-4">
   <input

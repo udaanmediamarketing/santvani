@@ -1,5 +1,3 @@
-// src/controllers/adminController.ts
-
 import { Request, Response } from "express";
 import {
   listPendingUsers,
@@ -14,9 +12,8 @@ import {
 } from "../models/postModel.js";
 
 import {
-  sendEmailPlaceholder,
-  approvalEmail,
-  postApprovedEmail,
+  sendSignupApprovalEmail,
+  sendSignUpRejectionEmail
 } from "../utils/emailTemplates.js";
 import { updatePostStatus } from "../models/postModel.js";
 
@@ -52,10 +49,10 @@ export const approveUserController = async (
     }
 
     try {
-      await sendEmailPlaceholder(
-        updatedUser.email,
-        approvalEmail(updatedUser.name)
-      );
+      await sendSignupApprovalEmail({
+      to: updatedUser.email,
+      name: updatedUser.name,
+    });
     } catch (mailErr) {
       console.warn("⚠️ Email sending failed:", mailErr);
     }
@@ -87,10 +84,10 @@ export const rejectUserController = async (
     }
 
     try {
-      await sendEmailPlaceholder(
-        updatedUser.email,
-        approvalEmail(updatedUser.name)
-      );
+      await sendSignUpRejectionEmail({
+      to: updatedUser.email,
+      name: updatedUser.name,
+    });
     } catch (mailErr) {
       console.warn("⚠️ Email sending failed:", mailErr);
     }

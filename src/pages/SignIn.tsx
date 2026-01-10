@@ -50,7 +50,7 @@ const SignIn = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       router.replace(
-        data.user.role === "admin" ? "/admin/dashboard" : "/"
+        data.user.role === "admin" ? "/admin/manage-users" : "/"
       );
     } catch (error) {
       console.error(error);
