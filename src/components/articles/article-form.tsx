@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -99,7 +100,7 @@ const [wordCount, setWordCount] = useState(0);
             नवीन लेख सबमिट करा
           </h2>
           <p className="text-sm text-gray-600">
-            संतवाणी ज्ञानकोशासाठी आपला लेख पाठवा
+            विश्व संत साहित्य ज्ञानकोशासाठी आपला लेख पाठवा
           </p>
         </div>
 
