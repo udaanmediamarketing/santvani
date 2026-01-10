@@ -162,7 +162,6 @@ const [wordCount, setWordCount] = useState(0);
         </div>
 
         {/* Content */}
-        {/* Content */}
 <div className="space-y-2">
   <Label className="text-sm font-semibold text-gray-700">
     लेख मजकूर

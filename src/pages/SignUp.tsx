@@ -37,7 +37,7 @@ const SignUp = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage("✅ Registration successful! Waiting for admin approval.");
+        setMessage("✅ नोंदणी यशस्वी झाली आहे! Admin च्या मंजुरीची प्रतीक्षा आहे.");
         setTimeout(() => router.replace("/signin"), 2500);
       } else {
         setMessage(`❌ ${data.error || "Signup failed"}`);

@@ -1,18 +1,101 @@
-// src/utils/emailTemplates.ts
+import { Resend } from "resend";
 
-export const approvalEmail = (name: string) => ({
-  subject: "Your SantVani account is approved",
-  text: `Hi ${name},\n\nYour SantVani account has been approved by the admin. You can now log in.\n\n— SantVani Team`
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const postApprovedEmail = (name: string, title: string) => ({
-  subject: "Your post is approved",
-  text: `Hi ${name},\n\nYour post "${title}" has been approved and is now visible on the dashboard.\n\n— SantVani Team`
-});
+export const sendSignupApprovalEmail = async ({
+  to,
+  name,
+}: {
+  to: string;
+  name: string;
+}) => {
+  const { data, error } = await resend.emails.send({
+    from: process.env.FROM_EMAIL!,
+    to,
+    subject: "तुमचे खाते मंजूर झाले आहे 🎉",
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+       <img
+          src="./images/banner.png"
+          alt="विश्व संत साहित्य"
+          style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;"
+        />
+        <h2>नमस्कार ${name},</h2>
 
-export const sendEmailPlaceholder = async (to: string, mail: { subject: string; text: string }) => {
-  console.log(`--- pretend-sending email to ${to} ---`);
-  console.log("subject:", mail.subject);
-  console.log("text:", mail.text);
- 
+        <p>
+          आनंदाची बातमी! 🎉  
+          तुमचे खाते <b>Admin कडून मंजूर</b> करण्यात आले आहे.
+        </p>
+
+        <p>
+          आता तुम्ही तुमच्या ई-मेल आणि पासवर्ड वापरून लॉगिन करू शकता.
+        </p>
+
+        <a
+          href="http://localhost:3000/signin"
+          style="
+            display: inline-block;
+            margin-top: 16px;
+            padding: 10px 16px;
+            background-color: #f97316;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+          "
+        >
+          लॉगिन करा
+        </a>
+
+        <br /><br />
+        <p>धन्यवाद,<br/>विश्व संत साहित्य टीम</p>
+        <img
+          src="./images/logo.jpg"
+          alt="SantVani Logo"
+          className="h-10 w-auto object-contain"
+        />
+      </div>
+    `,
+  });
+  if (error) {
+  console.error("❌ Resend error:", error);
+  throw error;
+}
+
+console.log("✅ Email sent:", data);
+
+};
+
+export const sendSignUpRejectionEmail = async ({
+  to,
+  name,
+}: {
+  to: string;
+  name: string;
+}) => {
+  await resend.emails.send({
+    from: process.env.FROM_EMAIL!,
+    to,
+    subject: "तुमची नोंदणी मंजूर झाली नाही ❌",
+    html: `
+      <div style="font-family: Arial; line-height: 1.6">
+        <h2>नमस्कार ${name},</h2>
+
+        <p>
+          तुमची नोंदणी तपासल्यानंतर, सध्या तुमचे खाते
+          <b>मंजूर करता येत नाही</b>.
+        </p>
+
+       <p>जर तुम्हाला अधिक माहिती हवी असेल, तर कृपया Admin शी संपर्क साधा.</p>
+
+        <br />
+        <p>धन्यवाद,<br/>विश्व संत साहित्य टीम</p>
+        <img
+          src="/images/logo.jpg"
+          alt="SantVani Logo"
+          className="h-10 w-auto object-contain"
+        />
+      </div>
+    `,
+  });
 };

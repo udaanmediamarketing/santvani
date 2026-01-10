@@ -10,9 +10,10 @@ interface ParsedFormData {
   category: string;
   content: string | null;
   image_url: string | null;
+  userId: string;
 }
 
-export async function parseFormData(req: Request, res: Response): Promise<ParsedFormData | null> {
+export async function parseFormData(req: Request, res: Response, userId: string): Promise<ParsedFormData | null> {
   return new Promise((resolve, reject) => {
     const uploadDir = path.join(process.cwd(), 'uploads/temp');
 
@@ -61,7 +62,7 @@ const pdfFile = fileKey
       if (pdfFile) {
         try {
           const buffer = await fs.readFile(pdfFile.filepath);
-          image_url = await uploadToCloudStorage(buffer, pdfFile.originalFilename || 'post.pdf');
+          image_url = await uploadToCloudStorage(buffer, pdfFile.originalFilename || 'post.img', userId);
           
           // Clean up temp file
           await fs.unlink(pdfFile.filepath).catch(console.error);
@@ -72,7 +73,7 @@ const pdfFile = fileKey
         }
       }
 
-      resolve({ title, category, content, image_url });
+      resolve({ title, category, content, image_url, userId });
     });
   });
 }
