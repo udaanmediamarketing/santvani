@@ -120,7 +120,7 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
   const santname = decodeURIComponent(name);
   const result = await pool.query(
     `SELECT * FROM articles
-     WHERE category = $1
+     WHERE category = $1 AND status = 'published'
      ORDER BY created_at DESC`,
      [santname]
   );

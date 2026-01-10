@@ -60,12 +60,6 @@ export default function SantPage() {
         </h1>
 
         {loading && <p className="text-center">लोड होत आहे...</p>}
-        {!loading && articles.length === 0 && (
-          <p className="text-center text-gray-600">
-            या संतांचे लेख उपलब्ध नाहीत
-          </p>
-        )}
-
         {/* Articles as Sant Cards */}
         {articles.length === 0 ? (
         <p className="text-center text-gray-600">

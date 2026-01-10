@@ -36,7 +36,7 @@ const [wordCount, setWordCount] = useState(0);
       if (!token) {
       throw new Error("User not authenticated");
     }
-     const file = data.pdf?.[0];
+    const file = data.pdf?.[0];
     if (file && /\s/.test(file.name)) {
       toast.error("फाइल नावात space वापरू नका", {
         description: "कृपया फाइलचे नाव बदलून पुन्हा अपलोड करा (उदा. image-194.png)",
