@@ -7,9 +7,11 @@ import fsSync from 'fs';
 
 interface ParsedFormData {
   title: string;
+  santname: string | null;  
   category: string;
   content: string | null;
   image_url: string | null;
+  youtube_url: string | null;
   userId: string;
 }
 
@@ -43,6 +45,12 @@ if (!fsSync.existsSync(uploadDir)) {
     : Array.isArray(fields.title)
     ? fields.title[0]
     : '';
+    const santname = 
+        typeof fields.santname === 'string'
+          ? fields.santname
+          : Array.isArray(fields.santname)
+          ? fields.santname[0]
+          : null;
 const category =
   typeof fields.category === 'string'
     ? fields.category
@@ -50,7 +58,12 @@ const category =
     ? fields.category[0]
     : '';
       const content = Array.isArray(fields.content) ? fields.content[0] || null : fields.content || null;
-
+      const youtube_url = 
+        typeof fields.youtubeUrl === 'string'  // Frontend sends "youtubeUrl"
+          ? fields.youtubeUrl
+          : Array.isArray(fields.youtubeUrl)
+          ? fields.youtubeUrl[0]
+          : null;  
       // Handle image file
       let image_url: string | null = null;
       const fileKey = Object.keys(files)[0];
@@ -73,7 +86,7 @@ const pdfFile = fileKey
         }
       }
 
-      resolve({ title, category, content, image_url, userId });
+      resolve({ title, category, santname, content, image_url, youtube_url, userId });
     });
   });
 }

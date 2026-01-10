@@ -10,7 +10,7 @@ interface AuthRequest extends Request {
 
 export const createPostController = async (req: AuthRequest, res: Response) => {
   try {
-    const { title, category, content, image_url } = req.body;
+    const { title, category, santname, content, image_url, youtube_url } = req.body;
 
     const author_id = (req as AuthRequest).user?.id;
     if (!author_id) {
@@ -20,8 +20,10 @@ export const createPostController = async (req: AuthRequest, res: Response) => {
     const post = await createPost(
       title,
       category,
+      santname, 
       content || null,
       image_url || null,
+      youtube_url || null,
       author_id
     );
 

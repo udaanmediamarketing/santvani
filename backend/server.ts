@@ -30,17 +30,6 @@ if (!process.env.FROM_EMAIL) {
   throw new Error("❌ FROM_EMAIL is missing in environment variables");
 }
 
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: { rejectUnauthorized: false },
-// });
-
-// pool
-//   .connect()
-//   .then(() => console.log("✅ Neon DB connected"))
-//   .catch(console.error);
-
-
 app.post("/api/auth/signup", async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;

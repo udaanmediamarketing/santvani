@@ -4,6 +4,7 @@ import { createPostController, listPosts, listPostsBySantName } from "../control
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { parseFormData } from "../utils/formidableParser.js";
 import { Request, Response } from "express";
+import { ConsoleLogWriter } from "drizzle-orm";
 
 interface AuthRequest extends Request {
   user?: {
@@ -18,10 +19,10 @@ router.get("/list-posts/:id", listPosts);
 router.post("/create-post", authenticate, async (req: Request, res: Response) => {
   const userId = (req as AuthRequest)?.user?.id;
   if(!userId) {
-    return res.status(401).json({ error: "User id is not present" });
+    return res.status(400).json({ error: "User id is not present" });
   }
   const parsedData = await parseFormData(req, res, userId);
-  
+
   if (!parsedData) {
     return;
   }

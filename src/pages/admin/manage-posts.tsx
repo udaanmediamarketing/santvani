@@ -9,6 +9,8 @@ import { AdminTopNav } from "../../components/admin-navbar";
 type Post = {
   id: number;
   title: string;
+  santname?: string;
+  category?: string;
   author_name: string;
   status: "pending" | "published" | "rejected";
   created_at: string;
@@ -150,6 +152,7 @@ const paginatedPosts = filteredPosts?.slice(
           <thead className="bg-gray-200">
             <tr>
               <th className="p-3">Title</th>
+              <th className="p-3">Category</th>
               <th className="p-3">Author</th>
               <th className="p-3">Status</th>
               <th className="p-3">Actions</th>
@@ -159,6 +162,7 @@ const paginatedPosts = filteredPosts?.slice(
             {paginatedPosts?.map((p) => (
               <tr key={p.id} className="border-b">
                 <td className="p-3">{p.title}</td>
+                <td className="p-3">{p.category ?? p.santname}</td>
                 <td className="p-3">{p.author_name}</td>
                 <td className="p-3">
                   <span

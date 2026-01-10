@@ -17,27 +17,29 @@ export interface PostRow {
 
 export const createPost = async (
   title: string,
-  category: string,
+  category: string,           
+  santname: string | null,    
   content: string | null = null,
   image_url: string | null = null,
-  author_id: string | null = null
+  youtube_url: string | null = null, 
+  author_id: string          
 ): Promise<PostRow> => {
   const result = await pool.query(
-    `INSERT INTO articles (title, category, content, image_url, author_id, status)
-     VALUES ($1, $2, $3, $4, $5, 'pending')
+    `INSERT INTO articles (title, category, santname, content, image_url, youtube_url, author_id, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
      RETURNING *`,
-    [title, category, content, image_url, author_id]
+    [title, category, santname, content, image_url, youtube_url, author_id]
   );
-
   return result.rows[0] as PostRow;
 };
-
 
 export const getPendingPosts = async (): Promise<PostRow[]> => {
   const result = await pool.query(`
     SELECT
       p.id,
       p.title,
+      p.category,
+      p.santname,
       p.status,
       p.created_at,
       u.name AS author_name
@@ -120,7 +122,7 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
   const santname = decodeURIComponent(name);
   const result = await pool.query(
     `SELECT * FROM articles
-     WHERE category = $1 AND status = 'published'
+     WHERE santname = $1 AND status = 'published'
      ORDER BY created_at DESC`,
      [santname]
   );
