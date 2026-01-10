@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -17,26 +17,37 @@ import { useAuth } from "../../pages/context/AuthContext";
 import { toast } from "sonner";
 
 type FormData = {
+  santname: string;
   category: string;
   title: string;
   content?: string;
-  pdf?: FileList;
+  img?: FileList;
+  youtubeUrl?: string;
 };
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
+const categories = ["किर्तन", "भजन", "श्लोक", "सामुदायिक ध्यान", "सामुदायिक प्रार्थना"];
 
 export default function CreateArticleForm() {
   const { register, handleSubmit, setValue, reset } = useForm<FormData>();
   const [uploading, setUploading] = useState(false);
 const [wordCount, setWordCount] = useState(0);
   const { token } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   const MAX_WORDS = 500;
   const onSubmit = async (data: FormData) => {
     try {
       if (!token) {
       throw new Error("User not authenticated");
     }
-    const file = data.pdf?.[0];
+    const file = data.img?.[0];
     if (file && /\s/.test(file.name)) {
       toast.error("फाइल नावात space वापरू नका", {
         description: "कृपया फाइलचे नाव बदलून पुन्हा अपलोड करा (उदा. image-194.png)",
@@ -46,10 +57,14 @@ const [wordCount, setWordCount] = useState(0);
       setUploading(true);
 
       const formData = new FormData();
+      formData.append("santname", data.santname);
       formData.append("category", data.category);
       formData.append("title", data.title);
       if (data.content) formData.append("content", data.content);
-      if (data.pdf?.[0]) formData.append("pdf", data.pdf[0]);
+      if (data.img?.[0]) formData.append("img", data.img[0]);
+      if (data.youtubeUrl) {
+  formData.append("youtubeUrl", data.youtubeUrl);
+}
 
       const res = await fetch("http://localhost:5000/api/posts/create-post", {
         method: "POST",
@@ -103,17 +118,17 @@ const [wordCount, setWordCount] = useState(0);
           </p>
         </div>
 
-        {/* Category */}
+        {/* Santname */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">
             संत निवडा
           </Label>
 
-          <Input type="hidden" {...register("category", { required: true })} />
+          <Input type="hidden" {...register("santname", { required: true })} />
 
           <Select
             onValueChange={(val) =>
-              setValue("category", val, {
+              setValue("santname", val, {
                 shouldValidate: true,
                 shouldDirty: true,
               })
@@ -138,6 +153,47 @@ const [wordCount, setWordCount] = useState(0);
                   className="cursor-pointer hover:bg-orange-50"
                 >
                   {sant}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Categroy */}
+        <div className="space-y-2">
+          <Label className="text-sm font-semibold text-gray-700">
+            विभाग
+          </Label>
+
+          <Input type="hidden" {...register("category", { required: true })} />
+
+          <Select
+            onValueChange={(val) =>
+              setValue("category", val, {
+                shouldValidate: true,
+                shouldDirty: true,
+              })
+            }
+          >
+            <SelectTrigger
+              className="
+                rounded-xl
+                border-gray-300
+                focus:ring-2 focus:ring-orange-400
+                transition-all
+              "
+            >
+              <SelectValue placeholder="विभाग" />
+            </SelectTrigger>
+
+            <SelectContent className="rounded-xl shadow-lg bg-white">
+              {categories.map((cat) => (
+                <SelectItem
+                  key={cat}
+                  value={cat}
+                  className="cursor-pointer hover:bg-orange-50"
+                >
+                  {cat}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -206,10 +262,39 @@ const [wordCount, setWordCount] = useState(0);
   </div>
 </div>
 
+{/* YT Link */}
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700">
+    YouTube व्हिडिओ लिंक (ऐच्छिक)
+  </Label>
+
+  <Input
+    type="url"
+    placeholder="https://www.youtube.com/watch?v=XXXX"
+    {...register("youtubeUrl", {
+      pattern: {
+        value:
+          /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,
+        message: "वैध YouTube लिंक द्या",
+      },
+    })}
+    className="
+      rounded-xl
+      border-gray-300
+      focus:ring-2 focus:ring-orange-400
+      transition-all
+    "
+  />
+
+  <p className="text-xs text-gray-500">
+    YouTube व्हिडिओ असल्यास लिंक पेस्ट करा
+  </p>
+</div>
+   
         {/* Upload */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">
-            PDF किंवा Image अपलोड करा
+            Image अपलोड करा
           </Label>
 
           <div
@@ -224,12 +309,12 @@ const [wordCount, setWordCount] = useState(0);
           >
             <Input
               type="file"
-              accept=".pdf,.jpg,.jpeg,.png"
-              {...register("pdf")}
+              accept=".jpg,.jpeg,.png"
+              {...register("img")}
               className="cursor-pointer"
             />
             <p className="text-xs text-gray-500 mt-2">
-              PDF / JPG / PNG समर्थित
+              JPG / PNG समर्थित
             </p>
           </div>
         </div>
