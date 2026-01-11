@@ -76,17 +76,16 @@ const Navbar = () => {
           ))}
 
         {/* Settings Button */}
-        <Button
+        {/* <Button
           variant="ghost"
           onClick={() => setShowSettings((prev) => !prev)}
         >
           <Settings />
-        </Button>
+        </Button> */}
 
         {/* Settings Dropdown */}
-        {showSettings && (
+        {/* {showSettings && (
           <div className="absolute right-0 top-16 w-56 bg-white text-black rounded-lg shadow-xl z-50 p-3 space-y-3">
-            {/* Language */}
             <div>
               <p className="text-sm font-semibold mb-1">🌐 भाषा</p>
               {languages.map((lang) => (
@@ -114,7 +113,7 @@ const Navbar = () => {
 
 
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

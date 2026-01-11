@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import SantNavbar from "../components/sant-navbar";
 import CreateArticleForm from "../components/articles/article-form";
 import { useAuth } from "../pages/context/AuthContext";
+import dynamic from "next/dynamic";
+
+const SantNavbar = dynamic(
+  () => import("../components/sant-navbar"),
+  { ssr: false }
+);
 
 export default function CreateArticlePage() {
   const { user, loading } = useAuth();

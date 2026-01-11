@@ -55,7 +55,6 @@ const isBcryptHash = (password: string) =>
       finalPassword,
     ]);
 
-    console.log("✅ Admin ready:", r.rows[0]);
     process.exit(0);
 
   } catch (err) {

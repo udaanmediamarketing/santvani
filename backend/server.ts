@@ -22,24 +22,12 @@ if (!process.env.DATABASE_URL) {
 }
 
 if (!process.env.RESEND_API_KEY) {
-  console.log("❌ RESEND_API_KEY is missing in environment variables");
   throw new Error("❌ RESEND_API_KEY is missing in environment variables");
 }
 
 if (!process.env.FROM_EMAIL) {
   throw new Error("❌ FROM_EMAIL is missing in environment variables");
 }
-
-// const pool = new Pool({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: { rejectUnauthorized: false },
-// });
-
-// pool
-//   .connect()
-//   .then(() => console.log("✅ Neon DB connected"))
-//   .catch(console.error);
-
 
 app.post("/api/auth/signup", async (req: Request, res: Response) => {
   try {

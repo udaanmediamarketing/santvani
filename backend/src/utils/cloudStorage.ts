@@ -14,7 +14,6 @@ export async function uploadToCloudStorage(
   if (!bucketName || !publicBaseUrl) {
     throw new Error("R2 environment variables not configured");
   }
-
   const key = `users/${userId}/uploads/article-files/${Date.now()}_${filename}`;
 
   await r2.send(

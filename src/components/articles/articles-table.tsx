@@ -45,7 +45,6 @@ export default function ArticlesTable() {
 }, []);
 
   if (loading) return <p className="text-center py-8">Loading articles...</p>;
-  console.log("Articles:", articles[0].status);
   if (articles.length === 0)
     return <p className="text-center py-8 text-gray-500">No articles found</p>;
 
