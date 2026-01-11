@@ -124,5 +124,6 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
      ORDER BY created_at DESC`,
      [santname]
   );
+  console.log("result",result);
   return result.rows as PostRow[];
 };
