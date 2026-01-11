@@ -15,6 +15,7 @@ export const articles = pgTable("articles", {
   imageUrl: text("image_url"),
   status: articleStatusEnum("status").default("pending").notNull(),
   youtubeUrl: text("youtube_url"), 
+  slug: text("slug").notNull().unique(), 
   // TODO: Foreign key relation with users table
   authorId: uuid("author_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

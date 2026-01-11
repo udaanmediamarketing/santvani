@@ -1,6 +1,6 @@
 // src/controllers/postController.ts
 import { Request, Response } from "express";
-import { createPost, getPosts, getPostsBySantName } from "../models/postModel.js";
+import { createPost, getPosts, getPostsBySantName, getAllPosts, getPostBySlug} from "../models/postModel.js";
 
 interface AuthRequest extends Request {
   user?: {
@@ -10,7 +10,7 @@ interface AuthRequest extends Request {
 
 export const createPostController = async (req: AuthRequest, res: Response) => {
   try {
-    const { title, category, santname, content, image_url, youtube_url } = req.body;
+    const { title, category, santname, content, image_url, youtube_url, slug } = req.body;
 
     const author_id = (req as AuthRequest).user?.id;
     if (!author_id) {
@@ -24,7 +24,8 @@ export const createPostController = async (req: AuthRequest, res: Response) => {
       content || null,
       image_url || null,
       youtube_url || null,
-      author_id
+      slug,
+      author_id,
     );
 
     res.status(201).json({
@@ -36,7 +37,15 @@ export const createPostController = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
+export const listAllPosts = async (req: Request, res: Response) => {
+  try{
+    const posts = await getAllPosts();
+    res.json({ posts });
+  } catch(err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
 export const listPosts = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id) {
@@ -53,4 +62,28 @@ export const listPostsBySantName = async (req: Request, res: Response) => {
   }
   const posts = await getPostsBySantName(name);
   res.json({ posts });
+};
+
+export const getPostBySlugController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { slug } = req.params;
+
+    if (!slug) {
+      return res.status(400).json({ message: 'Slug is required' });
+    }
+
+    const post = await getPostBySlug(slug);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    res.json(post);
+  } catch (err) {
+    console.error('getPostBySlug error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
 };

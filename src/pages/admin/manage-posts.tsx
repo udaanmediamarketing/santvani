@@ -65,7 +65,6 @@ const paginatedPosts = filteredPosts?.slice(
       );
 
       const data = await res.json();
-      console.log(data);
       setPosts(data.posts);
     } catch (err) {
       console.error(err);

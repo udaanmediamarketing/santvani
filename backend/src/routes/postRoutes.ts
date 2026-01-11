@@ -1,10 +1,9 @@
 // src/routes/postRoutes.ts
 import express from "express";
-import { createPostController, listPosts, listPostsBySantName } from "../controllers/postController.js";
+import { createPostController, listPosts, listAllPosts, listPostsBySantName, getPostBySlugController } from "../controllers/postController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { parseFormData } from "../utils/formidableParser.js";
 import { Request, Response } from "express";
-import { ConsoleLogWriter } from "drizzle-orm";
 
 interface AuthRequest extends Request {
   user?: {
@@ -15,7 +14,9 @@ interface AuthRequest extends Request {
 const router = express.Router();
 
 router.get("/list-posts-by-sant/:name", listPostsBySantName);
+router.get("/list-all-posts", listAllPosts);
 router.get("/list-posts/:id", listPosts); 
+router.get('/get-by-slug/:slug', getPostBySlugController);
 router.post("/create-post", authenticate, async (req: Request, res: Response) => {
   const userId = (req as AuthRequest)?.user?.id;
   if(!userId) {

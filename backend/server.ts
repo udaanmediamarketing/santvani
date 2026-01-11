@@ -22,7 +22,6 @@ if (!process.env.DATABASE_URL) {
 }
 
 if (!process.env.RESEND_API_KEY) {
-  console.log("❌ RESEND_API_KEY is missing in environment variables");
   throw new Error("❌ RESEND_API_KEY is missing in environment variables");
 }
 

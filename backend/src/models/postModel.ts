@@ -6,9 +6,12 @@ export type PostStatus = "pending" | "approved" | "rejected";
 export interface PostRow {
   id: string;
   title: string;
-  category: string;
+  category?: string;
   content?: string | null;
   image_url?: string | null;
+  youtube_url?: string | null; 
+  santname?: string | null;
+  slug: string,
   status: PostStatus;
   author_id?: string | null;
   created_at: string;
@@ -22,13 +25,14 @@ export const createPost = async (
   content: string | null = null,
   image_url: string | null = null,
   youtube_url: string | null = null, 
+  slug: string,
   author_id: string          
 ): Promise<PostRow> => {
   const result = await pool.query(
-    `INSERT INTO articles (title, category, santname, content, image_url, youtube_url, author_id, status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending')
+    `INSERT INTO articles (title, category, santname, content, image_url, youtube_url, slug, author_id, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending')
      RETURNING *`,
-    [title, category, santname, content, image_url, youtube_url, author_id]
+    [title, category, santname, content, image_url, youtube_url, slug, author_id]
   );
   return result.rows[0] as PostRow;
 };
@@ -89,6 +93,14 @@ export const getPosts = async (id: string): Promise<PostRow[]> => {
   return result.rows as PostRow[];
 };
 
+export const getAllPosts = async (): Promise<PostRow[]> => {
+  const result = await pool.query(
+    `SELECT * FROM articles
+     WHERE status = 'published'
+     ORDER BY created_at DESC`,
+  );
+  return result.rows as PostRow[];
+};
 
 export const getPostById = async (id: string): Promise<PostRow | null> => {
   const result = await pool.query(
@@ -127,4 +139,21 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
      [santname]
   );
   return result.rows as PostRow[];
+};
+
+export const getPostBySlug = async (slug: string): Promise<PostRow | null> => {
+  const decodedSlug = decodeURIComponent(slug);
+
+  const result = await pool.query(
+    `
+    SELECT *
+    FROM articles
+    WHERE slug = $1
+      AND status = 'published'
+    LIMIT 1
+    `,
+    [decodedSlug]
+  );
+
+  return result.rows[0] || null;
 };

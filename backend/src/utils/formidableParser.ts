@@ -12,6 +12,7 @@ interface ParsedFormData {
   content: string | null;
   image_url: string | null;
   youtube_url: string | null;
+  slug: string;
   userId: string;
 }
 
@@ -64,6 +65,17 @@ const category =
           : Array.isArray(fields.youtubeUrl)
           ? fields.youtubeUrl[0]
           : null;  
+        const slug =
+  typeof fields.slug === 'string'
+    ? fields.slug
+    : Array.isArray(fields.slug)
+    ? fields.slug[0]
+    : '';
+    if (!slug || !slug.trim()) {
+  res.status(400).json({ error: "Slug is required" });
+  return resolve(null);
+}
+
       // Handle image file
       let image_url: string | null = null;
       const fileKey = Object.keys(files)[0];
@@ -86,7 +98,7 @@ const pdfFile = fileKey
         }
       }
 
-      resolve({ title, category, santname, content, image_url, youtube_url, userId });
+      resolve({ title, category, santname, content, image_url, youtube_url, slug, userId });
     });
   });
 }
