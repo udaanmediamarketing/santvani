@@ -85,6 +85,7 @@ import { useState } from "react";
 import SantNavbar from "./components/sant-navbar";
 import Navbar from "./components/navbar";
 import "../styles/globals.css";
+import Footer from "./components/footer"; 
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -108,6 +109,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
       />
+      
+
     </>
   );
 }

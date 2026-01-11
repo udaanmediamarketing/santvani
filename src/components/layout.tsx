@@ -2,8 +2,8 @@
 //   return <div className="min-h-screen bg-gradient-to-br from-white to-orange-50">{children}</div>;
 // }
 
+//import Footer from "./footer";
 
-// import { ThemeProvider } from "../app/providers/theme-provider";
 
 export default function RootLayout({
   children,
@@ -19,10 +19,14 @@ export default function RootLayout({
           dark:from-zinc-900 dark:to-zinc-800
           text-black dark:text-white
           transition-colors
+          flex flex-col
         "
       >
-        {children}
-        {/* <ThemeProvider>{children}</ThemeProvider> */}
+        {/* Page Content */}
+        <main className="flex-grow">
+          {children}
+        </main>
+
       </body>
     </html>
   );
