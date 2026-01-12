@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import DynamicCard from './card';
+import DynamicCard from '../../components/cards/card';
 import { formatDate, slugify } from '../../lib/helper';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '../../components/ui/skeleton';
 import { cn } from '../../lib/utils';
 
 interface Post {
@@ -18,8 +18,10 @@ interface Post {
 
 export default function SantHorizontalGrid({
   cardLayout = 'row',
+  variant = 'main',
 }: {
   cardLayout?: 'row' | 'column';
+  variant?: 'main' | 'side';
 }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,11 +58,11 @@ export default function SantHorizontalGrid({
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <div
-        className={cn("grid gap-4 place-items-center", {
+        className={cn("grid gap-4", {
           // Vertical list
-          "grid-cols-1": cardLayout === 'row',
+          "grid-cols-[minmax(0,1fr)]": cardLayout === 'row',
           // Horizontal grid
-          "grid-cols-2 lg:grid-cols-4 place-items-stretch": cardLayout === 'column',
+          "grid-cols-2 lg:grid-cols-4 items-stretch": cardLayout === 'column',
         })}
       >
         {posts.map((post, index) => (
@@ -73,6 +75,7 @@ export default function SantHorizontalGrid({
             category={post.category || 'Sant Vani'}
             date={formatDate(post.created_at)}
             layout={cardLayout}
+            variant={variant}
           />
         ))}
       </div>

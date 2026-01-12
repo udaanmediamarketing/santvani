@@ -1,7 +1,9 @@
 import SantCard from "../components/santcard";
 import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
 import NewSantGrid from "./cards/santcard-grid";
-import MovingNewsList from "./vertical-list";import Footer from "./footer";
+import MovingNewsList from "./vertical-list";
+import Footer from "./footer";
+import QuarterColumn from "./quater-column";
 
 export default function Home({
   setActiveMenu,
@@ -94,15 +96,34 @@ export default function Home({
       </section>
 
       <div>
-        <SantHorizontalGrid cardLayout="row" />
+        <SantHorizontalGrid cardLayout="column"/>
 
       </div>
-      <div>
-        <SantHorizontalGrid cardLayout="column" />
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
+  <div className="w-full lg:w-3/4">
+    <SantHorizontalGrid cardLayout="row"/>
+  </div>
+    <QuarterColumn />
 
+</div>
+
+      <div>
+        <Footer />
       </div>
     </div>
     </>
   );
   
 }
+
+{/* <div className="flex flex-wrap gap-6">
+  <QuarterColumn>
+    <h2 className="text-lg font-bold">Title</h2>
+    <p>Description text</p>
+    <button className="btn">Action</button>
+  </QuarterColumn>
+
+  <div className="w-full md:w-3/4">
+    Main content
+  </div>
+</div> */}
