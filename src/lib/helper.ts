@@ -9,3 +9,11 @@ export function slugify(text: string) {
     .replace(/-+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
+
+export function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('mr-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}

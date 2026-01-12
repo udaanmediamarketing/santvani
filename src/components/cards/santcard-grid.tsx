@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { NewSantCard } from './new-santcard';
-import { slugify } from '../../lib/slugify';
+import { slugify, formatDate} from '../../lib/helper';
 interface Post {
   _id: string;
   image_url: string;
@@ -112,12 +112,4 @@ export default function NewSantGrid() {
     </div>
   </div>
 );
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('mr-IN', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
 }

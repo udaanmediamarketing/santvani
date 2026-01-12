@@ -15,7 +15,7 @@ import {
 } from "../ui/select";
 import { useAuth } from "../../pages/context/AuthContext";
 import { toast } from "sonner";
-import { slugify } from "@/src/lib/slugify";
+import { slugify } from "@/src/lib/helper";
 
 type FormData = {
   santname?: string;

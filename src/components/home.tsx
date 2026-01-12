@@ -1,4 +1,5 @@
 import SantCard from "../components/santcard";
+import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
 import NewSantGrid from "./cards/santcard-grid";
 import MovingNewsList from "./vertical-list";
 export default function Home({ setActiveMenu }: { setActiveMenu: React.Dispatch<React.SetStateAction<string>> }) {
@@ -64,6 +65,15 @@ export default function Home({ setActiveMenu }: { setActiveMenu: React.Dispatch<
   </div>
 </div>
       </section>
+
+      <div>
+        <SantHorizontalGrid cardLayout="row" />
+
+      </div>
+      <div>
+        <SantHorizontalGrid cardLayout="column" />
+
+      </div>
     </div>
   );
 }

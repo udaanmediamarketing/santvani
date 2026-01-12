@@ -3,6 +3,7 @@
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Calendar } from "lucide-react";
 interface NewSantCardProps {
   href?: string;
   imageSrc?: string;
@@ -72,8 +73,12 @@ export function NewSantCard({
   <div className="mb-2"> <span className="bg-orange-700 backdrop-blur px-3 py-1 rounded-full text-sm font-bold"> {category} </span> 
   </div> 
   <h2 className="text-sm font-bold mb-2 drop-shadow-lg"> {title} </h2> 
-  {date && 
-  <div className="text-sm opacity-90">{date}</div>}
+  {date && (
+  <div className="flex items-center gap-1 text-sm opacity-90">
+    <Calendar size={18} />
+    <span>{date}</span>
+  </div>
+)}
 </CardContent>
 {href && (
         <Link
