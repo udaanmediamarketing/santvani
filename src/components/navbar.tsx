@@ -13,7 +13,7 @@ const languages = ["इंग्रजी", "हिंदी", "मराठी"
 // Helper hook for client-only rendering
 const useIsClient = () => {
   return useSyncExternalStore(
-    () => () => {},
+    () => () => { },
     () => true,
     () => false
   );
@@ -91,11 +91,10 @@ const Navbar = () => {
               {languages.map((lang) => (
                 <button
                   key={lang}
-                  className={`block w-full text-left px-3 py-1 rounded hover:bg-gray-100 ${
-                    selectedLang === lang
-                      ? "font-semibold text-orange-600"
-                      : ""
-                  }`}
+                  className={`block w-full text-left px-3 py-1 rounded hover:bg-gray-100 ${selectedLang === lang
+                    ? "font-semibold text-orange-600"
+                    : ""
+                    }`}
                   onClick={() => setSelectedLang(lang)}
                 >
                   {lang}
@@ -104,12 +103,15 @@ const Navbar = () => {
             </div>
 
             <div className="border-t pt-2">
-              <Link href="/translate">
+              <Link href="/explore-more">
                 <button className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 text-sm font-medium">
-                  🔁 Next Page (Translate)
+                  🔁 Explore More
                 </button>
               </Link>
             </div>
+
+
+
           </div>
         )} */}
       </div>
