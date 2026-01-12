@@ -49,7 +49,7 @@ const SignIn = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      router.replace(data.user.role === "admin" ? "/admin/manage-users" : "/");
+      router.replace(data.user.role === "admin" ? "/" : "/");
     } catch (error) {
       console.error(error);
       setMessage("⚠️ Server not responding");

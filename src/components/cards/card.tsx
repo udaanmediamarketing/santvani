@@ -4,7 +4,8 @@ import { Card, CardHeader, CardTitle } from '../../components/ui/card';
 import { cn } from '../../lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar } from "lucide-react";
+import { Calendar } from 'lucide-react';
+
 interface DynamicCardProps {
   href?: string;
   imageSrc?: string;
@@ -12,8 +13,8 @@ interface DynamicCardProps {
   title: string;
   category: string;
   date: string;
-  description?: string;
   layout?: 'row' | 'column';
+  variant?: 'main' | 'side';
   className?: string;
 }
 
@@ -32,88 +33,112 @@ export default function DynamicCard({
   category,
   date,
   layout = 'row',
+  variant,
   className,
 }: DynamicCardProps) {
   const embedUrl = youtubeUrl ? getYoutubeEmbedUrl(youtubeUrl) : null;
 
+  const isRow = layout === 'row';
+  const isCompact = isRow && variant === 'side';
+
   return (
     <Card
       className={cn(
-        "relative hover:shadow-xl transition-all duration-300 border-4 border-[#f97316] rounded-md p-2 bg-neutral-50",
-        layout === 'row'
-          ? "w-3/4 h-50 max-w-none"
-          : "w-full max-w-sm",
+        'relative bg-neutral-50 transition-all',
+        isCompact
+          ? 'border border-orange-400 p-1 w-full'
+          : 'border-4 border-orange-500 p-3 hover:shadow-xl',
+        // isRow && 'w-3/4',
         className
       )}
     >
       <div
-        className={cn("flex w-full h-full", {
-          "flex-row gap-4 items-stretch": layout === 'row',
-          "flex-col": layout === 'column',
-        })}
+        className={cn(
+          isRow ? 'flex flex-row gap-4' : 'flex flex-col'
+        )}
       >
         {/* Media */}
-        <div className={cn(
-    "relative flex-shrink-0",
-    layout === "row"
-      ? "w-40 md:w-56 h-32 md:h-44"
-      : "w-full h-50"
-  )}>
+        <div
+          className={cn(
+            'relative z-20 overflow-hidden rounded-md',
+            isCompact
+              ? 'w-20 h-20'
+              : isRow
+              ? 'w-40 md:w-56 h-40 md:h-44'
+              : 'w-full h-56'
+          )}
+        >
           {imageSrc ? (
             <Image
               src={imageSrc}
               alt={title}
               fill
-              className={cn(
-                "object-cover rounded-lg shadow-md",
-              )}
+              className="object-cover"
             />
           ) : embedUrl ? (
             <iframe
               src={embedUrl}
-              title="YouTube video"
-              className="w-full h-full rounded-lg"
+              title={title}
+              className="w-full h-full rounded-md"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-          ) : null}
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-xs text-neutral-500">
+              No media available
+            </div>
+          )}
         </div>
 
         {/* Content */}
         <div
-          className={cn("flex-1 min-w-0 flex flex-col", {
-            "py-3 px-2 pt-4": layout === 'row',
-            "p-2 ": layout === 'column',
-          })}
+          className={cn(
+            'flex flex-col min-w-0',
+            isCompact ? 'p-1' : 'px-2 py-3'
+          )}
         >
-          <CardHeader className="pl-4 items-start flex flex-col">
-  <CardTitle
-    className={cn(
-      "text-lg font-bold leading-tight",
-      layout === "column" && "line-clamp-2 min-h-[5rem]"
-    )}
-  >
-    {title}
-  </CardTitle>
+          <CardHeader className={cn('p-0', !isCompact && 'pl-2')}>
+            <CardTitle
+              className={cn(
+                'font-bold leading-tight',
+                isCompact
+                  ? 'text-xs line-clamp-2'
+                  : 'text-lg line-clamp-3'
+              )}
+            >
+              {title}
+            </CardTitle>
 
-  <div className="flex flex-col items-start gap-1 text-xs pt-1">
-     <span className="bg-orange-700 backdrop-blur px-3 py-1 text-white rounded-full text-sm font-bold"> {category} </span> 
-    {date && (
-  <div className="flex items-center gap-1 pt-2 text-base opacity-90">
-    <Calendar size={22} />
-    <span>{date}</span>
-  </div>
-)}
-  </div>
-</CardHeader>
-{href && (
+            <div className="flex flex-col gap-1 pt-4">
+              <span
+                className={cn(
+                  'rounded-full font-semibold w-fit',
+                  isCompact
+                    ? 'text-[12px] px-2 py-0.5 items-start bg-orange-500 text-white'
+                    : 'text-sm px-3 py-1 bg-orange-600 text-white'
+                )}
+              >
+                {category}
+              </span>
+
+              {date && !isCompact && (
+                <div className="flex items-center gap-1 text-md opacity-80">
+                  <Calendar size={14} />
+                  <span>{date}</span>
+                </div>
+              )}
+            </div>
+          </CardHeader>
+        </div>
+      </div>
+
+      {href && (
         <Link
           href={href}
-          className="absolute inset-0 z-30 cursor-pointer"
+          className="absolute inset-0 z-30 "
           aria-label={`Open ${title}`}
         />
       )}
-        </div>
-      </div>
     </Card>
   );
 }
