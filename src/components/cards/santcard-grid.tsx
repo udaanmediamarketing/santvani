@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { NewSantCard } from './new-santcard';
 import { slugify, formatDate} from '../../lib/helper';
+import { useAuthFetch } from '../../pages/context/authFetch';
+
 interface Post {
   _id: string;
   image_url: string;
@@ -16,9 +18,10 @@ interface Post {
 export default function NewSantGrid() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const authFetch = useAuthFetch();
 
   useEffect(() => {
-  fetch('http://localhost:5000/api/posts/list-all-posts')
+  authFetch('http://localhost:5000/api/posts/list-all-posts')
     .then(res => res.json())
     .then(data => {
       const postsArray = Array.isArray(data)

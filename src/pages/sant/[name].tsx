@@ -1,27 +1,10 @@
-// 'use client'
-// import { useRouter } from "next/router";import React, { useState } from "react";
-// import SantNavbar from "../../components/sant-navbar";
-// import SantDashboard from "../../components/sant/santdashboard";
-
-// export default function SantPage() {
-//   const router = useRouter();
-//   const { name } = router.query;
-//   const [activeMenu, setActiveMenu] = useState("home");
-
-//   return (
-//     <>
-//       <SantNavbar onMenuClick={setActiveMenu} activeMenu={activeMenu}/>
-//       <SantDashboard activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
-//     </>
-//   );
-// }
-
 "use client";
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SantNavbar from "../../components/sant-navbar";
 import ArticleCard from "../../components/articles/article-card";
+import { useAuthFetch } from "../context/authFetch";
 
 type Article = {
   id: number;
@@ -39,12 +22,13 @@ export default function SantPage() {
   const [activeMenu, setActiveMenu] = useState("home");
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const authFetch = useAuthFetch();
 
   useEffect(() => {
     if (!name) return;
     const santName =
   typeof name === "string" ? decodeURIComponent(name) : "";
-    fetch(`http://localhost:5000/api/posts/list-posts-by-sant/${encodeURIComponent(santName)}`)
+    authFetch(`http://localhost:5000/api/posts/list-posts-by-sant/${encodeURIComponent(santName)}`)
       .then((res) => res.json())
       .then((data) => setArticles(data.posts))
       .finally(() => setLoading(false));

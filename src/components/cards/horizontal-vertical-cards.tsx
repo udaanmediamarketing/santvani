@@ -5,6 +5,7 @@ import DynamicCard from '../../components/cards/card';
 import { formatDate, slugify } from '../../lib/helper';
 import { Skeleton } from '../../components/ui/skeleton';
 import { cn } from '../../lib/utils';
+import { useAuthFetch } from '../../pages/context/authFetch';
 
 interface Post {
   id?: string;
@@ -25,9 +26,10 @@ export default function SantHorizontalGrid({
 }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+  const authFetch = useAuthFetch();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/posts/list-all-posts')
+    authFetch('http://localhost:5000/api/posts/list-all-posts')
       .then(res => res.json())
       .then(data => {
         const postsArray = Array.isArray(data)
