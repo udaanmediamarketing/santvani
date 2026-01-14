@@ -4,6 +4,8 @@ import NewSantGrid from "./cards/santcard-grid";
 import MovingNewsList from "./vertical-list";
 import Footer from "./footer";
 import QuarterColumn from "./quater-column";
+import OrgGrid from "./organizations/org-grid";
+import Image from "next/image";
 
 export default function Home({
   setActiveMenu,
@@ -47,17 +49,19 @@ export default function Home({
 
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4 py-4 bg-orange-50 border-b border-[#f97316]">
-            <img
-              src="/images/logo.jpg"
-              alt="विश्व संत साहित्य लोगो"
-              className="h-14 w-auto object-contain"
-            />
+  <Image
+    src="/images/logo.jpg"
+    alt="विश्व संत साहित्य लोगो"
+    width={56}
+    height={56}
+    className="object-contain"
+    priority
+  />
 
-            <h1 className="text-[28px] sm:text-[38px] font-extrabold text-[#f97316] font-serif tracking-wide text-center leading-tight">
-              विश्व संत साहित्य
-            </h1>
-
-          </div>
+  <h1 className="text-[28px] sm:text-[38px] font-extrabold text-[#f97316] font-serif tracking-wide text-center leading-tight">
+    विश्व संत साहित्य
+  </h1>
+</div>
 
           {/* Description */}
           <div className="space-y-3 px-4 sm:px-6 py-4 text-blue-800 text-sm sm:text-base leading-relaxed text-center">
@@ -106,7 +110,10 @@ export default function Home({
     <QuarterColumn />
 
 </div>
-
+<div>
+  <div className="text-xl font-semibold ">संस्था / केंद्र </div>
+  <OrgGrid/>
+</div>
       <div>
         <Footer />
       </div>

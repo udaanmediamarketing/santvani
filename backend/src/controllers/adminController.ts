@@ -12,6 +12,10 @@ import {
 } from "../models/postModel.js";
 
 import {
+  getPendingOrgs,
+  updateOrgStatus
+} from "../models/orgModel.js";
+import {
   sendSignupApprovalEmail,
   sendSignUpRejectionEmail
 } from "../utils/emailTemplates.js";
@@ -155,3 +159,58 @@ export const rejectPostController = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+
+export const getPendingOrgsController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const posts = await getPendingOrgs();
+    return res.status(200).json({ posts });
+  } catch (error) {
+    console.error("❌ Error fetching pending posts:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const publishOrgController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const post = await updateOrgStatus(id, "published");
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json({
+      message: "Post published successfully",
+      post,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const rejectOrgController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const post = await updateOrgStatus(id, "rejected");
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json({
+      message: "Post rejected successfully",
+      post,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+

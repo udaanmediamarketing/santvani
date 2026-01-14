@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { useAuth } from "../pages/context/AuthContext";
-import { Settings, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Settings, User, LogOut, LayoutDashboard, BookOpen, Landmark } from "lucide-react";
 
 type UserProfileDropdownProps = {
   user: {
@@ -104,6 +104,25 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
       अ‍ॅडमिन डॅशबोर्ड
     </Link>
   )}
+
+  <Link
+    href="/list-articles"
+    onClick={() => setOpen(false)}
+    className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-100 transition"
+  >
+    <BookOpen size={16} className="text-gray-500" />
+    लेखांची यादी
+  </Link>
+
+
+  <Link
+    href="/list-orgs"
+    onClick={() => setOpen(false)}
+    className="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-gray-100 transition"
+  >
+    <Landmark size={16} className="text-gray-500" />
+    संस्था / उपक्रमांची यादी
+  </Link>
 
   <Link
     href="/settings"

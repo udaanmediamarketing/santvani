@@ -32,6 +32,9 @@ export default function AdminDashboard() {
         <button onClick={() => router.replace("/admin/manage-users")}className="px-6 py-2 rounded-full bg-gray-200 text-gray-700">
           Manage Users
         </button>
+        <button onClick={() => router.replace("/admin/manage-userorgs")}className="px-6 py-2 rounded-full bg-gray-200 text-gray-700">
+          Manage Organizations
+        </button>
       </div>
 
       {/* Content placeholder */}

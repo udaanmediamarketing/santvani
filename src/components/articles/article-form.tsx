@@ -81,7 +81,7 @@ export default function CreateArticleForm() {
 
     setTranslating(true);
     try {
-      const res = await authFetch(
+      const res = await fetch(
         `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
           contentValue
         )}`
@@ -112,7 +112,7 @@ export default function CreateArticleForm() {
   if (!value?.trim()) return;
 
   try {
-    const res = await authFetch(
+    const res = await fetch(
       `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
         value
       )}`
