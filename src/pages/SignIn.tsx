@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-
+import { useAuth } from "../pages/context/AuthContext";
+import { useAuthFetch } from "../pages/context/authFetch";
 const SignIn = () => {
   const router = useRouter();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -16,6 +18,7 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const authFetch = useAuthFetch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,7 +30,7 @@ const SignIn = () => {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signin", {
+      const res = await authFetch("http://localhost:5000/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -48,8 +51,8 @@ const SignIn = () => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      router.replace(data.user.role === "admin" ? "/" : "/");
+      login(data.token, data.user);
+      router.replace("/");
     } catch (error) {
       console.error(error);
       setMessage("⚠️ Server not responding");

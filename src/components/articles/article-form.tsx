@@ -18,7 +18,7 @@ import { useAuth } from "../../pages/context/AuthContext";
 import { toast } from "sonner";
 import { slugify } from "@/src/lib/helper";
 import { Plus } from "lucide-react";
-
+import { useAuthFetch } from "../../pages/context/authFetch";
 
 type FormData = {
   santname?: string;
@@ -61,9 +61,9 @@ export default function CreateArticleForm() {
   const [manualSant, setManualSant] = useState(false);
   const [manualCategory, setManualCategory] = useState(false);
 
-
   const { token } = useAuth();
   const contentValue = watch("content") || "";
+  const authFetch = useAuthFetch();
   
   useEffect(() => {
     setMounted(true);
@@ -81,7 +81,7 @@ export default function CreateArticleForm() {
 
     setTranslating(true);
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
           contentValue
         )}`
@@ -112,7 +112,7 @@ export default function CreateArticleForm() {
   if (!value?.trim()) return;
 
   try {
-    const res = await fetch(
+    const res = await authFetch(
       `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
         value
       )}`
@@ -189,7 +189,7 @@ const TranslateSelect = ({
     santname: data.santname,
     category: data.category,
     content: data.content});
-  const res = await fetch("http://localhost:5000/api/posts/create-post", {
+  const res = await authFetch("http://localhost:5000/api/posts/create-post", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
