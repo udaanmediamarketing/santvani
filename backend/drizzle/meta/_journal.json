@@ -57,6 +57,20 @@
       "when": 1768146421583,
       "tag": "0007_mean_dark_phoenix",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1768395945566,
+      "tag": "0008_slimy_tinkerer",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1768399968939,
+      "tag": "0009_lean_joystick",
+      "breakpoints": true
     }
   ]
 }

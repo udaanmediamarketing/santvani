@@ -17,7 +17,7 @@ interface ParsedFormData {
 }
 
 export async function parseFormData(req: Request, res: Response, userId: string): Promise<ParsedFormData | null> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const uploadDir = path.join(process.cwd(), 'uploads/temp');
 
 if (!fsSync.existsSync(uploadDir)) {
