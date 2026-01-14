@@ -104,6 +104,56 @@ export default function CreateArticleForm() {
     }
   };
 
+  const translateField = async (
+  field: keyof FormData,
+  value: string,
+  lang: string
+) => {
+  if (!value?.trim()) return;
+
+  try {
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
+        value
+      )}`
+    );
+    const data = await res.json();
+    const translatedText = data[0].map((item: string) => item[0]).join("");
+
+    setValue(field, translatedText, { shouldValidate: true });
+  } catch {
+    toast.error("भाषांतर अयशस्वी झाले");
+  }
+};
+
+const TranslateSelect = ({
+  onSelect,
+}: {
+  onSelect: (lang: string) => void;
+}) => (
+  <Select onValueChange={onSelect}>
+    <SelectTrigger className="
+  w-28
+  text-xs
+  rounded-lg
+  bg-white
+  border
+  border-gray-300
+  shadow-sm
+  z-10
+">
+      <SelectValue placeholder="भाषा" />
+    </SelectTrigger>
+    <SelectContent className="rounded-lg bg-white shadow-lg z-10">
+      <SelectItem value="en">English</SelectItem>
+      <SelectItem value="hi">Hindi</SelectItem>
+      <SelectItem value="mr">Marathi</SelectItem>
+      <SelectItem value="sa">Sanskrit</SelectItem>
+    </SelectContent>
+  </Select>
+);
+
+
   const onSubmit = async (data: FormData) => {
     
     if (!token) {
@@ -216,12 +266,18 @@ export default function CreateArticleForm() {
     </button>
   </Label>
   {manualSant ? (
+    <div className="flex gap-2">
     <Input
       placeholder="नवीन संत नाव टाका"
       {...register("santname")}
       onChange={(e) => setValue("santname", e.target.value)}
-      className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400"
     />
+    <TranslateSelect
+      onSelect={(lang) =>
+        translateField("santname", watch("santname") || "", lang)
+      }
+    />
+  </div>
   ) : (
     /* DROPDOWN MODE */
     <Controller
@@ -272,14 +328,18 @@ export default function CreateArticleForm() {
 
   {/* Manual Input */}
   {manualCategory ? (
+    <div className="flex gap-2">
     <Input
       placeholder="विभाग लिहा"
       {...register("category")}
-      onChange={(e) => {
-        setValue("category", e.target.value);
-      }}
-      className="rounded-xl border-gray-300"
+      onChange={(e) => setValue("category", e.target.value)}
     />
+    <TranslateSelect
+      onSelect={(lang) =>
+        translateField("category", watch("category") || "", lang)
+      }
+    />
+  </div>
   ) : (
     <Controller
       name="category"
@@ -310,13 +370,17 @@ export default function CreateArticleForm() {
         {/* Title */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">लेखाचे शीर्षक *</Label>
-          <Input
-            {...register("title", {
-              required: "शीर्षक आवश्यक आहे",
-            })}
-            placeholder="लेखाचे शीर्षक लिहा"
-            className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all"
-          />
+          <div className="flex gap-2">
+  <Input
+    {...register("title", { required: "शीर्षक आवश्यक आहे" })}
+    placeholder="लेखाचे शीर्षक लिहा"
+  />
+  <TranslateSelect
+    onSelect={(lang) =>
+      translateField("title", watch("title") || "", lang)
+    }
+  />
+</div>
           {errors.title && (
             <p className="text-xs text-red-600 mt-1">{errors.title.message}</p>
           )}
