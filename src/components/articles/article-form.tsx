@@ -17,6 +17,8 @@ import {
 import { useAuth } from "../../pages/context/AuthContext";
 import { toast } from "sonner";
 import { slugify } from "@/src/lib/helper";
+import { Plus } from "lucide-react";
+
 
 type FormData = {
   santname?: string;
@@ -37,6 +39,7 @@ export default function CreateArticleForm() {
   control,
   reset,
   watch,
+  setValue,
   formState: { errors, isValid },
 } = useForm<FormData>({
   mode: "onChange",
@@ -55,7 +58,10 @@ export default function CreateArticleForm() {
   const [wordCount, setWordCount] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [translating, setTranslating] = useState(false);
-  
+  const [manualSant, setManualSant] = useState(false);
+  const [manualCategory, setManualCategory] = useState(false);
+
+
   const { token } = useAuth();
   const contentValue = watch("content") || "";
   
@@ -128,9 +134,11 @@ export default function CreateArticleForm() {
   if (data.content) formData.append("content", data.content);
   if (data.youtubeUrl) formData.append("youtubeUrl", data.youtubeUrl);
   if (data.img?.[0]) formData.append("img", data.img[0]);
-  for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
+  console.log("Submitting form data:", {
+    title: data.title,
+    santname: data.santname,
+    category: data.category,
+    content: data.content});
   const res = await fetch("http://localhost:5000/api/posts/create-post", {
     method: "POST",
     headers: {
@@ -138,7 +146,6 @@ export default function CreateArticleForm() {
     },
     body: formData,
   });
-  console.log(res);
   if (!res.ok) {
     try {
       const errorData = await res.json();
@@ -194,57 +201,112 @@ export default function CreateArticleForm() {
         </div>
 
         {/* Sant Name */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">संत निवडा *</Label>
-          <Controller
-            name="santname"
-            control={control}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all">
-                  <SelectValue placeholder="संत निवडा" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl shadow-lg bg-white">
-                  {sants.map((sant) => (
-                    <SelectItem key={sant} value={sant}>
-                      {sant}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.santname && (
-            <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
-          )}
-        </div>
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700 flex items-center justify-between">
+    संत निवडा
+    <button
+      type="button"
+      onClick={() => {
+        setManualSant((prev) => !prev);
+        setValue("santname", "");
+      }}
+      className="text-orange-500 hover:text-orange-600"
+    >
+      <Plus size={16} />
+    </button>
+  </Label>
+  {manualSant ? (
+    <Input
+      placeholder="नवीन संत नाव टाका"
+      {...register("santname")}
+      onChange={(e) => setValue("santname", e.target.value)}
+      className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400"
+    />
+  ) : (
+    /* DROPDOWN MODE */
+    <Controller
+      name="santname"
+      control={control}
+      render={({ field }) => (
+        <Select
+          value={field.value}
+          onValueChange={(value) => {
+            field.onChange(value);
+          }}
+        >
+          <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400">
+            <SelectValue placeholder="संत निवडा" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl shadow-lg bg-white">
+            {sants.map((sant) => (
+              <SelectItem key={sant} value={sant}>
+                {sant}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    />
+  )}
 
-        {/* Category */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">विभाग *</Label>
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all">
-                  <SelectValue placeholder="विभाग निवडा" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl shadow-lg bg-white">
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.category && (
-            <p className="text-xs text-red-600 mt-1">{errors.category.message}</p>
-          )}
-        </div>
+  {errors.santname && (
+    <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
+  )}
+</div>
 
+{/* Category */}
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
+    विभाग
+    <button
+      type="button"
+      className="text-orange-500 text-lg"
+      onClick={() => {
+        setManualCategory(true);
+        setValue("category", "");
+      }}
+    >
+      <Plus size={16} />
+    </button>
+  </Label>
+
+  {/* Manual Input */}
+  {manualCategory ? (
+    <Input
+      placeholder="विभाग लिहा"
+      {...register("category")}
+      onChange={(e) => {
+        setValue("category", e.target.value);
+      }}
+      className="rounded-xl border-gray-300"
+    />
+  ) : (
+    <Controller
+      name="category"
+      control={control}
+      render={({ field }) => (
+        <Select
+          value={field.value}
+          onValueChange={(val) => {
+            field.onChange(val);
+            setManualCategory(false);
+          }}
+        >
+          <SelectTrigger className="rounded-xl border-gray-300">
+            <SelectValue placeholder="विभाग निवडा" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    />
+  )}
+</div>
         {/* Title */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">लेखाचे शीर्षक *</Label>
