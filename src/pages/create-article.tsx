@@ -2,12 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import CreateArticleForm from "../components/articles/article-form";
 import { useAuth } from "../pages/context/AuthContext";
-import dynamic from "next/dynamic";
-
-const SantNavbar = dynamic(
-  () => import("../components/sant-navbar"),
-  { ssr: false }
-);
+import Navbar from "../components/navbar";
 
 export default function CreateArticlePage() {
   const { user, loading } = useAuth();
@@ -26,7 +21,7 @@ export default function CreateArticlePage() {
   }
   return (
     <>
-      <SantNavbar activeMenu="Blogs" onMenuClick={() => {}}/>
+      <Navbar />
       <CreateArticleForm />
     </>
   );
