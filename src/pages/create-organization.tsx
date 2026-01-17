@@ -3,12 +3,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "../pages/context/AuthContext";
 import dynamic from "next/dynamic";
 import CreateOrganizationForm from "../components/organizations/org-form";
-
-const SantNavbar = dynamic(
-  () => import("../components/sant-navbar"),
-  { ssr: false }
-);
-
+import Navbar from "../components/navbar";
 export default function CreateOrganizationPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -26,7 +21,8 @@ export default function CreateOrganizationPage() {
   }
   return (
     <>
-      <SantNavbar activeMenu="Blogs" onMenuClick={() => {}}/>
+      {/* <antNavbar activeMenu="Blogs" onMenuClick={() => {}}/> */}
+      <Navbar />
       <CreateOrganizationForm />
     </>
   );

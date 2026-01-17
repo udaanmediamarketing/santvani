@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import SantNavbar from "../../components/sant-navbar";
 import ArticleCard from "../../components/articles/article-card";
 import { useAuthFetch } from "../context/authFetch";
+import Navbar from "../../components/navbar";
 
 type Article = {
   id: number;
@@ -36,8 +36,7 @@ export default function SantPage() {
 
   return (
     <>
-      <SantNavbar onMenuClick={setActiveMenu} activeMenu={activeMenu} />
-
+      <Navbar />
       <div className="p-6 bg-[#def1de] min-h-screen">
         <h1 className="text-center text-4xl font-bold text-[#f97316] font-serif mb-10">
           संत {name}
