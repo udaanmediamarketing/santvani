@@ -5,7 +5,7 @@ import { Card } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
 import { useAuth } from "../../pages/context/AuthContext";
-
+import { useAuthFetch } from "../../pages/context/authFetch";
 interface Article {
   id: string;
   title: string;
@@ -22,10 +22,11 @@ export default function ArticlesTable() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const authFetch = useAuthFetch();
   const id = user?.id;
   useEffect(() => {
   const fetchArticles = async () => {
-    const res = await fetch(`http://localhost:5000/api/posts/list-posts/${id}`, {
+    const res = await authFetch(`http://localhost:5000/api/posts/list-posts/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },

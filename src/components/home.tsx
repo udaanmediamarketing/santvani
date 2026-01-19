@@ -151,9 +151,14 @@
 
 
 import SantCard from "../components/santcard";
+import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
 import NewSantGrid from "./cards/santcard-grid";
 import MovingNewsList from "./vertical-list";
+
 import Footer from "./footer";
+import QuarterColumn from "./quater-column";
+import OrgGrid from "./organizations/org-grid";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import CategoryList from "./category-list";
@@ -267,15 +272,19 @@ export default function Home({
         {/* Welcome Section */}
         <div className="max-w-3xl mx-auto shadow-xl border-4 border-[#f97316] bg-white rounded-md overflow-hidden">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4 py-4 bg-orange-50 border-b border-[#f97316]">
-            <img
-              src="/images/logo.jpg"
-              alt="विश्व संत साहित्य लोगो"
-              className="h-14 w-auto object-contain"
-            />
-            <h1 className="text-[28px] sm:text-[38px] font-extrabold text-[#f97316] font-serif tracking-wide text-center leading-tight">
-              विश्व संत साहित्य
-            </h1>
-          </div>
+  <Image
+    src="/images/logo.jpg"
+    alt="विश्व संत साहित्य लोगो"
+    width={56}
+    height={56}
+    className="object-contain"
+    priority
+  />
+
+  <h1 className="text-[28px] sm:text-[38px] font-extrabold text-[#f97316] font-serif tracking-wide text-center leading-tight">
+    विश्व संत साहित्य
+  </h1>
+</div>
 
           <div className="space-y-3 px-4 sm:px-6 py-4 text-blue-800 text-sm sm:text-base leading-relaxed text-center">
             <p>
@@ -367,9 +376,41 @@ export default function Home({
           )}
 
         </section>
+  
+      <div>
+        <SantHorizontalGrid cardLayout="column"/>
+
       </div>
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
+  <div className="w-full lg:w-3/4">
+    <SantHorizontalGrid cardLayout="row"/>
+  </div>
+    <QuarterColumn />
+
+</div>
+<div>
+  <div className="text-xl font-semibold ">संस्था / केंद्र </div>
+  <OrgGrid/>
+</div>
+      <div>
+        <Footer />
+      </div>
+    </div>
 
       <Footer />
     </>
   );
+  
 }
+
+{/* <div className="flex flex-wrap gap-6">
+  <QuarterColumn>
+    <h2 className="text-lg font-bold">Title</h2>
+    <p>Description text</p>
+    <button className="btn">Action</button>
+  </QuarterColumn>
+
+  <div className="w-full md:w-3/4">
+    Main content
+  </div>
+</div> */}

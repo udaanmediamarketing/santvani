@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import adminRoutes from "./src/routes/adminRoutes";
 import postRoutes from "./src/routes/postRoutes";
+import orgRoutes from "./src/routes/orgRoutes.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api/admin", adminRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/organizations", orgRoutes);
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL missing");

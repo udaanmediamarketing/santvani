@@ -16,7 +16,9 @@ import {
 } from "../ui/select";
 import { useAuth } from "../../pages/context/AuthContext";
 import { toast } from "sonner";
-import { slugify } from "@/src/lib/slugify";
+import { slugify } from "@/src/lib/helper";
+import { Plus } from "lucide-react";
+import { useAuthFetch } from "../../pages/context/authFetch";
 
 type FormData = {
   santname?: string;
@@ -37,6 +39,7 @@ export default function CreateArticleForm() {
   control,
   reset,
   watch,
+  setValue,
   formState: { errors, isValid },
 } = useForm<FormData>({
   mode: "onChange",
@@ -55,9 +58,12 @@ export default function CreateArticleForm() {
   const [wordCount, setWordCount] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [translating, setTranslating] = useState(false);
-  
+  const [manualSant, setManualSant] = useState(false);
+  const [manualCategory, setManualCategory] = useState(false);
+
   const { token } = useAuth();
   const contentValue = watch("content") || "";
+  const authFetch = useAuthFetch();
   
   useEffect(() => {
     setMounted(true);
@@ -98,6 +104,56 @@ export default function CreateArticleForm() {
     }
   };
 
+  const translateField = async (
+  field: keyof FormData,
+  value: string,
+  lang: string
+) => {
+  if (!value?.trim()) return;
+
+  try {
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
+        value
+      )}`
+    );
+    const data = await res.json();
+    const translatedText = data[0].map((item: string) => item[0]).join("");
+
+    setValue(field, translatedText, { shouldValidate: true });
+  } catch {
+    toast.error("भाषांतर अयशस्वी झाले");
+  }
+};
+
+const TranslateSelect = ({
+  onSelect,
+}: {
+  onSelect: (lang: string) => void;
+}) => (
+  <Select onValueChange={onSelect}>
+    <SelectTrigger className="
+  w-28
+  text-xs
+  rounded-lg
+  bg-white
+  border
+  border-gray-300
+  shadow-sm
+  z-10
+">
+      <SelectValue placeholder="भाषा" />
+    </SelectTrigger>
+    <SelectContent className="rounded-lg bg-white shadow-lg z-10">
+      <SelectItem value="en">English</SelectItem>
+      <SelectItem value="hi">Hindi</SelectItem>
+      <SelectItem value="mr">Marathi</SelectItem>
+      <SelectItem value="sa">Sanskrit</SelectItem>
+    </SelectContent>
+  </Select>
+);
+
+
   const onSubmit = async (data: FormData) => {
     
     if (!token) {
@@ -128,17 +184,18 @@ export default function CreateArticleForm() {
   if (data.content) formData.append("content", data.content);
   if (data.youtubeUrl) formData.append("youtubeUrl", data.youtubeUrl);
   if (data.img?.[0]) formData.append("img", data.img[0]);
-  for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
-  const res = await fetch("http://localhost:5000/api/posts/create-post", {
+  console.log("Submitting form data:", {
+    title: data.title,
+    santname: data.santname,
+    category: data.category,
+    content: data.content});
+  const res = await authFetch("http://localhost:5000/api/posts/create-post", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
-  console.log(res);
   if (!res.ok) {
     try {
       const errorData = await res.json();
@@ -194,67 +251,136 @@ export default function CreateArticleForm() {
         </div>
 
         {/* Sant Name */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">संत निवडा *</Label>
-          <Controller
-            name="santname"
-            control={control}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all">
-                  <SelectValue placeholder="संत निवडा" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl shadow-lg bg-white">
-                  {sants.map((sant) => (
-                    <SelectItem key={sant} value={sant}>
-                      {sant}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.santname && (
-            <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
-          )}
-        </div>
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700 flex items-center justify-between">
+    संत निवडा
+    <button
+      type="button"
+      onClick={() => {
+        setManualSant((prev) => !prev);
+        setValue("santname", "");
+      }}
+      className="text-orange-500 hover:text-orange-600"
+    >
+      <Plus size={16} />
+    </button>
+  </Label>
+  {manualSant ? (
+    <div className="flex gap-2">
+    <Input
+      placeholder="नवीन संत नाव टाका"
+      {...register("santname")}
+      onChange={(e) => setValue("santname", e.target.value)}
+    />
+    <TranslateSelect
+      onSelect={(lang) =>
+        translateField("santname", watch("santname") || "", lang)
+      }
+    />
+  </div>
+  ) : (
+    /* DROPDOWN MODE */
+    <Controller
+      name="santname"
+      control={control}
+      render={({ field }) => (
+        <Select
+          value={field.value}
+          onValueChange={(value) => {
+            field.onChange(value);
+          }}
+        >
+          <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400">
+            <SelectValue placeholder="संत निवडा" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl shadow-lg bg-white">
+            {sants.map((sant) => (
+              <SelectItem key={sant} value={sant}>
+                {sant}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    />
+  )}
 
-        {/* Category */}
-        <div className="space-y-2">
-          <Label className="text-sm font-semibold text-gray-700">विभाग *</Label>
-          <Controller
-            name="category"
-            control={control}
-            render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all">
-                  <SelectValue placeholder="विभाग निवडा" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl shadow-lg bg-white">
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-          {errors.category && (
-            <p className="text-xs text-red-600 mt-1">{errors.category.message}</p>
-          )}
-        </div>
+  {errors.santname && (
+    <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
+  )}
+</div>
 
+{/* Category */}
+<div className="space-y-2">
+  <Label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
+    विभाग
+    <button
+      type="button"
+      className="text-orange-500 text-lg"
+      onClick={() => {
+        setManualCategory(true);
+        setValue("category", "");
+      }}
+    >
+      <Plus size={16} />
+    </button>
+  </Label>
+
+  {/* Manual Input */}
+  {manualCategory ? (
+    <div className="flex gap-2">
+    <Input
+      placeholder="विभाग लिहा"
+      {...register("category")}
+      onChange={(e) => setValue("category", e.target.value)}
+    />
+    <TranslateSelect
+      onSelect={(lang) =>
+        translateField("category", watch("category") || "", lang)
+      }
+    />
+  </div>
+  ) : (
+    <Controller
+      name="category"
+      control={control}
+      render={({ field }) => (
+        <Select
+          value={field.value}
+          onValueChange={(val) => {
+            field.onChange(val);
+            setManualCategory(false);
+          }}
+        >
+          <SelectTrigger className="rounded-xl border-gray-300">
+            <SelectValue placeholder="विभाग निवडा" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+    />
+  )}
+</div>
         {/* Title */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">लेखाचे शीर्षक *</Label>
-          <Input
-            {...register("title", {
-              required: "शीर्षक आवश्यक आहे",
-            })}
-            placeholder="लेखाचे शीर्षक लिहा"
-            className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all"
-          />
+          <div className="flex gap-2">
+  <Input
+    {...register("title", { required: "शीर्षक आवश्यक आहे" })}
+    placeholder="लेखाचे शीर्षक लिहा"
+  />
+  <TranslateSelect
+    onSelect={(lang) =>
+      translateField("title", watch("title") || "", lang)
+    }
+  />
+</div>
           {errors.title && (
             <p className="text-xs text-red-600 mt-1">{errors.title.message}</p>
           )}

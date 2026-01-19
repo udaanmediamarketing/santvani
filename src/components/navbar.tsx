@@ -72,8 +72,8 @@ const Navbar = () => {
           <Button variant="secondary">लेख तयार करा</Button>
         </Link>
 
-        <Link href="/list-articles">
-          <Button variant="secondary">लेखांची यादी</Button>
+        <Link href="/create-organization">
+          <Button variant="secondary">संस्था / केंद्र नोंदवा</Button>
         </Link>
 
         {/* Auth UI (rendered once) */}

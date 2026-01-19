@@ -26,15 +26,23 @@ export default function Footer() {
 
         {/* Footer Links (Middle Portion) */}
         <nav className="flex space-x-20 mb-2 md:mb-0">
-          <a href="/about" className="hover:underline hover:text-gray-300 transition">
-            About
-          </a>
-          <a href="/privacy-policy" className="hover:underline hover:text-gray-300 transition">
-            Privacy Policy
-          </a>
-          <a href="/contact" className="hover:underline hover:text-gray-300 transition">
-            Contact
-          </a>
+          <Link href="/about">
+            <span className="hover:underline hover:text-gray-300 transition cursor-pointer">
+              About
+            </span>
+          </Link>
+
+          <Link href="/privacy-policy">
+            <span className="hover:underline hover:text-gray-300 transition cursor-pointer">
+              Privacy Policy
+            </span>
+          </Link>
+
+          <Link href="/contact">
+            <span className="hover:underline hover:text-gray-300 transition cursor-pointer">
+              Contact
+            </span>
+          </Link>
         </nav>
 
         {/* Copyright (Ending Portion) */}

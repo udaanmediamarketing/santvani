@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import CreateArticleForm from "../components/articles/article-form";
 import { useAuth } from "../pages/context/AuthContext";
+import dynamic from "next/dynamic";
+import CreateOrganizationForm from "../components/organizations/org-form";
 import Navbar from "../components/navbar";
-
-export default function CreateArticlePage() {
+export default function CreateOrganizationPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -21,8 +21,9 @@ export default function CreateArticlePage() {
   }
   return (
     <>
+      {/* <antNavbar activeMenu="Blogs" onMenuClick={() => {}}/> */}
       <Navbar />
-      <CreateArticleForm />
+      <CreateOrganizationForm />
     </>
   );
 }
