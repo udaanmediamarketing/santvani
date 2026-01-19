@@ -7,6 +7,7 @@ import {
   MessageCircle,
   Twitter,
   Linkedin,
+  X,
 } from "lucide-react";
 
 export default function ContactPage() {
@@ -118,9 +119,11 @@ export default function ContactPage() {
             <a
               href="https://twitter.com"
               target="_blank"
-              className="flex items-center gap-2 px-5 py-3 rounded-full bg-sky-500 text-white hover:opacity-90 transition"
+              className="flex items-center gap-2 px-5 py-3 rounded-full bg-black text-white hover:opacity-90 transition"
+
             >
-              <Twitter size={18} />
+              <X size={20} />
+
               Twitter
             </a>
 

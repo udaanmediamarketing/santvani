@@ -43,14 +43,30 @@ const Navbar = () => {
 
       <div className="flex gap-3 items-center">
         <Link href="/">
-          <Button variant="secondary">मुख्य पान</Button>
+          <Button variant="secondary">मुखपृष्ठ</Button>
         </Link>
 
-        {sants.map((sant) => (
+        {/* {sants.map((sant) => (
           <Link key={sant} href={`/sant/${sant}`}>
             <Button variant="ghost">{sant}</Button>
           </Link>
-        ))}
+        ))} */}
+
+
+        <Link href="/vertical-list">
+          <Button variant="secondary">प्रकाशने</Button>
+        </Link>
+        <Link href="/sahitya">
+          <Button variant="secondary">साहित्य</Button>
+        </Link>
+        <Link href="/navbar/granth">
+          <Button variant="secondary">ग्रंथ</Button>
+        </Link>
+        <Link href="/navbar/gallery">
+          <Button variant="secondary">गॅलरी</Button>
+        </Link>
+
+
 
         <Link href="/create-article">
           <Button variant="secondary">लेख तयार करा</Button>
@@ -75,45 +91,7 @@ const Navbar = () => {
             </Link>
           ))}
 
-        {/* Settings Button */}
-        {/* <Button
-          variant="ghost"
-          onClick={() => setShowSettings((prev) => !prev)}
-        >
-          <Settings />
-        </Button> */}
 
-        {/* Settings Dropdown */}
-        {/* {showSettings && (
-          <div className="absolute right-0 top-16 w-56 bg-white text-black rounded-lg shadow-xl z-50 p-3 space-y-3">
-            <div>
-              <p className="text-sm font-semibold mb-1">🌐 भाषा</p>
-              {languages.map((lang) => (
-                <button
-                  key={lang}
-                  className={`block w-full text-left px-3 py-1 rounded hover:bg-gray-100 ${selectedLang === lang
-                    ? "font-semibold text-orange-600"
-                    : ""
-                    }`}
-                  onClick={() => setSelectedLang(lang)}
-                >
-                  {lang}
-                </button>
-              ))}
-            </div>
-
-            <div className="border-t pt-2">
-              <Link href="/explore-more">
-                <button className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 text-sm font-medium">
-                  🔁 Explore More
-                </button>
-              </Link>
-            </div>
-
-
-
-          </div>
-        )} */}
       </div>
     </div>
   );

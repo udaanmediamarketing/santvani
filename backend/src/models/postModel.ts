@@ -158,3 +158,94 @@ export const getPostBySlug = async (slug: string): Promise<PostRow | null> => {
 
   return result.rows[0] || null;
 };
+
+// src/models/postModel.ts
+
+export interface CategoryCount {
+  category: string;
+  count: number;
+  posts: {
+    id: string;
+    title: string;
+    slug: string;
+    created_at: string;
+  }[];
+}
+
+export const getListByCategory = async (): Promise<CategoryCount[]> => {
+  const result = await pool.query(`
+    SELECT
+      category,
+      COUNT(*)::int AS count,
+      COALESCE(
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'id', id,
+            'title', title,
+            'slug', slug,
+            'created_at', created_at
+          )
+          ORDER BY created_at DESC
+        ),
+        '[]'::json
+      ) AS posts
+    FROM articles
+    WHERE status = 'published'
+    GROUP BY category
+    ORDER BY category
+  `);
+
+  return result.rows as CategoryCount[];
+};
+
+export const getPostsByCategory = async (
+  category: string
+): Promise<PostRow[]> => {
+  const result = await pool.query(
+    `SELECT *
+     FROM articles
+     WHERE category = $1
+       AND status = 'published'
+     ORDER BY created_at DESC`,
+    [category]
+  );
+
+  return result.rows as PostRow[];
+};
+
+// gallery items - photo and video
+export const getGalleryPosts = async () => {
+  const result = await pool.query(`
+    SELECT
+      id,
+      title,
+      image_url,
+      youtube_url,
+      created_at
+    FROM articles
+    WHERE status = 'published'
+      AND (image_url IS NOT NULL OR youtube_url IS NOT NULL)
+    ORDER BY created_at DESC
+  `);
+
+  return result.rows;
+};
+
+//search bar -- category or title
+// export const searchPosts = async (query: string) => {
+//   const result = await pool.query(
+//     `
+//     SELECT id, title, slug, category, created_at, image_url
+//     FROM articles
+//     WHERE status = 'published'
+//       AND (
+//         title ILIKE $1
+//         OR category ILIKE $1
+//       )
+//     ORDER BY created_at DESC
+//     `,
+//     [`%${query}%`]
+//   );
+
+//   return result.rows;
+// };

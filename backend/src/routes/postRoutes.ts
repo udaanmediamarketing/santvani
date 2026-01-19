@@ -1,9 +1,10 @@
 // src/routes/postRoutes.ts
 import express from "express";
-import { createPostController, listPosts, listAllPosts, listPostsBySantName, getPostBySlugController } from "../controllers/postController.js";
+import { createPostController, listPosts, listAllPosts, listPostsBySantName, getPostBySlugController, listByCategoryController, listPostsByCategoryController, listGalleryPosts,   } from "../controllers/postController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { parseFormData } from "../utils/formidableParser.js";
 import { Request, Response } from "express";
+
 
 interface AuthRequest extends Request {
   user?: {
@@ -13,6 +14,10 @@ interface AuthRequest extends Request {
 
 const router = express.Router();
 
+//router.get("/search", searchPostsController); ---------------- searchPostsController
+router.get("/gallery", listGalleryPosts);
+router.get("/list-by-category", listByCategoryController);
+router.get("/list-by-category/:category", listPostsByCategoryController);
 router.get("/list-posts-by-sant/:name", listPostsBySantName);
 router.get("/list-all-posts", listAllPosts);
 router.get("/list-posts/:id", listPosts); 
