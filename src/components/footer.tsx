@@ -25,7 +25,7 @@ export default function Footer() {
         </div>
 
         {/* Footer Links (Middle Portion) */}
-        <nav className="flex space-x-20 mb-2 md:mb-0">
+        {/* <nav className="flex space-x-20 mb-2 md:mb-0">
           <Link href="/about">
             <span className="hover:underline hover:text-gray-300 transition cursor-pointer">
               About
@@ -43,7 +43,7 @@ export default function Footer() {
               Contact
             </span>
           </Link>
-        </nav>
+        </nav> */}
 
         {/* Copyright (Ending Portion) */}
         <p className="text-sm text-gray-400 text-center">
