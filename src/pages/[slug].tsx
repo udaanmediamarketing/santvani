@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import Navbar from '../components/navbar';
 
 interface Post {
   title: string;
@@ -19,7 +20,11 @@ function getYoutubeEmbedUrl(url: string) {
 
 export default function PostPage({ post }: { post: Post | null }) {
   if (!post) {
-    return <div className="text-center py-20">Post not found</div>;
+    return (
+      <>
+      <Navbar/>
+    <div className="text-center py-20">Post not found</div>
+    </>);
   }
 
   const embedUrl = post.youtube_url
@@ -27,6 +32,8 @@ export default function PostPage({ post }: { post: Post | null }) {
     : null;
 
   return (
+    <>
+    <Navbar/>
     <div className="max-w-4xl mx-auto px-4 py-12 space-y-6">
       <h1 className="text-3xl md:text-4xl font-bold">
         {post.title}
@@ -73,6 +80,7 @@ export default function PostPage({ post }: { post: Post | null }) {
         </div>
       )}
     </div>
+    </>
   );
 }
 
