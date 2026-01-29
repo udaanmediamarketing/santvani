@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "../components/ui/badge";
-import { useAuthFetch } from "../pages/context/authFetch";
-
+ import { useMemo } from "react";
+ import { Post } from '../types/post';
 interface NewsItem {
   category: string;
   title: string;
@@ -11,49 +11,32 @@ interface NewsItem {
   extra: string;
 }
 
-interface Post {
-  _id: string;
-  title: string;
-  content: string;
-  category?: string;
-}
-
-export default function VerticalMovingNewsList() {
-  const [items, setItems] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const authFetch = useAuthFetch();
+export default function VerticalMovingNewsList({
+  posts = [],
+}: {
+  posts: Post[];
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [translateY, setTranslateY] = useState(0);
+
   const itemHeight = 120;
   const speed = 150; // px/sec
 
   /* ===========================
-     FETCH NEWS FROM API
+     MAP POSTS → NEWS ITEMS
   ============================ */
-  useEffect(() => {
-    authFetch("http://localhost:5000/api/posts/list-all-posts")
-      .then(res => res.json())
-      .then(data => {
-        const posts: Post[] = Array.isArray(data)
-          ? data
-          : Array.isArray(data.posts)
-          ? data.posts
-          : [];
 
-        const mappedItems: NewsItem[] = posts.map(post => ({
-          category: post.category || "समाचार",
-          title: post.title,
-          subtitle: post.content,
-          extra: ""
-        }));
+const items = useMemo<NewsItem[]>(() => {
+  if (!posts.length) return [];
 
-        setItems(mappedItems);
-      })
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+  return posts.map((post) => ({
+    category: post.category || "समाचार",
+    title: post.title,
+    subtitle: post.content ?? '',
+    extra: "",
+  }));
+}, [posts]);
 
   /* ===========================
      AUTO SCROLL ANIMATION
@@ -81,7 +64,7 @@ export default function VerticalMovingNewsList() {
     requestAnimationFrame(animate);
   }, [items.length]);
 
-  if (loading || !items.length) return null;
+  if (!items.length) return null;
 
   return (
     <div className="max-w-4xl mx-auto px-6 pt-6">
@@ -101,12 +84,9 @@ export default function VerticalMovingNewsList() {
           className="absolute inset-0 flex flex-col"
           style={{ transform: `translateY(${translateY}px)` }}
         >
-          {/* First set */}
           {items.map((item, index) => (
             <NewsRow key={`first-${index}`} item={item} />
           ))}
-
-          {/* Duplicate set for seamless loop */}
           {items.map((item, index) => (
             <NewsRow key={`second-${index}`} item={item} />
           ))}
@@ -114,8 +94,8 @@ export default function VerticalMovingNewsList() {
 
         {/* Fade overlays */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-white/90 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/90 to-transparent" />
+          <div className="absolute top-0 h-12 w-full bg-gradient-to-b from-white/90 to-transparent" />
+          <div className="absolute bottom-0 h-12 w-full bg-gradient-to-t from-white/90 to-transparent" />
         </div>
       </div>
     </div>
@@ -123,24 +103,18 @@ export default function VerticalMovingNewsList() {
 }
 
 /* ===========================
-   REUSABLE ROW COMPONENT
+   ROW
 =========================== */
 function NewsRow({ item }: { item: NewsItem }) {
   return (
-    <div className="flex items-start gap-4 px-8 py-4 hover:bg-orange-50/50 border-b border-orange-100/50 min-h-[120px]">
-      <Badge className="bg-gradient-to-br from-orange-500/20 to-rose-500/20 
-                        border-orange-300/50 text-orange-900 font-bold px-4 py-2 text-sm 
-                        shadow-md whitespace-nowrap min-w-[130px] mt-1">
+    <div className="flex items-start gap-4 px-8 py-4 border-b min-h-[120px]">
+      <Badge className="bg-orange-100 text-orange-800 font-bold px-4 py-2 min-w-[130px]">
         {item.category}
       </Badge>
 
-      <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1 pr-4">
-          {item.title}
-        </h3>
-        <p className="text-base text-gray-700 line-clamp-2 pr-4">
-          {item.subtitle}
-        </p>
+      <div className="flex-1">
+        <h3 className="font-bold text-lg line-clamp-1">{item.title}</h3>
+        <p className="text-gray-700 line-clamp-2">{item.subtitle}</p>
       </div>
     </div>
   );

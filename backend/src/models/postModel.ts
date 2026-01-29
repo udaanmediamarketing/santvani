@@ -93,11 +93,13 @@ export const getPosts = async (id: string): Promise<PostRow[]> => {
   return result.rows as PostRow[];
 };
 
-export const getAllPosts = async (): Promise<PostRow[]> => {
+export const getAllPosts = async ({ limit = 50 } = {}) : Promise<PostRow[]> => {
   const result = await pool.query(
     `SELECT * FROM articles
      WHERE status = 'published'
-     ORDER BY created_at DESC`,
+     ORDER BY created_at DESC
+     LIMIT $1`,
+     [limit]
   );
   return result.rows as PostRow[];
 };
@@ -139,6 +141,24 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
      [santname]
   );
   console.log("result",result);
+  return result.rows as PostRow[];
+};
+
+export const getPostsByCategory = async (
+  category: string, { limit = 10 } = {}
+): Promise<PostRow[]> => {
+  const decodedCat = decodeURIComponent(category);
+  const result = await pool.query(
+    `SELECT *
+     FROM articles
+     WHERE status = 'published'
+       AND category = $1
+     ORDER BY created_at DESC
+      LIMIT $2`,
+
+    [decodedCat, limit],
+  );
+
   return result.rows as PostRow[];
 };
 

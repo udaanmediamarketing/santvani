@@ -4,41 +4,36 @@ import { useEffect, useState } from 'react';
 import { NewSantCard } from './new-santcard';
 import { slugify, formatDate} from '../../lib/helper';
 import { useAuthFetch } from '../../pages/context/authFetch';
+import { Post } from '../../types/post';
 
-interface Post {
-  _id: string;
-  image_url: string;
-  youtube_url: string;
-  title: string;
-  content: string;
-  created_at: string;
-  category?: string;
-}
-
-export default function NewSantGrid() {
-  const [posts, setPosts] = useState<Post[]>([]);
+export default function NewSantGrid({
+  posts = [],
+}: {
+  posts: Post[];
+}) {
+  // const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const authFetch = useAuthFetch();
 
-  useEffect(() => {
-  authFetch('http://localhost:5000/api/posts/list-all-posts')
-    .then(res => res.json())
-    .then(data => {
-      const postsArray = Array.isArray(data)
-        ? data
-        : Array.isArray(data.posts)
-          ? data.posts
-          : [];
+//   useEffect(() => {
+//   authFetch('http://localhost:5000/api/posts/list-all-posts')
+//     .then(res => res.json())
+//     .then(data => {
+//       const postsArray = Array.isArray(data)
+//         ? data
+//         : Array.isArray(data.posts)
+//           ? data.posts
+//           : [];
 
-      setPosts(postsArray.slice(0, 5));
-    })
-    .catch(err => console.error(err))
-    .finally(() => setLoading(false));
-}, []);
+//       setPosts(postsArray.slice(0, 5));
+//     })
+//     .catch(err => console.error(err))
+//     .finally(() => setLoading(false));
+// }, []);
     
-  if (loading) {
-    return <div className="text-center py-20">Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div className="text-center py-20">Loading...</div>;
+  // }
   if (posts.length < 5) return null;
 
   return (
@@ -60,7 +55,7 @@ export default function NewSantGrid() {
         title={posts[0]?.title}
         content={posts[0]?.content}
         category={posts[0]?.category}
-        date={formatDate(posts[0]?.created_at)}
+        date={formatDate(posts[0]?.created_at ?? '')}
         className="lg:col-start-1 lg:row-start-1 h-[180px]"
       />
 
@@ -72,7 +67,7 @@ export default function NewSantGrid() {
         title={posts[2]?.title}
         content={posts[2]?.content}
         category={posts[2]?.category}
-        date={formatDate(posts[2]?.created_at)}
+        date={formatDate(posts[2]?.created_at ?? '')}
         // className="lg:row-span-2"
         className="lg:col-start-2 lg:row-start-1 lg:row-span-2 mt-1 h-[360px]"
       />
@@ -85,7 +80,7 @@ export default function NewSantGrid() {
         title={posts[3]?.title}
         content={posts[3]?.content}
         category={posts[3]?.category}
-        date={formatDate(posts[3]?.created_at)}
+        date={formatDate(posts[3]?.created_at ?? "")}
         className="lg:col-start-3 lg:row-start-1 h-[180px]"
       />
 
@@ -97,7 +92,7 @@ export default function NewSantGrid() {
         title={posts[1]?.title}
         content={posts[1]?.content}
         category={posts[1]?.category}
-        date={formatDate(posts[1]?.created_at)}
+        date={formatDate(posts[1]?.created_at ?? "")}
         className="lg:col-start-1 lg:row-start-2 h-[180px]"
       />
 
@@ -109,7 +104,7 @@ export default function NewSantGrid() {
         title={posts[4]?.title}
         content={posts[4]?.content}
         category={posts[4]?.category}
-        date={formatDate(posts[4]?.created_at)}
+        date={formatDate(posts[4]?.created_at ?? "")}
         className="lg:col-start-3 lg:row-start-2 h-[180px]"
       />
     </div>

@@ -1,7 +1,6 @@
 // src/controllers/postController.ts
 import { Request, Response } from "express";
-import { createPost, getPosts, getPostsBySantName, getAllPosts, getPostBySlug} from "../models/postModel.js";
-
+import { createPost, getPosts, getPostsBySantName, getAllPosts, getPostBySlug, getPostsByCategory} from "../models/postModel.js";
 interface AuthRequest extends Request {
   user?: {
     id: string;
@@ -54,6 +53,23 @@ export const listPosts = async (req: Request, res: Response) => {
   const posts = await getPosts(id);
   res.json({ posts });
 };
+
+export const listPostsByCategory = async (req: Request, res: Response) => {
+  const { category } = req.params;
+
+  if (!category) {
+    return res.status(400).json({ error: 'Category is required' });
+  }
+
+  try {
+    const posts = await getPostsByCategory(category);
+    res.json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+};
+
 
 export const listPostsBySantName = async (req: Request, res: Response) => {
   const { name } = req.params;
