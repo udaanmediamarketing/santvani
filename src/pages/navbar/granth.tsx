@@ -20,11 +20,7 @@ const books: Book[] = [
     pdf: "/pdfs/dasbodh.pdf",
     cover: "/sant/dasbodh.jpg",
   },
-  {
-    title: "ग्रामगीता",
-    pdf: "/pdfs/gramgeeta.pdf",
-    cover: "/sant/gramgeeta.jpg",
-  },
+
   {
     title: "रामायण",
     pdf: "/pdfs/ramayan.pdf",
