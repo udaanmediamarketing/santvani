@@ -86,7 +86,6 @@ export default function PostPage({ post }: { post: Post | null }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const slug = params?.slug as string;
-
   const res = await fetch(
     `http://localhost:5000/api/posts/get-by-slug/${encodeURIComponent(slug)}`
   );

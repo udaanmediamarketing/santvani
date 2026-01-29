@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import adminRoutes from "./src/routes/adminRoutes";
 import postRoutes from "./src/routes/postRoutes";
 import orgRoutes from "./src/routes/orgRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use("/api/admin", adminRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/organizations", orgRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 if (!process.env.DATABASE_URL) {
   throw new Error("DATABASE_URL missing");
