@@ -94,8 +94,10 @@
 //   };
 // };
 
+
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import QuarterColumn from "../components/quater-column";
 
 interface Post {
   title: string;
@@ -123,64 +125,70 @@ export default function PostPage({ post }: { post: Post | null }) {
     : null;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Title */}
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-        {post.title}
-      </h1>
+    /* FULL SCREEN */
+    <div className="w-screen flex overflow-x-hidden">
 
-      {/* Meta */}
-      <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-6">
-        {post.category && (
-          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
-            {post.category}
-          </span>
-        )}
-        {post.created_at && (
-          <span className="flex items-center">
-            {new Date(post.created_at).toLocaleDateString("mr-IN")}
-          </span>
-        )}
-      </div>
+      {/* LEFT : 70% CONTENT */}
+      <div className="w-[70%] px-4 sm:px-6 lg:px-10 py-10">
+        <div className="max-w-screen-xl">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            {post.title}
+          </h1>
 
-      {/* Media */}
-      <div className="w-full flex justify-center mb-8">
-        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-lg overflow-hidden">
-          {post.image_url ? (
-            <div className="relative w-full">
-              <Image
-                src={post.image_url}
-                alt={post.title}
-                width={1200}
-                height={800}
-                className="w-full h-auto object-contain max-h-[80vh]"
-                sizes="(max-width: 768px) 100vw, 80vw"
-              />
+          <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-6">
+            {post.category && (
+              <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
+                {post.category}
+              </span>
+            )}
+            {post.created_at && (
+              <span>
+                {new Date(post.created_at).toLocaleDateString("mr-IN")}
+              </span>
+            )}
+          </div>
+
+          <div className="w-full flex justify-center mb-8">
+            <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden">
+              {post.image_url ? (
+                <Image
+                  src={post.image_url}
+                  alt={post.title}
+                  width={1200}
+                  height={800}
+                  className="w-full h-auto object-contain max-h-[80vh]"
+                />
+              ) : embedUrl ? (
+                <div className="aspect-video">
+                  <iframe
+                    src={embedUrl}
+                    className="w-full h-full"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <div className="h-64 flex items-center justify-center bg-gray-200">
+                  No media available
+                </div>
+              )}
             </div>
-          ) : embedUrl ? (
-            <div className="relative w-full aspect-video">
-              <iframe
-                src={embedUrl}
-                className="absolute inset-0 w-full h-full"
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-64 bg-gray-200">
-              No media available
+          </div>
+
+          {post.content && (
+            <div className="prose prose-lg max-w-none text-gray-800">
+              {post.content}
             </div>
           )}
         </div>
       </div>
 
-      {/* Content */}
-      {post.content && (
-        <div className="max-w-4xl mx-auto">
-          <div className="prose prose-base sm:prose-lg max-w-none text-gray-800">
-            {post.content}
-          </div>
+      {/* RIGHT : 30% SIDEBAR (ATTACHED TO SCREEN END) */}
+      <div className="w-[30%] py-10 pr-6">
+        <div className="sticky top-24">
+          <QuarterColumn />
         </div>
-      )}
+      </div>
+
     </div>
   );
 }

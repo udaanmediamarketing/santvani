@@ -8,8 +8,9 @@ export default function HomePage() {
 
   return (
     <>
-      <Navbar />
+      
       <Home setActiveMenu={setActiveMenu} />
     </>
   );
 }
+//<Navbar />

@@ -56,7 +56,7 @@ const Navbar = () => {
         <Link href="/vertical-list">
           <Button variant="secondary">प्रकाशने</Button>
         </Link>
-        <Link href="/sahitya">
+        <Link href="/navbar/sahitya">
           <Button variant="secondary">साहित्य</Button>
         </Link>
         <Link href="/navbar/granth">
