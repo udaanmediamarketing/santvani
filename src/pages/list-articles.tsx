@@ -1,7 +1,7 @@
 import ArticlesTable from "../components/articles/articles-table";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "../pages/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 export default function MyArticlesPage() {
     const { user, loading } = useAuth();
     const router = useRouter();

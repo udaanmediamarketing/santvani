@@ -14,6 +14,7 @@ import OrgGrid from './organizations/org-grid';
 import Footer from './footer';
 import { Organization } from '../types/org';
 import { Post } from '../types/post';
+import { useAuthFetch } from '../context/authFetch';
 
 export default function Home({
   setActiveMenu,
@@ -21,6 +22,8 @@ export default function Home({
   setActiveMenu: React.Dispatch<React.SetStateAction<string>>;
 }) {
   /** 🔹 DASHBOARD STATE */
+  const authFetch = useAuthFetch();
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [kirtanPosts, setKirtanPosts] = useState<Post[]>([]);
   const [editorPosts, setEditorPosts] = useState<Post[]>([]);
@@ -32,7 +35,7 @@ export default function Home({
   useEffect(() => {
     async function fetchDashboard() {
       try {
-        const res = await fetch(
+        const res = await authFetch(
           'http://localhost:5000/api/dashboard/home'
         );
         const data = await res.json();

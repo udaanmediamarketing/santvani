@@ -5,7 +5,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "../components/ui/button";
 import { LogIn, Settings } from "lucide-react";
 import UserProfileDropdown from "./userprofile";
-import { useAuth } from "../pages/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
 const languages = ["इंग्रजी", "हिंदी", "मराठी"];

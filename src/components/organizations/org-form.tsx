@@ -14,9 +14,9 @@ import {
 } from "../ui/select";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { useAuthFetch } from "../../pages/context/authFetch";
+import { useAuthFetch } from "../../context/authFetch";
 import { Textarea } from "../ui/textarea";
-import { useAuth } from "../../pages/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 type OrgFormData = {
   orgType?: string;

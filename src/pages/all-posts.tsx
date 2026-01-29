@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ReadMorePostCard, { Post } from '../components/read-more-card';
+import ReadMorePostCard from '../components/read-more-card';
+import { Post } from '../types/post';
 import Navbar from '../components/navbar';
 
 const POSTS_PER_PAGE = 4;

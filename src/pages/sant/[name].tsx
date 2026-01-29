@@ -3,7 +3,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ArticleCard from "../../components/articles/article-card";
-import { useAuthFetch } from "../context/authFetch";
+import { useAuthFetch } from "../../context/authFetch";
 import Navbar from "../../components/navbar";
 
 type Article = {

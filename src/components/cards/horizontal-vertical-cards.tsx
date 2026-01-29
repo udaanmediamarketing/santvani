@@ -5,7 +5,7 @@ import DynamicCard from '../../components/cards/card';
 import { formatDate, slugify } from '../../lib/helper';
 import { Skeleton } from '../../components/ui/skeleton';
 import { cn } from '../../lib/utils';
-import { useAuthFetch } from '../../pages/context/authFetch';
+import { useAuthFetch } from '../../context/authFetch';
 
 interface Post {
   id?: string;

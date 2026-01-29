@@ -1,4 +1,4 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import NotificationBell from "../../components/NotificationBell";
 
 export default function UserDashboard() {
