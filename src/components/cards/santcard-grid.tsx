@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { NewSantCard } from './new-santcard';
 import { slugify, formatDate} from '../../lib/helper';
-import { useAuthFetch } from '../../pages/context/authFetch';
+import { useAuthFetch } from '../../context/authFetch';
 import { Post } from '../../types/post';
 
 export default function NewSantGrid({

@@ -14,11 +14,11 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { useAuth } from "../../pages/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
 import { slugify } from "@/src/lib/helper";
 import { Plus } from "lucide-react";
-import { useAuthFetch } from "../../pages/context/authFetch";
+import { useAuthFetch } from "../../context/authFetch";
 
 type FormData = {
   santname?: string;

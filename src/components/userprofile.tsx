@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useAuth } from "../pages/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { Settings, User, LogOut, LayoutDashboard, BookOpen, Landmark } from "lucide-react";
 
 type UserProfileDropdownProps = {

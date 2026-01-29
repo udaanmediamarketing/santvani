@@ -10,8 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { useAuth } from "../../pages/context/AuthContext";
-import { useAuthFetch } from "../../pages/context/authFetch";
+import { useAuth } from "../../context/AuthContext";
+import { useAuthFetch } from "../../context/authFetch";
 
 interface Organization {
   id: string;

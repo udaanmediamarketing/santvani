@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
-import { useAuth } from "../../pages/context/AuthContext";
-import { useAuthFetch } from "../../pages/context/authFetch";
+import { useAuth } from "../../context/AuthContext";
+import { useAuthFetch } from "../../context/authFetch";
 interface Article {
   id: string;
   title: string;

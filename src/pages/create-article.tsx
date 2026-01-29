@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import CreateArticleForm from "../components/articles/article-form";
-import { useAuth } from "../pages/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/navbar";
 
 export default function CreateArticlePage() {
