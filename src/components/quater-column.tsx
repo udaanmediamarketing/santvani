@@ -7,7 +7,12 @@ import {
   Linkedin,
 } from "lucide-react";
 import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
+import CategoryList from "./category-list";
 export default function QuarterColumn() {
+  function handleCategorySelect(category: string): void | Promise<void> {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="w-full md:w-1/4 flex flex-col gap-4">
       <section className="text-center">
@@ -75,6 +80,24 @@ export default function QuarterColumn() {
   <SantHorizontalGrid cardLayout="row" variant="side"/>
 </section>
 
-    </div>
+    {/* Category List */}
+              <div
+                className="
+            w-44
+            [&_div]:flex
+            [&_div]:flex-col
+            [&_div]:gap-2
+            [&_button]:bg-black
+            [&_button]:p-0
+            [&_button]:text-right
+            [&_button]:text-sm
+            [&_button]:text-orange-300
+            hover:[&_button]:text-white-100
+          "
+              >
+                <CategoryList onSelectCategory={handleCategorySelect} />
+              </div>
+            </div>
+
   );
 }

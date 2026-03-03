@@ -172,8 +172,28 @@ export default function Home({
           </div>
 
         </div>
-        <CategoryList onSelectCategory={handleCategorySelect} />
-        
+        {/* 🏷️ Category List (Simple Horizontal Style) */}
+        <div
+          className="
+    mt-6
+    flex
+    justify-center
+    [&_div]:flex
+    [&_div]:flex-wrap
+    [&_div]:gap-6
+    [&_button]:bg-transparent
+    [&_button]:px-0
+    [&_button]:py-1
+    [&_button]:text-sm
+    [&_button]:font-medium
+    [&_button]:text-gray-600
+    hover:[&_button]:text-black-500
+  "
+        >
+          <CategoryList onSelectCategory={handleCategorySelect} />
+        </div>
+
+
         {/* 🔽 NAVBAR BELOW TITLE - FULL WIDTH */}
         <div className="w-full">
           <Navbar />
