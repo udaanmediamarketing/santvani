@@ -131,7 +131,7 @@ export default function CategoryList({
       className={
         layout === "vertical"
           ? "flex flex-col items-start gap-3 mt-2"
-          : "flex flex-wrap justify-center gap-4 mt-6"
+          : "flex flex-wrap justify-center gap-4 mt-1"
       }
     >
       {categories.map(({ category, count }) => (

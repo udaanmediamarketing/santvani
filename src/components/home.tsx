@@ -145,16 +145,16 @@ export default function Home({
       {/* MAIN CONTENT */}
       <div className="px-4 sm:px-6 lg:px-10 py-6 text-center space-y-12 bg-[#def1de] min-h-screen">
         {/* Welcome Section */}
-        <div className="flex flex-col items-center justify-center px-4 py-6  border-b border-[#f97316]">
+        <div className="flex flex-col items-center justify-center px-4 py-0  border-b border-[#f97316]">
 
           {/* Quote */}
-          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-5">
+          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-3">
             <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
             <p>|| तेथ शब्दब्रह्म कवळले ||</p>
           </div>
 
           {/* Logo + Title (Side by Side) */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
 
             <Image
               src="/images/logo1.png"
@@ -165,7 +165,7 @@ export default function Home({
               priority
             />
 
-            <h1 className="text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
+            <h1 className="mr-30 text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
               विश्व संत साहित्य
             </h1>
 
@@ -175,14 +175,14 @@ export default function Home({
         {/* 🏷️ Category List (Simple Horizontal Style) */}
         <div
           className="
-    mt-6
+    
     flex
     justify-center
     [&_div]:flex
     [&_div]:flex-wrap
     [&_div]:gap-6
     [&_button]:bg-transparent
-    [&_button]:px-0
+    [&_button]:px-3
     [&_button]:py-1
     [&_button]:text-sm
     [&_button]:font-medium
