@@ -108,11 +108,8 @@ export default function Home({
 
         {/* 🔶 Saints */}
         <section>
-          <h2 className="text-2xl font-bold text-[#f97316] mb-6">
-            महाराष्ट्रातील संत
-          </h2>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+          {/* <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             {sants.map((sant) => (
               <SantCard
                 key={sant.name}
@@ -120,7 +117,7 @@ export default function Home({
                 setActiveMenu={setActiveMenu}
               />
             ))}
-          </div>
+          </div> */}
 
           <div className="flex flex-col lg:flex-row gap-2 mt-8">
             <div className="lg:w-1/3 w-full">

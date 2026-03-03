@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import { Badge } from "../components/ui/badge";
  import { useMemo } from "react";
  import { Post } from '../types/post';
+ import { useRouter } from "next/navigation";
+
 interface NewsItem {
   category: string;
   title: string;
   subtitle: string;
   extra: string;
+  slug: string;
 }
 
 export default function VerticalMovingNewsList({
@@ -21,7 +24,7 @@ export default function VerticalMovingNewsList({
   const [translateY, setTranslateY] = useState(0);
 
   const itemHeight = 120;
-  const speed = 150; // px/sec
+  const speed = 100; // px/sec
 
   /* ===========================
      MAP POSTS → NEWS ITEMS
@@ -35,6 +38,7 @@ const items = useMemo<NewsItem[]>(() => {
     title: post.title,
     subtitle: post.content ?? '',
     extra: "",
+    slug: post.slug || '',
   }));
 }, [posts]);
 
@@ -106,8 +110,10 @@ const items = useMemo<NewsItem[]>(() => {
    ROW
 =========================== */
 function NewsRow({ item }: { item: NewsItem }) {
+  const router = useRouter();
   return (
-    <div className="flex items-start gap-4 px-8 py-4 border-b min-h-[120px]">
+    <div onClick={() => router.push(`/${item.slug}`)}
+      className="flex items-start gap-4 px-8 py-4 border-b min-h-[120px]">
       <Badge className="bg-orange-100 text-orange-800 font-bold px-4 py-2 min-w-[130px]">
         {item.category}
       </Badge>
