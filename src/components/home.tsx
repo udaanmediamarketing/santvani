@@ -1,17 +1,26 @@
 
-import SantCard from "../components/santcard";
-import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
-import NewSantGrid from "./cards/santcard-grid";
-import MovingNewsList from "./vertical-list";
+'use client';
 
-import Footer from "./footer";
-import QuarterColumn from "./quater-column";
-import OrgGrid from "./organizations/org-grid";
-import Image from "next/image";
+import Image from 'next/image';
+
+import SantCard from '../components/santcard';
+import MovingNewsList from './vertical-list';
+import NewSantGrid from './cards/santcard-grid';
+import WorldFreshUpdatesKirtan from './world-fresh-updates-kirtan';
+import EditorUpdatesSection from './editor-layout-posts';
+
+import ReadMoreSection from './read-more-posts';
+import QuarterColumn from './quater-column';
+import OrgGrid from './organizations/org-grid';
+import Footer from './footer';
+import { Organization } from '../types/org';
+import { Post } from '../types/post';
+import { useAuthFetch } from '../context/authFetch';
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import CategoryList from "./category-list";
 import Navbar from "./navbar";
+import SantHorizontalGrid from './cards/horizontal-vertical-cards';
 
 
 
@@ -20,32 +29,100 @@ export default function Home({
 }: {
   setActiveMenu: React.Dispatch<React.SetStateAction<string>>;
 }) {
+  /** 🔹 DASHBOARD STATE */
+  const authFetch = useAuthFetch();
+
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [kirtanPosts, setKirtanPosts] = useState<Post[]>([]);
+  const [editorPosts, setEditorPosts] = useState<Post[]>([]);
+  const [movingNews, setMovingNews] = useState<Post[]>([]);
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  /** 🔹 FETCH DASHBOARD (ONE API CALL) */
+  useEffect(() => {
+    async function fetchDashboard() {
+      try {
+        const res = await authFetch(
+          'http://localhost:5000/api/dashboard/home'
+        );
+        const data = await res.json();
+
+        setPosts(data.posts ?? []);
+        setKirtanPosts(data.kirtanPosts ?? []);
+        setEditorPosts(data.editorPosts ?? []);
+        setMovingNews(data.movingNews ?? []);
+        setOrganizations(data.organizations ?? []);
+      } catch (err) {
+        console.error('Dashboard fetch failed', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchDashboard();
+  }, []);
+
   const sants = [
     {
-      name: "तुकाराम",
+      name: 'तुकाराम',
       description:
-        "अभंगांच्या माध्यमातून भक्ती व प्रेमाचे संदेश देणारे पूजनीय मराठी संत.",
-      image: "/images/santTukaram.jpg",
+        'अभंगांच्या माध्यमातून भक्ती व प्रेमाचे संदेश देणारे पूजनीय मराठी संत.',
+      image: '/images/santTukaram.jpg',
     },
     {
-      name: "ज्ञानेश्वर",
+      name: 'ज्ञानेश्वर',
       description:
-        "भगवद्गीतेचे मराठीत सुलभ भाष्य करणाऱ्या ज्ञानेश्वरीचे महान लेखक.",
-      image: "/images/santDyaneshwar.jpeg",
+        'भगवद्गीतेचे मराठीत सुलभ भाष्य करणाऱ्या ज्ञानेश्वरीचे महान लेखक.',
+      image: '/images/santDyaneshwar.jpeg',
     },
     {
-      name: "नामदेव",
+      name: 'नामदेव',
       description:
-        "ज्यांच्या रचनांचा समावेश गुरु ग्रंथ साहिबमध्येही आहे असे भक्तिसंत.",
-      image: "/images/santNamdev.jpg",
+        'ज्यांच्या रचनांचा समावेश गुरु ग्रंथ साहिबमध्येही आहे असे भक्तिसंत.',
+      image: '/images/santNamdev.jpg',
     },
     {
-      name: "एकनाथ",
+      name: 'एकनाथ',
       description:
-        "एकात्मता, करुणा आणि मानवतेचे संदेश देणारे विद्वान संत.",
-      image: "/images/santEknath.jpg",
+        'एकात्मता, करुणा आणि मानवतेचे संदेश देणारे विद्वान संत.',
+      image: '/images/santEknath.jpg',
     },
   ];
+
+
+  /* 🔍 Search */
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
+  const [searchResults, setSearchResults] = useState<Post[]>([]);
+  const [search, setSearch] = useState("");
+  const filteredSants = sants.filter((sant) =>
+    sant.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+
+
+  /* 🏷️ Category */
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<string | null>(null);
+  const [categoryPosts, setCategoryPosts] = React.useState<any[]>([]);
+  //const [loading, setLoading] = React.useState(false);
+
+
+
+  //for search bar
+
+  useEffect(() => {
+    if (categoryPosts && categoryPosts.length > 0) {
+      setAllPosts(categoryPosts);
+    }
+    handleSearch();
+  }, [categoryPosts]);
+
+
+
+
+
 
   interface GalleryPost {
     id: string;
@@ -67,20 +144,8 @@ export default function Home({
 
 
 
-  /* 🔍 Search */
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
-  const [searchResults, setSearchResults] = useState<Post[]>([]);
-  const [search, setSearch] = useState("");
-  const filteredSants = sants.filter((sant) =>
-    sant.name.toLowerCase().includes(search.toLowerCase())
-  );
 
-  /* 🏷️ Category */
-  const [selectedCategory, setSelectedCategory] =
-    React.useState<string | null>(null);
-  const [categoryPosts, setCategoryPosts] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(false);
+
 
   const handleCategorySelect = async (category: string) => {
     setSelectedCategory(category);
@@ -119,14 +184,7 @@ export default function Home({
     }
   };
 
-  //for search bar
 
-  useEffect(() => {
-    if (categoryPosts && categoryPosts.length > 0) {
-      setAllPosts(categoryPosts);
-    }
-    handleSearch();
-  }, [categoryPosts]);
 
   //--------------------------
 
@@ -138,6 +196,11 @@ export default function Home({
           .toLowerCase()
           .includes(search.toLowerCase())
       );
+
+  if (loading) {
+    return <div className="p-10 text-center">Loading dashboard…</div>;
+  }
+
 
 
   return (
@@ -194,8 +257,7 @@ export default function Home({
         </div>
 
 
-        {/* 🔽 NAVBAR BELOW TITLE - FULL WIDTH */}
-        <div className="w-full">
+        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
           <Navbar />
         </div>
 
@@ -209,10 +271,10 @@ export default function Home({
 
           <div className="flex flex-col lg:flex-row gap-2 mt-8">
             <div className="lg:w-1/3 w-full">
-              <MovingNewsList />
+              <MovingNewsList posts={movingNews} />
             </div>
             <div className="lg:w-2/3 w-full">
-              <NewSantGrid />
+              <NewSantGrid posts={posts} />
             </div>
           </div>
 
@@ -246,7 +308,7 @@ export default function Home({
           {/* 🪟 POPUP MODAL */}
           {selectedPost && (
 
-            console.log(selectedPost.image_url),
+
 
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
               <div className="bg-white max-w-md w-full rounded-xl shadow-lg relative p-6">
@@ -328,38 +390,46 @@ export default function Home({
 
         <div>
           <SantHorizontalGrid cardLayout="column" />
+          <WorldFreshUpdatesKirtan
+            title="World Fresh Updates"
+            posts={kirtanPosts}
+          />
 
         </div>
         <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
           <div className="w-full lg:w-3/4">
             <SantHorizontalGrid cardLayout="row" />
           </div>
-          <QuarterColumn />
+          <QuarterColumn posts={posts} />
 
         </div>
         <div>
           <div className="text-xl font-semibold ">संस्था / केंद्र </div>
-          <OrgGrid />
+          <OrgGrid orgs={organizations} />
         </div>
         {/* <div>
+        <EditorUpdatesSection posts={editorPosts} />
+
+        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
+          <div className="w-full lg:w-3/4">
+            <ReadMoreSection posts={posts} />
+          </div>
+          <QuarterColumn posts={posts} />
+        </div>
+
+        <div>
+          <div className="text-xl font-semibold">संस्था / केंद्र</div>
+          <OrgGrid orgs={organizations} />
+        </div>
+
         <Footer />
       </div> */}
-      </div>
 
-      <Footer />
+
+        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
+          <Footer />
+        </div>
+      </div>
     </>
   );
-
 }
-
-{/* <div className="flex flex-wrap gap-6">
-  <QuarterColumn>
-    <h2 className="text-lg font-bold">Title</h2>
-    <p>Description text</p>
-    <button className="btn">Action</button>
-  </QuarterColumn>
-
-  <div className="w-full md:w-3/4">
-    Main content
-  </div>
-</div> */}

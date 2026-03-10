@@ -4,19 +4,14 @@ import { useEffect, useState } from "react";
 import OrgCard from "./org-card";
 import { Button } from "../ui/button";
 import {useRouter} from "next/navigation";
-interface Organization {
-  id: string;
-  org_name: string;
-  org_type?: string | null;
-  head_name: string;
-  city: string;
-  state: string;
-  created_at: string;
-  image_url?: string | null;
-  youtube_url?: string | null;
-}
+import {Organization} from "../../types/org";
 
-export default function OrgGrid() {
+
+export default function OrgGrid({
+  orgs = [],
+}: {
+  orgs: Organization[];
+}) {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [visibleCount, setVisibleCount] = useState(4);
   const [loading, setLoading] = useState(true);

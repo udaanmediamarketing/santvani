@@ -135,11 +135,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 🧾 SMALL HORIZONTAL CARD — SEARCH KE BILKUL BAJU */}
-        <div className="self-start pt-1">
-          <div className="origin-top scale-[0.85] max-w-[220px]">
-            <SantHorizontalGrid cardLayout="row" variant="side" />
-          </div>
+        {/* 🧾 SMALL HORIZONTAL CARD — SEARCH KE BAJU */}
+        <div className="self-start pt-2 w-[170px] space-y-2">
+          <SantHorizontalGrid cardLayout="row" variant="side" />
         </div>
 
         {/* 🌐 RIGHT BOTTOM — SOCIAL + COPYRIGHT */}

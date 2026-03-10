@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardHeader, CardTitle } from '../../components/ui/card';
+import { Card } from '../../components/ui/card';
 import { cn } from '../../lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -33,41 +33,21 @@ export default function DynamicCard({
   category,
   date,
   layout = 'row',
-  variant,
   className,
 }: DynamicCardProps) {
   const embedUrl = youtubeUrl ? getYoutubeEmbedUrl(youtubeUrl) : null;
-
   const isRow = layout === 'row';
-  const isCompact = isRow && variant === 'side';
 
   return (
     <Card
       className={cn(
-        'relative bg-neutral-50 transition-all',
-        isCompact
-          ? 'border border-orange-400 p-1 w-full'
-          : 'border-4 border-orange-500 p-3 hover:shadow-xl',
-        // isRow && 'w-3/4',
+        'relative bg-white border-0 shadow-none p-0',
         className
       )}
     >
-      <div
-        className={cn(
-          isRow ? 'flex flex-row gap-4' : 'flex flex-col'
-        )}
-      >
-        {/* Media */}
-        <div
-          className={cn(
-            'relative z-20 overflow-hidden rounded-md',
-            isCompact
-              ? 'w-20 h-20'
-              : isRow
-              ? 'w-40 md:w-56 h-40 md:h-44'
-              : 'w-full h-56'
-          )}
-        >
+      <div className={cn(isRow ? 'flex gap-3' : 'flex flex-col')}>
+        {/* Image */}
+        <div className="relative w-66 h-48 flex-shrink-0">
           {imageSrc ? (
             <Image
               src={imageSrc}
@@ -79,63 +59,36 @@ export default function DynamicCard({
             <iframe
               src={embedUrl}
               title={title}
-              className="w-full h-full rounded-md"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              className="w-full h-full"
               allowFullScreen
             />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center text-xs text-neutral-500">
-              No media available
-            </div>
-          )}
+          ) : null}
         </div>
 
         {/* Content */}
-        <div
-          className={cn(
-            'flex flex-col min-w-0',
-            isCompact ? 'p-1' : 'px-2 py-3'
-          )}
-        >
-          <CardHeader className={cn('p-0', !isCompact && 'pl-2')}>
-            <CardTitle
-              className={cn(
-                'font-bold leading-tight',
-                isCompact
-                  ? 'text-xs line-clamp-2'
-                  : 'text-lg line-clamp-3'
-              )}
-            >
-              {title}
-            </CardTitle>
+        <div className="flex flex-col justify-between py-1">
+          {/* Category */}
+          <span className="text-xs font-semibold text-white ml-2 bg-orange-700 px-2 py-1 w-fit">
+            {category}
+          </span>
 
-            <div className="flex flex-col gap-1 pt-4">
-              <span
-                className={cn(
-                  'rounded-full font-semibold w-fit',
-                  isCompact
-                    ? 'text-[12px] px-2 py-0.5 items-start bg-orange-500 text-white'
-                    : 'text-sm px-3 py-1 bg-orange-600 text-white'
-                )}
-              >
-                {category}
-              </span>
+          {/* Title */}
+          <h3 className="text-sm font-bold leading-snug line-clamp-3 mt-1">
+            {title}
+          </h3>
 
-              {date && !isCompact && (
-                <div className="flex items-center gap-1 text-md opacity-80">
-                  <Calendar size={14} />
-                  <span>{date}</span>
-                </div>
-              )}
-            </div>
-          </CardHeader>
+          {/* Date */}
+          <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+            <Calendar size={12} />
+            <span>{date}</span>
+          </div>
         </div>
       </div>
 
       {href && (
         <Link
           href={href}
-          className="absolute inset-0 z-30 "
+          className="absolute inset-0 z-10"
           aria-label={`Open ${title}`}
         />
       )}

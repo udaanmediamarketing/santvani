@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import OrgCard from "./org-card";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import Navbar from "../navbar";
 
 interface Organization {
   id: string;
@@ -49,21 +50,29 @@ export default function OrgAllGrid() {
 
   if (loading) {
     return (
+      <>
+       <Navbar />
       <p className="text-center py-10 text-gray-500">
         संस्था लोड होत आहेत...
       </p>
+      </>
     );
   }
 
   if (organizations.length === 0) {
     return (
+      <>
+      <Navbar />
       <p className="text-center py-10 text-gray-500">
         कोणतीही संस्था उपलब्ध नाही
       </p>
+      </>
     );
   }
 
   return (
+    <>
+    <Navbar />  
     <div className="px-6 py-6">
       {/* Column Layout */}
       <div className="flex flex-col space-y-6 w-3/4">
@@ -81,7 +90,7 @@ export default function OrgAllGrid() {
           />
         ))}
       </div>
-
     </div>
+    </>
   );
 }

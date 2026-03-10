@@ -1,7 +1,13 @@
 import React from "react";
+import Navbar from "../components/navbar";
 
 export default function AboutPage() {
   return (
+
+      <>
+      {/* 🔝 Navbar */}
+      <Navbar />
+
     <div className="min-h-screen px-6 py-12 bg-gradient-to-b from-orange-50 to-white">
       <div className="max-w-5xl mx-auto space-y-12">
 
@@ -85,5 +91,6 @@ export default function AboutPage() {
 
       </div>
     </div>
+    </>
   );
 }

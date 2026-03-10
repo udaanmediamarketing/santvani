@@ -93,11 +93,13 @@ export const getPosts = async (id: string): Promise<PostRow[]> => {
   return result.rows as PostRow[];
 };
 
-export const getAllPosts = async (): Promise<PostRow[]> => {
+export const getAllPosts = async ({ limit = 50 } = {}) : Promise<PostRow[]> => {
   const result = await pool.query(
     `SELECT * FROM articles
      WHERE status = 'published'
-     ORDER BY created_at DESC`,
+     ORDER BY created_at DESC
+     LIMIT $1`,
+     [limit]
   );
   return result.rows as PostRow[];
 };
@@ -139,6 +141,24 @@ export const getPostsBySantName = async (name: string): Promise<PostRow[]> => {
      [santname]
   );
   console.log("result",result);
+  return result.rows as PostRow[];
+};
+
+export const getPostsByCategory = async (
+  category: string, { limit = 10 } = {}
+): Promise<PostRow[]> => {
+  const decodedCat = decodeURIComponent(category);
+  const result = await pool.query(
+    `SELECT *
+     FROM articles
+     WHERE status = 'published'
+       AND category = $1
+     ORDER BY created_at DESC
+      LIMIT $2`,
+
+    [decodedCat, limit],
+  );
+
   return result.rows as PostRow[];
 };
 
@@ -198,20 +218,6 @@ export const getListByCategory = async (): Promise<CategoryCount[]> => {
   return result.rows as CategoryCount[];
 };
 
-export const getPostsByCategory = async (
-  category: string
-): Promise<PostRow[]> => {
-  const result = await pool.query(
-    `SELECT *
-     FROM articles
-     WHERE category = $1
-       AND status = 'published'
-     ORDER BY created_at DESC`,
-    [category]
-  );
-
-  return result.rows as PostRow[];
-};
 
 // gallery items - photo and video
 export const getGalleryPosts = async () => {
@@ -230,22 +236,3 @@ export const getGalleryPosts = async () => {
 
   return result.rows;
 };
-
-//search bar -- category or title
-// export const searchPosts = async (query: string) => {
-//   const result = await pool.query(
-//     `
-//     SELECT id, title, slug, category, created_at, image_url
-//     FROM articles
-//     WHERE status = 'published'
-//       AND (
-//         title ILIKE $1
-//         OR category ILIKE $1
-//       )
-//     ORDER BY created_at DESC
-//     `,
-//     [`%${query}%`]
-//   );
-
-//   return result.rows;
-// };
