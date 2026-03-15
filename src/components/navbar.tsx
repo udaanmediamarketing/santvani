@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { LogIn, Settings } from "lucide-react";
 import UserProfileDropdown from "./userprofile";
 import { useAuth } from "../context/AuthContext";
+import SantHorizontalGrid from "../components/cards/horizontal-vertical-cards"; // ✅ FIXED IMPORT
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
 const languages = ["इंग्रजी", "हिंदी", "मराठी"];
@@ -13,7 +14,7 @@ const languages = ["इंग्रजी", "हिंदी", "मराठी"
 // Helper hook for client-only rendering
 const useIsClient = () => {
   return useSyncExternalStore(
-    () => () => { },
+    () => () => {},
     () => true,
     () => false
   );
@@ -35,6 +36,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-orange-500 shadow-md text-white px-6 py-3 flex justify-between items-center relative">
+      
       {/* Logo */}
       <Link href="/" className="flex items-center gap-3">
         <img src="/images/logo.jpg" alt="SantVani Logo" className="h-10" />
@@ -42,15 +44,36 @@ const Navbar = () => {
       </Link>
 
       <div className="flex gap-3 items-center">
+
         <Link href="/">
-          <Button variant="secondary">मुख्य पान</Button>
+          <Button variant="secondary">मुखपृष्ठ</Button>
         </Link>
 
-        {sants.map((sant) => (
-          <Link key={sant} href={`/sant/${sant}`}>
-            <Button variant="ghost">{sant}</Button>
+        {/* प्रकाशने Hover Dropdown */}
+        <div className="relative inline-block group">
+
+          <Link href="/vertical-list">
+            <Button variant="secondary">प्रकाशने</Button>
           </Link>
-        ))}
+
+          {/* Hover Grid */}
+          <div className="absolute left-0 top-full mt-2 w-[420px] hidden group-hover:block bg-white shadow-lg p-4 z-50">
+            <SantHorizontalGrid cardLayout="column" variant="side" />
+          </div>
+
+        </div>
+
+        <Link href="/navbar/sahitya">
+          <Button variant="secondary">साहित्य</Button>
+        </Link>
+
+        <Link href="/navbar/granth">
+          <Button variant="secondary">ग्रंथ</Button>
+        </Link>
+
+        <Link href="/navbar/gallery">
+          <Button variant="secondary">गॅलरी</Button>
+        </Link>
 
         <Link href="/create-article">
           <Button variant="secondary">लेख तयार करा</Button>
@@ -60,7 +83,7 @@ const Navbar = () => {
           <Button variant="secondary">संस्था / केंद्र नोंदवा</Button>
         </Link>
 
-        {/* Auth UI (rendered once) */}
+        {/* Auth UI */}
         {isClient &&
           (loading ? (
             <div className="h-10 w-24 bg-white/20 rounded animate-pulse" />
@@ -75,45 +98,6 @@ const Navbar = () => {
             </Link>
           ))}
 
-        {/* Settings Button */}
-        {/* <Button
-          variant="ghost"
-          onClick={() => setShowSettings((prev) => !prev)}
-        >
-          <Settings />
-        </Button> */}
-
-        {/* Settings Dropdown */}
-        {/* {showSettings && (
-          <div className="absolute right-0 top-16 w-56 bg-white text-black rounded-lg shadow-xl z-50 p-3 space-y-3">
-            <div>
-              <p className="text-sm font-semibold mb-1">🌐 भाषा</p>
-              {languages.map((lang) => (
-                <button
-                  key={lang}
-                  className={`block w-full text-left px-3 py-1 rounded hover:bg-gray-100 ${selectedLang === lang
-                    ? "font-semibold text-orange-600"
-                    : ""
-                    }`}
-                  onClick={() => setSelectedLang(lang)}
-                >
-                  {lang}
-                </button>
-              ))}
-            </div>
-
-            <div className="border-t pt-2">
-              <Link href="/explore-more">
-                <button className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 text-sm font-medium">
-                  🔁 Explore More
-                </button>
-              </Link>
-            </div>
-
-
-
-          </div>
-        )} */}
       </div>
     </div>
   );

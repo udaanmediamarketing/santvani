@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Post } from '../types/post';
+import CategoryList from './category-list';
 
 function getYoutubeEmbedUrl(url?: string) {
   const match = url?.match(
@@ -26,6 +27,10 @@ export default function QuarterColumn({
 }: {
   posts: Post[];
 }) {
+
+  function handleCategorySelect(category: string): void | Promise<void> {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <div className="w-full md:w-1/4 flex flex-col gap-6 pl-3">
@@ -122,6 +127,24 @@ export default function QuarterColumn({
             );
           })}
       </section>
-    </div>
+    {/* Category List */}
+              <div
+                className="
+            w-44
+            [&_div]:flex
+            [&_div]:flex-col
+            [&_div]:gap-2
+            [&_button]:bg-black
+            [&_button]:p-0
+            [&_button]:text-right
+            [&_button]:text-sm
+            [&_button]:text-orange-300
+            hover:[&_button]:text-white-100
+          "
+              >
+                <CategoryList onSelectCategory={handleCategorySelect} />
+              </div>
+            </div>
+
   );
 }

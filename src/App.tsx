@@ -9,7 +9,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-       <Navbar />
+       
       <Component
         {...pageProps}
         activeMenu={activeMenu}
@@ -20,3 +20,4 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
+//<Navbar />

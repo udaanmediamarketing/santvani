@@ -1,7 +1,13 @@
 import React from "react";
+import Navbar from "../components/navbar";
 
 export default function PrivacyPolicyPage() {
   return (
+
+    <>
+      {/* 🔝 Navbar */}
+      <Navbar />
+
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-6 py-12">
       <div className="max-w-5xl mx-auto space-y-12">
 
@@ -123,5 +129,6 @@ export default function PrivacyPolicyPage() {
 
       </div>
     </div>
+    </>
   );
 }

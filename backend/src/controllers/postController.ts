@@ -1,6 +1,7 @@
 // src/controllers/postController.ts
 import { Request, Response } from "express";
-import { createPost, getPosts, getPostsBySantName, getAllPosts, getPostBySlug, getPostsByCategory} from "../models/postModel.js";
+import { createPost, getPosts, getPostsBySantName, getAllPosts, getPostBySlug, getListByCategory, getPostsByCategory, getGalleryPosts,  } from "../models/postModel.js";
+
 interface AuthRequest extends Request {
   user?: {
     id: string;
@@ -19,7 +20,7 @@ export const createPostController = async (req: AuthRequest, res: Response) => {
     const post = await createPost(
       title,
       category,
-      santname, 
+      santname,
       content || null,
       image_url || null,
       youtube_url || null,
@@ -37,10 +38,10 @@ export const createPostController = async (req: AuthRequest, res: Response) => {
   }
 };
 export const listAllPosts = async (req: Request, res: Response) => {
-  try{
+  try {
     const posts = await getAllPosts();
     res.json({ posts });
-  } catch(err) {
+  } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
   }
@@ -48,7 +49,7 @@ export const listAllPosts = async (req: Request, res: Response) => {
 export const listPosts = async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id) {
-      return res.status(400).json({ error: "User ID is required" });
+    return res.status(400).json({ error: "User ID is required" });
   }
   const posts = await getPosts(id);
   res.json({ posts });
@@ -74,7 +75,7 @@ export const listPostsByCategory = async (req: Request, res: Response) => {
 export const listPostsBySantName = async (req: Request, res: Response) => {
   const { name } = req.params;
   if (!name) {
-      return res.status(400).json({ error: "Sant name is required" });
+    return res.status(400).json({ error: "Sant name is required" });
   }
   const posts = await getPostsBySantName(name);
   res.json({ posts });
@@ -103,3 +104,65 @@ export const getPostBySlugController = async (
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+export const listByCategoryController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = await getListByCategory();
+    res.json(data);
+  } catch (error) {
+    console.error("listByCategory error:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const listPostsByCategoryController = async (req: Request, res: Response) => {
+  try {
+    const { category } = req.params;
+    if (!category) return res.status(400).json({ error: "Category required" });
+
+    const posts = await getPostsByCategory(category);
+    res.json({ posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+//galley content
+export const listGalleryPosts = async (
+  _req: Request,
+  res: Response
+) => {
+  try {
+    const posts = await getGalleryPosts();
+    res.json({ posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch gallery" });
+  }
+};
+
+// search bar ------searchPosts
+// export const searchPostsController = async (
+//   req: Request,
+//   res: Response
+// ) => {
+//   try {
+//     const q = req.query.q as string | undefined;
+
+//     if (!q) {
+//       return res.json({ posts: [] });
+//     }
+
+//     const posts = await searchPosts(q);
+//     res.json({ posts });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Search failed" });
+//   }
+// };
