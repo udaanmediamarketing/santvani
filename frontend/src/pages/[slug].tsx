@@ -100,7 +100,7 @@ export default function PostPage({ post }: { post: Post | null }) {
     <QuarterColumn posts={[]} />
   </div>
 
-</div>
+      </div>
     </>
   );
 }
