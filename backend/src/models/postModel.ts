@@ -178,3 +178,61 @@ export const getPostBySlug = async (slug: string): Promise<PostRow | null> => {
 
   return result.rows[0] || null;
 };
+
+// src/models/postModel.ts
+
+export interface CategoryCount {
+  category: string;
+  count: number;
+  posts: {
+    id: string;
+    title: string;
+    slug: string;
+    created_at: string;
+  }[];
+}
+
+export const getListByCategory = async (): Promise<CategoryCount[]> => {
+  const result = await pool.query(`
+    SELECT
+      category,
+      COUNT(*)::int AS count,
+      COALESCE(
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'id', id,
+            'title', title,
+            'slug', slug,
+            'created_at', created_at
+          )
+          ORDER BY created_at DESC
+        ),
+        '[]'::json
+      ) AS posts
+    FROM articles
+    WHERE status = 'published'
+    GROUP BY category
+    ORDER BY category
+  `);
+
+  return result.rows as CategoryCount[];
+};
+
+
+// gallery items - photo and video
+export const getGalleryPosts = async () => {
+  const result = await pool.query(`
+    SELECT
+      id,
+      title,
+      image_url,
+      youtube_url,
+      created_at
+    FROM articles
+    WHERE status = 'published'
+      AND (image_url IS NOT NULL OR youtube_url IS NOT NULL)
+    ORDER BY created_at DESC
+  `);
+
+  return result.rows;
+};

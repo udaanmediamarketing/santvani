@@ -7,10 +7,17 @@ import {
   MessageCircle,
   Twitter,
   Linkedin,
+  X,
 } from "lucide-react";
+import Navbar from "../components/navbar";
 
 export default function ContactPage() {
   return (
+
+    <>
+      {/* 🔝 Navbar */}
+      <Navbar />
+
     <div className="min-h-screen px-6 py-12 bg-gradient-to-b from-white to-orange-50">
       <div className="max-w-5xl mx-auto space-y-12">
 
@@ -118,9 +125,11 @@ export default function ContactPage() {
             <a
               href="https://twitter.com"
               target="_blank"
-              className="flex items-center gap-2 px-5 py-3 rounded-full bg-sky-500 text-white hover:opacity-90 transition"
+              className="flex items-center gap-2 px-5 py-3 rounded-full bg-black text-white hover:opacity-90 transition"
+
             >
-              <Twitter size={18} />
+              <X size={20} />
+
               Twitter
             </a>
 
@@ -153,5 +162,6 @@ export default function ContactPage() {
 
       </div>
     </div>
+    </>
   );
 }

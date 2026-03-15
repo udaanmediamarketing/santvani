@@ -16,6 +16,10 @@ interface DynamicCardProps {
   layout?: 'row' | 'column';
   variant?: 'main' | 'side';
   className?: string;
+  imageWidth?: string;
+  imageHeight?: string;
+  imageFit?: 'cover' | 'contain';
+  bgWhite?: boolean;
 }
 
 function getYoutubeEmbedUrl(url: string) {
@@ -34,6 +38,10 @@ export default function DynamicCard({
   date,
   layout = 'row',
   className,
+  imageWidth = 'w-66',
+  imageHeight = 'h-48',
+  imageFit = 'cover',
+  bgWhite = false,
 }: DynamicCardProps) {
   const embedUrl = youtubeUrl ? getYoutubeEmbedUrl(youtubeUrl) : null;
   const isRow = layout === 'row';
@@ -41,34 +49,41 @@ export default function DynamicCard({
   return (
     <Card
       className={cn(
-        'relative bg-white border-0 shadow-none p-0',
+        'relative border-0 shadow-none p-0',
+        bgWhite && "bg-white",
         className
       )}
     >
       <div className={cn(isRow ? 'flex gap-3' : 'flex flex-col')}>
         {/* Image */}
-        <div className="relative w-66 h-48 flex-shrink-0">
+        <div className={cn("relative flex-shrink-0", imageWidth, imageHeight)}>
           {imageSrc ? (
             <Image
               src={imageSrc}
               alt={title}
               fill
-              className="object-cover"
+              className={cn(
+  imageFit === "cover" && "object-cover",
+  imageFit === "contain" && "object-contain"
+)}
             />
           ) : embedUrl ? (
             <iframe
               src={embedUrl}
               title={title}
-              className="w-full h-full"
+              className={cn(
+  imageFit === "cover" && "object-cover",
+  imageFit === "contain" && "object-contain"
+)}
               allowFullScreen
             />
           ) : null}
         </div>
 
         {/* Content */}
-        <div className="flex flex-col justify-between py-1">
+        <div className="flex flex-col self-start space-y-2">
           {/* Category */}
-          <span className="text-xs font-semibold text-white ml-2 bg-orange-700 px-2 py-1 w-fit">
+          <span className="text-xs font-semibold text-white ml-2 mt-2 bg-orange-700 px-2 py-1 w-fit">
             {category}
           </span>
 
