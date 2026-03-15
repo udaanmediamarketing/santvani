@@ -35,74 +35,72 @@ export default function PostPage({ post }: { post: Post | null }) {
   return (
     <>
       <Navbar />
-      <div className="w-full flex">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row">
 
-        {/* LEFT : POST CONTENT */}
-        <div className="flex-[3] px-4 sm:px-6 lg:px-10 py-10">
-          <div className="max-w-screen-xl">
+  {/* LEFT : POST CONTENT */}
+  <div className="w-full lg:w-3/4 px-4 sm:px-6 lg:px-10 py-10">
+    <div className="max-w-screen-xl">
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              {post.title}
-            </h1>
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+        {post.title}
+      </h1>
 
-            <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-6">
-              {post.category && (
-                <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
-                  {post.category}
-                </span>
-              )}
-              {post.created_at && (
-                <span>
-                  {new Date(post.created_at).toLocaleDateString("mr-IN")}
-                </span>
-              )}
-            </div>
-
-            <div className="w-full flex justify-center mb-8">
-              <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden">
-
-                {post.image_url ? (
-                  <Image
-                    src={post.image_url}
-                    alt={post.title}
-                    width={1200}
-                    height={800}
-                    className="w-full h-auto object-contain max-h-[80vh]"
-                  />
-                ) : embedUrl ? (
-                  <div className="aspect-video">
-                    <iframe
-                      src={embedUrl}
-                      className="w-full h-full"
-                      allowFullScreen
-                    />
-                  </div>
-                ) : (
-                  <div className="h-64 flex items-center justify-center bg-gray-200">
-                    No media available
-                  </div>
-                )}
-
-              </div>
-            </div>
-
-            {post.content && (
-              <div className="prose prose-lg max-w-none text-gray-800">
-                {post.content}
-              </div>
-            )}
-
-          </div>
-        </div>
-
-        {/* RIGHT : SIDEBAR */}
-        <div className="flex py-10 pr-6">
-          <div className="sticky top-24">
-            <QuarterColumn posts={[]} />
-          </div>
-        </div>
-
+      <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-6">
+        {post.category && (
+          <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-medium">
+            {post.category}
+          </span>
+        )}
+        {post.created_at && (
+          <span>
+            {new Date(post.created_at).toLocaleDateString("mr-IN")}
+          </span>
+        )}
       </div>
+
+      <div className="w-full flex justify-center mb-8">
+        <div className="w-full bg-white rounded-2xl shadow-lg overflow-hidden">
+
+          {post.image_url ? (
+            <Image
+              src={post.image_url}
+              alt={post.title}
+              width={1200}
+              height={800}
+              className="w-full h-auto object-contain max-h-[80vh]"
+            />
+          ) : embedUrl ? (
+            <div className="aspect-video">
+              <iframe
+                src={embedUrl}
+                className="w-full h-full"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <div className="h-64 flex items-center justify-center bg-gray-200">
+              No media available
+            </div>
+          )}
+
+        </div>
+      </div>
+
+      {post.content && (
+        <div className="prose prose-lg max-w-none text-gray-800">
+          {post.content}
+        </div>
+      )}
+
+    </div>
+  </div>
+
+  {/* RIGHT : SIDEBAR */}
+  <div className="w-full md:w-1/4 px-4 py-10">
+    <QuarterColumn posts={[]} />
+  </div>
+
+</div>
     </>
   );
 }

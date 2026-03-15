@@ -24,9 +24,10 @@ export default function CategoryPage({ category }: Props) {
         if (!res.ok) throw new Error('Failed to fetch');
 
         const data = await res.json();
-        setPosts(data.posts ?? data);
+        setPosts(Array.isArray(data) ? data : (data.posts ?? []));
       } catch (err) {
         console.error('Failed to fetch posts', err);
+        setPosts([]);
       } finally {
         setLoading(false);
       }
@@ -136,7 +137,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   return {
     props: {
-      category: decodeURIComponent(category),
+      category: category,
     },
   };
 };

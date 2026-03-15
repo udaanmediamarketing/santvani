@@ -33,7 +33,7 @@ export default function QuarterColumn({
   }
 
   return (
-    <div className="w-full md:w-1/4 flex flex-col gap-6 pl-3">
+    <div className="w-full flex flex-col gap-6 pl-3">
       {/* SOCIAL SECTION */}
       <section className="text-center mb-10">
         <h2 className="text-2xl font-bold text-orange-600 mb-6">
@@ -86,13 +86,13 @@ export default function QuarterColumn({
                 className="flex gap-3 group"
               >
                 {/* Thumbnail */}
-                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200">
+                <div className="relative w-28 h-20 shrink-0 overflow-hidden aspect-video bg-neutral-200">
                   {post.image_url && (
                     <Image
                       src={post.image_url}
                       alt={post.title}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   )}
 

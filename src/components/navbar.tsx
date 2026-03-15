@@ -6,7 +6,8 @@ import { Button } from "../components/ui/button";
 import { LogIn, Settings } from "lucide-react";
 import UserProfileDropdown from "./userprofile";
 import { useAuth } from "../context/AuthContext";
-import SantHorizontalGrid from "../components/cards/horizontal-vertical-cards"; // ✅ FIXED IMPORT
+import { Post } from "../types/post";
+import PrakashaneHoverCards from './cards/prakashane-hover-cards';
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
 const languages = ["इंग्रजी", "हिंदी", "मराठी"];
@@ -19,8 +20,11 @@ const useIsClient = () => {
     () => false
   );
 };
+interface NavbarProps {
+  posts?: Post[];
+}
 
-const Navbar = () => {
+const Navbar = ({ posts = [] }: NavbarProps) => {
   const { user, loading } = useAuth();
   const isClient = useIsClient();
 
@@ -57,9 +61,9 @@ const Navbar = () => {
           </Link>
 
           {/* Hover Grid */}
-          <div className="absolute left-0 top-full mt-2 w-[420px] hidden group-hover:block bg-white shadow-lg p-4 z-50">
-            <SantHorizontalGrid cardLayout="column" variant="side" />
-          </div>
+          <div className="absolute left-0 mt-2 w-[600px] hidden group-hover:block bg-white shadow-lg p-4 z-50">
+  <PrakashaneHoverCards posts={posts} />
+</div>
 
         </div>
 

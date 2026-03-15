@@ -1,8 +1,6 @@
 
-"use client";
-
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export interface CategoryCount {
   category: string;
@@ -46,7 +44,7 @@ export default function CategoryList({
     if (onSelectCategory) {
       onSelectCategory(category);
     } else {
-      router.push(`/${encodeURIComponent(category)}`);
+      router.push(`/category/${encodeURIComponent(category)}`);
     }
   };
 

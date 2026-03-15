@@ -18,11 +18,19 @@ interface Post {
 }
 
 export default function SantHorizontalGrid({
+  imageWidth="w-66",
+  imageHeight="h-48",
   cardLayout = 'row',
   variant = 'main',
+  bgWhite = false,
+  imageFit="cover"
 }: {
+  imageWidth?: string;
+  imageHeight?: string;
   cardLayout?: 'row' | 'column';
   variant?: 'main' | 'side';
+  bgWhite?: boolean;
+  imageFit?: 'cover' | 'contain';
 }) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,6 +86,10 @@ export default function SantHorizontalGrid({
             date={formatDate(post.created_at)}
             layout={cardLayout}
             variant={variant}
+            imageWidth={imageWidth}
+            imageHeight={imageHeight}
+            bgWhite={bgWhite}
+            imageFit={imageFit}
           />
         ))}
       </div>

@@ -5,13 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-<<<<<<< HEAD
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../context/authFetch";
-=======
-import { useAuth } from "./context/AuthContext";
-import { useAuthFetch } from "./context/authFetch";
->>>>>>> f0503980fc358b971a8407ab20055d5517dd8562
+
 const SignIn = () => {
   const router = useRouter();
   const { login } = useAuth();
