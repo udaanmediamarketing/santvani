@@ -15,25 +15,6 @@ export default function NewSantGrid({
   const [loading, setLoading] = useState(true);
   const authFetch = useAuthFetch();
 
-//   useEffect(() => {
-//   authFetch('http://localhost:5000/api/posts/list-all-posts')
-//     .then(res => res.json())
-//     .then(data => {
-//       const postsArray = Array.isArray(data)
-//         ? data
-//         : Array.isArray(data.posts)
-//           ? data.posts
-//           : [];
-
-//       setPosts(postsArray.slice(0, 5));
-//     })
-//     .catch(err => console.error(err))
-//     .finally(() => setLoading(false));
-// }, []);
-    
-  // if (loading) {
-  //   return <div className="text-center py-20">Loading...</div>;
-  // }
   if (posts.length < 5) return null;
 
   return (

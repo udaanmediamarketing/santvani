@@ -94,18 +94,15 @@ export default function Home({
   /* 🔍 Search */
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [allPosts, setAllPosts] = useState<Post[]>([]);
-  const [searchResults, setSearchResults] = useState<Post[]>([]);
   const [search, setSearch] = useState("");
   const filteredSants = sants.filter((sant) =>
     sant.name.toLowerCase().includes(search.toLowerCase())
   );
 
-
-
   /* 🏷️ Category */
   const [selectedCategory, setSelectedCategory] =
     React.useState<string | null>(null);
-  const [categoryPosts, setCategoryPosts] = React.useState<any[]>([]);
+  const [categoryPosts, setCategoryPosts] = React.useState<Post[]>([]);
   //const [loading, setLoading] = React.useState(false);
 
 
@@ -118,11 +115,6 @@ export default function Home({
     }
     handleSearch();
   }, [categoryPosts]);
-
-
-
-
-
 
   interface GalleryPost {
     id: string;
@@ -140,12 +132,6 @@ export default function Home({
     image_url?: string;
     youtube_url?: string;
   }
-
-
-
-
-
-
 
   const handleCategorySelect = async (category: string) => {
     setSelectedCategory(category);
@@ -253,21 +239,16 @@ export default function Home({
     hover:[&_button]:text-black-500
   "
         >
-          <CategoryList onSelectCategory={handleCategorySelect} />
+          <CategoryList />
         </div>
-
-
         <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-          <Navbar />
+          <Navbar posts={posts}/>
         </div>
-
 
         <section>
           {/* <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#f97316] font-serif mb-6 sm:mb-8 tracking-wider">
             महाराष्ट्रातील संत
           </h2> */}
-
-
 
           <div className="flex flex-col lg:flex-row gap-2 mt-8">
             <div className="lg:w-1/3 w-full">
@@ -307,9 +288,6 @@ export default function Home({
 
           {/* 🪟 POPUP MODAL */}
           {selectedPost && (
-
-
-
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
               <div className="bg-white max-w-md w-full rounded-xl shadow-lg relative p-6">
 
@@ -377,14 +355,7 @@ export default function Home({
 
 
           {/* 🏷️ Category Tags */}
-          <CategoryList onSelectCategory={handleCategorySelect} />
-
-          {/* 📄 Category Result */}
-          {selectedCategory && (
-            <div className="max-w-6xl mx-auto mt-10 px-4">
-              ...
-            </div>
-          )}
+          <CategoryList />
 
         </section>
 
@@ -398,9 +369,11 @@ export default function Home({
         </div>
         <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
           <div className="w-full lg:w-3/4">
-            <SantHorizontalGrid cardLayout="row" />
+            <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain'/>
           </div>
-          <QuarterColumn posts={posts} />
+          <div className='w-full lg:w-1/4 '>
+            <QuarterColumn posts={posts} />
+          </div>
 
         </div>
         <div>
