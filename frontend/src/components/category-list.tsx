@@ -29,6 +29,7 @@ export default function CategoryList({
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
+    if (!apiUrl) return;
     fetch(`${apiUrl}/api/posts/list-by-category`)
       .then((res) => res.json())
       .then((data: CategoryCount[]) => {
@@ -39,7 +40,7 @@ export default function CategoryList({
         setCategories(updated);
       })
       .catch(console.error);
-  }, []);
+  }, [apiUrl]);
 
   const handleClick = (category: string) => {
     if (onSelectCategory) {

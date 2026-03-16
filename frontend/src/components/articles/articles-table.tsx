@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { Badge } from "../ui/badge";
 import { useAuth } from "../../context/AuthContext";
 import { useAuthFetch } from "../../context/authFetch";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -25,7 +24,8 @@ export default function ArticlesTable() {
   const { user } = useAuth();
   const authFetch = useAuthFetch();
   const id = user?.id;
-  useEffect(() => {
+    useEffect(() => {
+  if (!id || !authFetch) return;
   const fetchArticles = async () => {
     const res = await authFetch(`${apiUrl}/api/posts/list-posts/${id}`, {
       headers: {
@@ -44,7 +44,7 @@ export default function ArticlesTable() {
   };
 
   fetchArticles();
-}, []);
+}, [id, authFetch, apiUrl]);
 
   if (loading) return <p className="text-center py-8">Loading articles...</p>;
   if (articles.length === 0)

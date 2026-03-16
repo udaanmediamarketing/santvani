@@ -7,15 +7,11 @@ import SantCard from '../components/santcard';
 import MovingNewsList from './vertical-list';
 import NewSantGrid from './cards/santcard-grid';
 import WorldFreshUpdatesKirtan from './world-fresh-updates-kirtan';
-import EditorUpdatesSection from './editor-layout-posts';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-import ReadMoreSection from './read-more-posts';
 import QuarterColumn from './quater-column';
 import OrgGrid from './organizations/org-grid';
 import Footer from './footer';
 import { Organization } from '../types/org';
-import { Post } from '../types/post';
 import { useAuthFetch } from '../context/authFetch';
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";

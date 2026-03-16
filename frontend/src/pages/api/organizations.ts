@@ -1,3 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ message: "This endpoint is deprecated. Use backend API instead." });
+}
+
+/*
 // import type { NextApiRequest, NextApiResponse } from "next";
 // import { db } from "../../../db";
 // import { organizations } from "../../../backend/schema/organizations";
@@ -7,7 +14,7 @@
 //     try {
 //       const { name, santName, description, website, foundedYear } = req.body;
 
-//       await db.insert(organizations).values({
+//       await db.insert(organizations).values({*/
 //         name,
 //         santName,
 //         description,
