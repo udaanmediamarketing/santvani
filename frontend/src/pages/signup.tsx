@@ -8,6 +8,7 @@ import { useState } from "react";
 
 const SignUp = () => {
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +29,7 @@ const SignUp = () => {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
+      const res = await fetch(`${apiUrl}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

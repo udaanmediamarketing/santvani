@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { AdminTopNav } from "../../components/admin-navbar";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Post = {
   id: number;
@@ -56,7 +57,7 @@ const paginatedPosts = filteredPosts?.slice(
     try {
       setLoading(true);
       const res = await fetch(
-        "http://localhost:5000/api/admin/pending-posts",
+        `${apiUrl}/api/admin/pending-posts`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -84,8 +85,8 @@ const paginatedPosts = filteredPosts?.slice(
     try {
       const endpoint =
         status === "published"
-          ? `http://localhost:5000/api/admin/publish-post/${id}`
-          : `http://localhost:5000/api/admin/reject-post/${id}`;
+          ? `${apiUrl}/api/admin/publish-post/${id}`
+          : `${apiUrl}/api/admin/reject-post/${id}`;
 
       const res = await fetch(endpoint, {
         method: "PUT",

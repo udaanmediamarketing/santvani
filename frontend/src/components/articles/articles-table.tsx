@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "../ui/badge";
 import { useAuth } from "../../context/AuthContext";
 import { useAuthFetch } from "../../context/authFetch";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface Article {
   id: string;
   title: string;
@@ -26,7 +27,7 @@ export default function ArticlesTable() {
   const id = user?.id;
   useEffect(() => {
   const fetchArticles = async () => {
-    const res = await authFetch(`http://localhost:5000/api/posts/list-posts/${id}`, {
+    const res = await authFetch(`${apiUrl}/api/posts/list-posts/${id}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },

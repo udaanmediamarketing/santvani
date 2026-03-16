@@ -6,6 +6,7 @@ import { formatDate, slugify } from '../../lib/helper';
 import { Skeleton } from '../../components/ui/skeleton';
 import { cn } from '../../lib/utils';
 import { useAuthFetch } from '../../context/authFetch';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface Post {
   id?: string;
@@ -37,7 +38,7 @@ export default function SantHorizontalGrid({
   const authFetch = useAuthFetch();
 
   useEffect(() => {
-    authFetch('http://localhost:5000/api/posts/list-all-posts')
+    authFetch(`${apiUrl}/api/posts/list-all-posts`)
       .then(res => res.json())
       .then(data => {
         const postsArray = Array.isArray(data)

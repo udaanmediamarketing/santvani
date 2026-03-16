@@ -3,6 +3,8 @@
 // import React, { useEffect, useState } from "react";
 // import { useParams } from "next/navigation";
 
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 // interface Post {
 //   id: string;
 //   title: string;
@@ -25,7 +27,7 @@
 //     setLoadingPosts(true);
 
 //     fetch(
-//       `http://localhost:5000/api/posts/list-by-category/${encodeURIComponent(
+//       `${apiUrl}/api/posts/list-by-category/${encodeURIComponent(
 //         category
 //       )}`
 //     )

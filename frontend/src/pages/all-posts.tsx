@@ -11,12 +11,13 @@ export default function ReadMoreSection() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     async function fetchPosts() {
       try {
         const res = await fetch(
-          'http://localhost:5000/api/posts/list-all-posts'
+          `${apiUrl}/api/posts/list-all-posts`
         );
         const data = await res.json();
         setPosts(data.posts);

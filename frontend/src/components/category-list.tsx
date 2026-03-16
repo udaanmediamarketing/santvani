@@ -26,9 +26,10 @@ export default function CategoryList({
 }: CategoryListProps) {
   const [categories, setCategories] = useState<CategoryCount[]>([]);
   const router = useRouter();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts/list-by-category")
+    fetch(`${apiUrl}/api/posts/list-by-category`)
       .then((res) => res.json())
       .then((data: CategoryCount[]) => {
         const updated = DEFAULT_CATEGORIES.map((cat) => {

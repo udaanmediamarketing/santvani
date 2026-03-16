@@ -18,6 +18,7 @@ import { useAuth } from "../../context/AuthContext";
 import { toast } from "sonner";
 import { slugify } from "@/src/lib/helper";
 import { Plus } from "lucide-react";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 import { useAuthFetch } from "../../context/authFetch";
 
 type FormData = {
@@ -189,7 +190,7 @@ const TranslateSelect = ({
     santname: data.santname,
     category: data.category,
     content: data.content});
-  const res = await authFetch("http://localhost:5000/api/posts/create-post", {
+  const res = await authFetch(`${apiUrl}/api/posts/create-post`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { AdminTopNav } from "../../components/admin-navbar";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Organization = {
   id: number;
@@ -58,7 +59,7 @@ export default function ManageOrganizations() {
     try {
       setLoading(true);
       const res = await fetch(
-        "http://localhost:5000/api/admin/pending-orgs",
+        `${apiUrl}/api/admin/pending-orgs`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -88,8 +89,8 @@ export default function ManageOrganizations() {
     try {
       const endpoint =
         status === "published"
-          ? `http://localhost:5000/api/admin/publish-org/${id}`
-          : `http://localhost:5000/api/admin/reject-org/${id}`;
+          ? `${apiUrl}/api/admin/publish-org/${id}`
+          : `${apiUrl}/api/admin/reject-org/${id}`;
 
       const res = await fetch(endpoint, {
         method: "PUT",

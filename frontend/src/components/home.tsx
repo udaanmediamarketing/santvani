@@ -8,6 +8,7 @@ import MovingNewsList from './vertical-list';
 import NewSantGrid from './cards/santcard-grid';
 import WorldFreshUpdatesKirtan from './world-fresh-updates-kirtan';
 import EditorUpdatesSection from './editor-layout-posts';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 import ReadMoreSection from './read-more-posts';
 import QuarterColumn from './quater-column';
@@ -44,7 +45,7 @@ export default function Home({
     async function fetchDashboard() {
       try {
         const res = await authFetch(
-          'http://localhost:5000/api/dashboard/home'
+          `${apiUrl}/api/dashboard/home`
         );
         const data = await res.json();
 
@@ -139,7 +140,7 @@ export default function Home({
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/posts/list-by-category/${encodeURIComponent(
+        `${apiUrl}/api/posts/list-by-category/${encodeURIComponent(
           category
         )}`
       );
@@ -158,7 +159,7 @@ export default function Home({
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/posts/list-all-posts`
+        `${apiUrl}/api/posts/list-all-posts`
       );
       const data = await res.json();
       setAllPosts(data.posts || []);
@@ -315,7 +316,7 @@ export default function Home({
                     src={
                       selectedPost.image_url.startsWith("http")
                         ? selectedPost.image_url
-                        : `http://localhost:5000${selectedPost.image_url}`
+                        : `${apiUrl}${selectedPost.image_url}`
 
                     }
                     alt={selectedPost.title}

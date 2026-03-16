@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import QuarterColumn from "../components/quater-column";
 import Navbar from "../components/navbar";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface Post {
   title: string;
@@ -107,8 +108,9 @@ export default function PostPage({ post }: { post: Post | null }) {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const slug = params?.slug as string;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(
-    `http://localhost:5000/api/posts/get-by-slug/${encodeURIComponent(slug)}`
+    `${apiUrl}/api/posts/get-by-slug/${encodeURIComponent(slug)}`
   );
 
   if (!res.ok) {

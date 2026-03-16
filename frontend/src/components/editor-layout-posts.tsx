@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import EditorUpdateCardLayout from './editor-layout';
- import { Post } from '../types/post';
+import { Post } from '../types/post';
+
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function EditorUpdatesSection({
   posts = [],
 }: {
@@ -15,7 +18,7 @@ export default function EditorUpdatesSection({
   //   const fetchPosts = async () => {
   //     try {
   //       const res = await fetch(
-  //         'http://localhost:5000/api/posts/list-all-posts',
+  //         `${apiUrl}/api/posts/list-all-posts`,
   //         { cache: 'no-store' }
   //       );
 

@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { AdminTopNav } from "../../components/admin-navbar";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type User = {
   id: number;
@@ -50,7 +51,7 @@ export default function ManageUsers() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/api/admin/pending-users", {
+      const res = await fetch(`${apiUrl}/api/admin/pending-users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,8 +75,8 @@ export default function ManageUsers() {
 ) => {
   try {
      const endpoint = status === "approved" 
-    ? `http://localhost:5000/api/admin/approve-user/${id}` 
-    : `http://localhost:5000/api/admin/reject-user/${id}`
+    ? `${apiUrl}/api/admin/approve-user/${id}` 
+    : `${apiUrl}/api/admin/reject-user/${id}`
   
     const res = await fetch(endpoint, {
         method: "PUT",
