@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+.turbo/
+dist/
+
+# Dev files
+.env.local
+.env.*.local
+
+# System
+.DS_Store
+*.log
+.git
