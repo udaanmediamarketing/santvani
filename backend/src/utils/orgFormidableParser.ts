@@ -1,4 +1,4 @@
-import formidable from "formidable";
+import formidable, { Files, Fields } from "formidable";
 import fs from "fs/promises";
 import fsSync from "fs";
 import path from "path";
@@ -38,7 +38,7 @@ export async function parseOrganizationFormData(
       uploadDir,
     });
 
-    form.parse(req, async (err, fields, files) => {
+    form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
       if (err) {
         console.error("Formidable parse error:", err);
         res.status(400).json({ error: "Form parse failed" });

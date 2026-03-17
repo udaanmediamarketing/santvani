@@ -1,4 +1,4 @@
-import formidable from 'formidable';
+import formidable, { Files, Fields } from 'formidable';
 import fs from 'fs/promises';
 import path from 'path';
 import { Request, Response } from 'express';
@@ -32,7 +32,7 @@ if (!fsSync.existsSync(uploadDir)) {
       uploadDir,
     });
 
-    form.parse(req, async (err, fields, files) => {
+    form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
       if (err) {
         console.error('Formidable parse error:', err);
         res.status(400).json({ error: 'File upload failed' });
