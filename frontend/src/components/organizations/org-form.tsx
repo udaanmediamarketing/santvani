@@ -18,6 +18,8 @@ import { useAuthFetch } from "../../context/authFetch";
 import { Textarea } from "../ui/textarea";
 import { useAuth } from "../../context/AuthContext";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 type OrgFormData = {
   orgType?: string;
   orgName: string;
@@ -136,7 +138,7 @@ if (data.image && data.image.length > 0) {
  if (data.youtubeUrl) formData.append("youtubeUrl", data.youtubeUrl);
 
  console.log("ORG DATA:", Object.fromEntries(formData.entries()));
-      const res = await authFetch("http://localhost:5000/api/organizations/create-org", {
+      const res = await authFetch(`${apiUrl}/api/organizations/create-org`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

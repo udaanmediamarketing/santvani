@@ -6,6 +6,8 @@ import ArticleCard from "../../components/articles/article-card";
 import { useAuthFetch } from "../../context/authFetch";
 import Navbar from "../../components/navbar";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 type Article = {
   id: number;
   title: string;
@@ -28,7 +30,7 @@ export default function SantPage() {
     if (!name) return;
     const santName =
   typeof name === "string" ? decodeURIComponent(name) : "";
-    authFetch(`http://localhost:5000/api/posts/list-posts-by-sant/${encodeURIComponent(santName)}`)
+    authFetch(`${apiUrl}/api/posts/list-posts-by-sant/${encodeURIComponent(santName)}`)
       .then((res) => res.json())
       .then((data) => setArticles(data.posts))
       .finally(() => setLoading(false));

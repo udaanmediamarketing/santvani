@@ -1,34 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import WorldFreshUpdateCard from './world-fresh-updates';
 import Link from 'next/link';
 import { Post } from '../types/post';
 
 export default function WorldFreshUpdatesKirtan({ title, posts }: { title: string, posts?: Post[] }) {
-  // const [posts, setPosts] = useState<Post[]>([]);
-  // const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchKirtanPosts = async () => {
-//       try {
-//         const res = await fetch(
-//   `http://localhost:5000/api/posts/list-posts-by-category/${encodeURIComponent('किर्तन')}`
-// );
-//         const data = await res.json();
-//         setPosts(data.posts.slice(0, 4));
-//       } catch (err) {
-//         console.error('Failed to fetch kirtan posts', err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchKirtanPosts();
-//   }, []);
-
-  // if (loading) return null;
-
   return (
     <section className="w-full border border-neutral-200 p-4">
   {/* Header */}

@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import {useRouter} from "next/navigation";
 import {Organization} from "../../types/org";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function OrgGrid({
   orgs = [],
@@ -21,7 +22,7 @@ export default function OrgGrid({
     const fetchOrganizations = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/organizations/list-all-orgs"
+          `${apiUrl}/api/organizations/list-all-orgs`
         );
         const data = await res.json();
 

@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../context/authFetch";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const SignIn = () => {
   const router = useRouter();
   const { login } = useAuth();
@@ -31,7 +33,7 @@ const SignIn = () => {
     setMessage("");
 
     try {
-      const res = await authFetch("http://localhost:5000/api/auth/signin", {
+      const res = await authFetch(`${apiUrl}/api/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -13,6 +13,8 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useAuthFetch } from "../../context/authFetch";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 interface Organization {
   id: string;
   org_type: string | null;
@@ -35,7 +37,7 @@ export default function OrganizationsTable() {
     const fetchOrganizations = async () => {
       try {
         const res = await authFetch(
-          `http://localhost:5000/api/organizations/list-orgs/${userId}`
+          `${apiUrl}/api/organizations/list-orgs/${userId}`
         );
 
         const data = await res.json();

@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import ReadMorePostCard from '../../components/read-more-card';
 import Navbar from '../../components/navbar';
 import { Post } from '../../types/post';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 interface Props {
   category: string;
 }
@@ -18,7 +21,7 @@ export default function CategoryPage({ category }: Props) {
     async function fetchPosts() {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/posts/list-posts-by-category/${encodeURIComponent(category)}`
+          `${apiUrl}/api/posts/list-posts-by-category/${encodeURIComponent(category)}`
         );
 
         if (!res.ok) throw new Error('Failed to fetch');

@@ -67,8 +67,9 @@
 //   );
 // }
 
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 // export const getServerSideProps: GetServerSideProps = async () => {
-//   const res = await fetch("http://localhost:5000/api/posts/gallery");
+//   const res = await fetch(`${apiUrl}/api/posts/gallery`);
 
 //   if (!res.ok) {
 //     return { props: { posts: [] } };
@@ -181,8 +182,10 @@ export default function GalleryPage({ posts }: { posts: GalleryPost[] }) {
   );
 }
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch("http://localhost:5000/api/posts/gallery");
+  const res = await fetch(`${apiUrl}/api/posts/gallery`);
 
   if (!res.ok) {
     return { props: { posts: [] } };
