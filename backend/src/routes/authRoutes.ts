@@ -1,41 +1,10 @@
-// server.ts
-import express from "express";
-import type { Request, Response } from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import pool from "./src/config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import adminRoutes from "./src/routes/adminRoutes";
-import postRoutes from "./src/routes/postRoutes";
-import orgRoutes from "./src/routes/orgRoutes.js";
-import dashboardRoutes from "./src/routes/dashboardRoutes.js";
-import authRoutes from "./src/routes/authRoutes.js";
+import express, { Request, Response } from "express";
+import pool from "../config/db.js";
+const router = express.Router();
 
-dotenv.config();
-
-const app = express();
-app.use(express.json());
-app.use(cors());
-app.use("/api/admin", adminRoutes);
-app.use("/api/posts", postRoutes);
-app.use("/api/organizations", orgRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/auth", authRoutes);
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL missing");
-}
-
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("❌ RESEND_API_KEY is missing in environment variables");
-}
-
-if (!process.env.FROM_EMAIL) {
-  throw new Error("❌ FROM_EMAIL is missing in environment variables");
-}
-
-app.post("/api/auth/signup", async (req: Request, res: Response) => {
+router.post("/signup", async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
@@ -72,7 +41,7 @@ app.post("/api/auth/signup", async (req: Request, res: Response) => {
 });
 
 
-app.post("/api/auth/signin", async (req: Request, res: Response) => {
+router.post("/signin", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -125,9 +94,4 @@ if (!JWT_SECRET) {
   }
 });
 
-// app.get("/", (_req, res) => res.send("API OK"));
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚀 Server running at http://localhost:${PORT}`)
-);
+export default router;
