@@ -12,6 +12,9 @@ export default function ReadMoreSection() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined");
+  }
 
   useEffect(() => {
     async function fetchPosts() {

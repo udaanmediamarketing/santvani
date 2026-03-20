@@ -32,6 +32,10 @@ const SignIn = () => {
     setLoading(true);
     setMessage("");
 
+    if (!apiUrl) {
+      throw new Error("NEXT_PUBLIC_API_URL is not defined");
+    }
+
     try {
       const res = await authFetch(`${apiUrl}/api/auth/signin`, {
         method: "POST",
