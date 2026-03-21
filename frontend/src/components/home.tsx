@@ -154,7 +154,11 @@ export default function Home({
   const handleSearch = async () => {
 
     try {
+      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
+      console.log('Full URL:', `${process.env.NEXT_PUBLIC_API_URL}/api/posts/list-all-posts`)
+
       const res = await fetch(
+        
         `${apiUrl}/api/posts/list-all-posts`
       );
       const data = await res.json();

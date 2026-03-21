@@ -26,6 +26,9 @@ export default function OrgAllGrid() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
+    console.log('Full URL:', `${process.env.NEXT_PUBLIC_API_URL}/api/organizations/list-all-orgs`)
+
     const fetchOrganizations = async () => {
       try {
         const res = await fetch(
