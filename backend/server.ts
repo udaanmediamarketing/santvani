@@ -16,7 +16,16 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://vishwsantsahitya.com',
+    'https://www.vishwsantsahitya.com',
+    'http://localhost:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 app.use("/api/admin", adminRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/organizations", orgRoutes);
@@ -98,9 +107,9 @@ app.post("/api/auth/signin", async (req: Request, res: Response) => {
 
     const JWT_SECRET = process.env.JWT_SECRET;
 
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET is not defined");
-}
+    if (!JWT_SECRET) {
+      throw new Error("JWT_SECRET is not defined");
+    }
 
     const token = jwt.sign(
       { id: user.id, role: user.role },

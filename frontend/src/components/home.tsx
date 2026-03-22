@@ -260,7 +260,7 @@ export default function Home({
             </div>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto px-4">
+          {/* <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto px-4">
             {filteredSants.map((sant) => (
               <SantCard
                 key={sant.name}
@@ -268,7 +268,7 @@ export default function Home({
                 setActiveMenu={setActiveMenu}
               />
             ))}
-          </div>
+          </div> */}
 
           {/* 🔍 Search Bar */}
           <div className="flex justify-center my-12 px-4">

@@ -35,25 +35,25 @@ const categories = ["किर्तन", "भजन", "श्लोक", "स�
 
 export default function CreateArticleForm() {
   const {
-  register,
-  handleSubmit,
-  control,
-  reset,
-  watch,
-  setValue,
-  formState: { errors, isValid },
-} = useForm<FormData>({
-  mode: "onChange",
-  defaultValues: {
-    santname: "",
-    category: "",
-    title: "",
-    content: "",
-    youtubeUrl: "",
-  },
-});
+    register,
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<FormData>({
+    mode: "onChange",
+    defaultValues: {
+      santname: "",
+      category: "",
+      title: "",
+      content: "",
+      youtubeUrl: "",
+    },
+  });
 
-// Update FormData type - make everything optional except title
+  // Update FormData type - make everything optional except title
 
   const [uploading, setUploading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
@@ -65,7 +65,7 @@ export default function CreateArticleForm() {
   const { token } = useAuth();
   const contentValue = watch("content") || "";
   const authFetch = useAuthFetch();
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -106,34 +106,34 @@ export default function CreateArticleForm() {
   };
 
   const translateField = async (
-  field: keyof FormData,
-  value: string,
-  lang: string
-) => {
-  if (!value?.trim()) return;
+    field: keyof FormData,
+    value: string,
+    lang: string
+  ) => {
+    if (!value?.trim()) return;
 
-  try {
-    const res = await fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
-        value
-      )}`
-    );
-    const data = await res.json();
-    const translatedText = data[0].map((item: string) => item[0]).join("");
+    try {
+      const res = await fetch(
+        `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(
+          value
+        )}`
+      );
+      const data = await res.json();
+      const translatedText = data[0].map((item: string) => item[0]).join("");
 
-    setValue(field, translatedText, { shouldValidate: true });
-  } catch {
-    toast.error("भाषांतर अयशस्वी झाले");
-  }
-};
+      setValue(field, translatedText, { shouldValidate: true });
+    } catch {
+      toast.error("भाषांतर अयशस्वी झाले");
+    }
+  };
 
-const TranslateSelect = ({
-  onSelect,
-}: {
-  onSelect: (lang: string) => void;
-}) => (
-  <Select onValueChange={onSelect}>
-    <SelectTrigger className="
+  const TranslateSelect = ({
+    onSelect,
+  }: {
+    onSelect: (lang: string) => void;
+  }) => (
+    <Select onValueChange={onSelect}>
+      <SelectTrigger className="
   w-28
   text-xs
   rounded-lg
@@ -143,20 +143,20 @@ const TranslateSelect = ({
   shadow-sm
   z-10
 ">
-      <SelectValue placeholder="भाषा" />
-    </SelectTrigger>
-    <SelectContent className="rounded-lg bg-white shadow-lg z-10">
-      <SelectItem value="en">English</SelectItem>
-      <SelectItem value="hi">Hindi</SelectItem>
-      <SelectItem value="mr">Marathi</SelectItem>
-      <SelectItem value="sa">Sanskrit</SelectItem>
-    </SelectContent>
-  </Select>
-);
+        <SelectValue placeholder="भाषा" />
+      </SelectTrigger>
+      <SelectContent className="rounded-lg bg-white shadow-lg z-10">
+        <SelectItem value="en">English</SelectItem>
+        <SelectItem value="hi">Hindi</SelectItem>
+        <SelectItem value="mr">Marathi</SelectItem>
+        <SelectItem value="sa">Sanskrit</SelectItem>
+      </SelectContent>
+    </Select>
+  );
 
 
   const onSubmit = async (data: FormData) => {
-    
+
     if (!token) {
       toast.error("प्रयोगकर्ता प्रमाणित नाही");
       return;
@@ -173,56 +173,57 @@ const TranslateSelect = ({
     setUploading(true);
 
     try {
-  const formData = new FormData();
-  const sluggedurl = slugify(data.title)
-  // Required field (title) - safe because it's validated
-  formData.append("title", data.title);
-  formData.append("slug", sluggedurl);
+      const formData = new FormData();
+      const sluggedurl = slugify(data.title)
+      // Required field (title) - safe because it's validated
+      formData.append("title", data.title);
+      formData.append("slug", sluggedurl);
 
-  // Optional fields - only append if they exist and have value
-  if (data.santname) formData.append("santname", data.santname);
-  if (data.category) formData.append("category", data.category);
-  if (data.content) formData.append("content", data.content);
-  if (data.youtubeUrl) formData.append("youtubeUrl", data.youtubeUrl);
-  if (data.img?.[0]) formData.append("img", data.img[0]);
-  console.log("Submitting form data:", {
-    title: data.title,
-    santname: data.santname,
-    category: data.category,
-    content: data.content});
-  const res = await authFetch(`${apiUrl}/api/posts/create-post`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  });
-  if (!res.ok) {
-    try {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to upload");
-    } catch {
-      throw new Error("Failed to upload");
+      // Optional fields - only append if they exist and have value
+      if (data.santname) formData.append("santname", data.santname);
+      if (data.category) formData.append("category", data.category);
+      if (data.content) formData.append("content", data.content);
+      if (data.youtubeUrl) formData.append("youtubeUrl", data.youtubeUrl);
+      if (data.img?.[0]) formData.append("img", data.img[0]);
+      console.log("Submitting form data:", {
+        title: data.title,
+        santname: data.santname,
+        category: data.category,
+        content: data.content
+      });
+      const res = await authFetch(`${apiUrl}/api/posts/create-post`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      if (!res.ok) {
+        try {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Failed to upload");
+        } catch {
+          throw new Error("Failed to upload");
+        }
+      }
+
+      toast.success("लेख यशस्वीरित्या पाठवण्यात आला!", {
+        description: "आपला लेख पुनरावलोकनासाठी पाठवण्यात आला आहे.",
+      });
+      reset();
+      setWordCount(0);
+    } catch (err: unknown) {
+      console.error(err);
+      let errorMessage = "काहीतरी चूक झाले";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      toast.error(errorMessage, {
+        description: "लेख सबमिट करता आला नाही. कृपया पुन्हा प्रयत्न करा.",
+      });
+    } finally {
+      setUploading(false);
     }
-  }
-
-  toast.success("लेख यशस्वीरित्या पाठवण्यात आला!", {
-    description: "आपला लेख पुनरावलोकनासाठी पाठवण्यात आला आहे.",
-  });
-  reset();
-  setWordCount(0);
-} catch (err: unknown) {
-  console.error(err);
-  let errorMessage = "काहीतरी चूक झाले";
-  if (err instanceof Error) {
-    errorMessage = err.message;
-  }
-  toast.error(errorMessage, {
-    description: "लेख सबमिट करता आला नाही. कृपया पुन्हा प्रयत्न करा.",
-  });
-} finally {
-  setUploading(false);
-}
   };
 
   return (
@@ -252,136 +253,140 @@ const TranslateSelect = ({
         </div>
 
         {/* Sant Name */}
-<div className="space-y-2">
-  <Label className="text-sm font-semibold text-gray-700 flex items-center justify-between">
-    संत निवडा
-    <button
-      type="button"
-      onClick={() => {
-        setManualSant((prev) => !prev);
-        setValue("santname", "");
-      }}
-      className="text-orange-500 hover:text-orange-600"
-    >
-      <Plus size={16} />
-    </button>
-  </Label>
-  {manualSant ? (
-    <div className="flex gap-2">
-    <Input
-      placeholder="नवीन संत नाव टाका"
-      {...register("santname")}
-      onChange={(e) => setValue("santname", e.target.value)}
-    />
-    <TranslateSelect
-      onSelect={(lang) =>
-        translateField("santname", watch("santname") || "", lang)
-      }
-    />
-  </div>
-  ) : (
-    /* DROPDOWN MODE */
-    <Controller
-      name="santname"
-      control={control}
-      render={({ field }) => (
-        <Select
-          value={field.value}
-          onValueChange={(value) => {
-            field.onChange(value);
-          }}
-        >
-          <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400">
-            <SelectValue placeholder="संत निवडा" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl shadow-lg bg-white">
-            {sants.map((sant) => (
-              <SelectItem key={sant} value={sant}>
-                {sant}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-    />
-  )}
+        <div className="space-y-2">
+          <Label className="text-sm font-semibold text-gray-700 flex items-center justify-between">
+            संत निवडा
+            <button
+              type="button"
+              onClick={() => {
+                setManualSant((prev) => !prev);
+                setValue("santname", "");
+              }}
+              className="text-orange-500 hover:text-orange-600"
+            >
+              <Plus size={16} />
+            </button>
+          </Label>
+          {manualSant ? (
+            <div className="flex gap-2">
+              <Input
+                placeholder="नवीन संत नाव टाका"
+                {...register("santname")}
+                onChange={(e) => setValue("santname", e.target.value)}
+              />
+              <TranslateSelect
+                onSelect={(lang) =>
+                  translateField("santname", watch("santname") || "", lang)
+                }
+              />
+            </div>
+          ) : (
+            /* DROPDOWN MODE */
+            <Controller
+              name="santname"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
+                >
+                  <SelectTrigger className="rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400">
+                    <SelectValue placeholder="संत निवडा" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl shadow-lg bg-white">
+                    {sants.map((sant) => (
+                      <SelectItem key={sant} value={sant}>
+                        {sant}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          )}
 
-  {errors.santname && (
-    <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
-  )}
-</div>
+          {errors.santname && (
+            <p className="text-xs text-red-600 mt-1">{errors.santname.message}</p>
+          )}
+        </div>
 
-{/* Category */}
-<div className="space-y-2">
-  <Label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
-    विभाग
-    <button
-      type="button"
-      className="text-orange-500 text-lg"
-      onClick={() => {
-        setManualCategory(true);
-        setValue("category", "");
-      }}
-    >
-      <Plus size={16} />
-    </button>
-  </Label>
+        {/* Category */}
+        <div className="space-y-2">
+          <Label className="text-sm font-semibold text-gray-700 flex justify-between items-center">
+            विभाग
+            <button
+              type="button"
+              className="text-orange-500 text-lg"
+              onClick={() => {
+                setManualCategory(true);
+                setValue("category", "");
+              }}
+            >
+              <Plus size={16} />
+            </button>
+          </Label>
 
-  {/* Manual Input */}
-  {manualCategory ? (
-    <div className="flex gap-2">
-    <Input
-      placeholder="विभाग लिहा"
-      {...register("category")}
-      onChange={(e) => setValue("category", e.target.value)}
-    />
-    <TranslateSelect
-      onSelect={(lang) =>
-        translateField("category", watch("category") || "", lang)
-      }
-    />
-  </div>
-  ) : (
-    <Controller
-      name="category"
-      control={control}
-      render={({ field }) => (
-        <Select
-          value={field.value}
-          onValueChange={(val) => {
-            field.onChange(val);
-            setManualCategory(false);
-          }}
-        >
-          <SelectTrigger className="rounded-xl border-gray-300">
-            <SelectValue placeholder="विभाग निवडा" />
-          </SelectTrigger>
-          <SelectContent>
-            {categories.map((cat) => (
-              <SelectItem key={cat} value={cat}>
-                {cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-    />
-  )}
-</div>
+          {/* Manual Input */}
+          {manualCategory ? (
+            <div className="flex gap-2">
+              <Input
+                placeholder="विभाग लिहा"
+                {...register("category")}
+                onChange={(e) => setValue("category", e.target.value)}
+              />
+              <TranslateSelect
+                onSelect={(lang) =>
+                  translateField("category", watch("category") || "", lang)
+                }
+              />
+            </div>
+          ) : (
+            <Controller
+              name="category"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    setManualCategory(false);
+                  }}
+                >
+                  <SelectTrigger className="rounded-xl border-gray-300">
+                    <SelectValue placeholder="विभाग निवडा" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl z-[9999]">
+                    {categories.map((cat) => (
+                      <SelectItem
+                        key={cat}
+                        value={cat}
+                        className="hover:bg-orange-50 focus:bg-orange-50 cursor-pointer"
+                      >
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          )}
+        </div>
         {/* Title */}
         <div className="space-y-2">
           <Label className="text-sm font-semibold text-gray-700">लेखाचे शीर्षक *</Label>
           <div className="flex gap-2">
-  <Input
-    {...register("title", { required: "शीर्षक आवश्यक आहे" })}
-    placeholder="लेखाचे शीर्षक लिहा"
-  />
-  <TranslateSelect
-    onSelect={(lang) =>
-      translateField("title", watch("title") || "", lang)
-    }
-  />
-</div>
+            <Input
+              {...register("title", { required: "शीर्षक आवश्यक आहे" })}
+              placeholder="लेखाचे शीर्षक लिहा"
+            />
+            <TranslateSelect
+              onSelect={(lang) =>
+                translateField("title", watch("title") || "", lang)
+              }
+            />
+          </div>
           {errors.title && (
             <p className="text-xs text-red-600 mt-1">{errors.title.message}</p>
           )}
@@ -404,13 +409,12 @@ const TranslateSelect = ({
             placeholder="येथे आपला लेख लिहा..."
             className="min-h-[180px] rounded-xl border-gray-300 focus:ring-2 focus:ring-orange-400 transition-all"
           />
-          
+
           {/* Word Counter & Translate */}
           <div className="flex flex-col sm:flex-row justify-between gap-2 text-xs">
             <span
-              className={`${
-                wordCount >= MAX_WORDS ? "text-red-600" : "text-gray-500"
-              }`}
+              className={`${wordCount >= MAX_WORDS ? "text-red-600" : "text-gray-500"
+                }`}
             >
               {wordCount} / {MAX_WORDS} शब्द
             </span>
