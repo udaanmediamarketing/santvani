@@ -15,11 +15,11 @@ export const sendSignupApprovalEmail = async ({
     subject: "तुमचे खाते मंजूर झाले आहे 🎉",
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-       <img
-          src="./images/banner.png"
-          alt="विश्व संत साहित्य"
-          style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;"
-        />
+      //  <img
+      //     src="./images/banner.png"
+      //     alt="विश्व संत साहित्य"
+      //     style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px;"
+      //   />
         <h2>नमस्कार ${name},</h2>
 
         <p>
@@ -32,7 +32,7 @@ export const sendSignupApprovalEmail = async ({
         </p>
 
         <a
-          href="http://localhost:3000/signin"
+          href="https://www.vishwsantsahitya.com/signin"
           style="
             display: inline-block;
             margin-top: 16px;
@@ -49,11 +49,11 @@ export const sendSignupApprovalEmail = async ({
 
         <br /><br />
         <p>धन्यवाद,<br/>विश्व संत साहित्य टीम</p>
-        <img
-          src="./images/logo.jpg"
-          alt="SantVani Logo"
-          className="h-10 w-auto object-contain"
-        />
+        // <img
+        //   src="./images/logo.jpg"
+        //   alt="SantVani Logo"
+        //   className="h-10 w-auto object-contain"
+        // />
       </div>
     `,
   });

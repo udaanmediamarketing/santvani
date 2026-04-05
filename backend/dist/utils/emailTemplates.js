@@ -24,7 +24,7 @@ export const sendSignupApprovalEmail = async ({ to, name, }) => {
         </p>
 
         <a
-          href="http://localhost:3000/signin"
+          href="https://www.vishwsantsahitya.com/signin"
           style="
             display: inline-block;
             margin-top: 16px;
@@ -41,11 +41,11 @@ export const sendSignupApprovalEmail = async ({ to, name, }) => {
 
         <br /><br />
         <p>धन्यवाद,<br/>विश्व संत साहित्य टीम</p>
-        <img
-          src="./images/logo.jpg"
-          alt="SantVani Logo"
-          className="h-10 w-auto object-contain"
-        />
+        // <img
+        //   src="./images/logo.jpg"
+        //   alt="SantVani Logo"
+        //   className="h-10 w-auto object-contain"
+        // />
       </div>
     `,
     });
@@ -73,11 +73,11 @@ export const sendSignUpRejectionEmail = async ({ to, name, }) => {
 
         <br />
         <p>धन्यवाद,<br/>विश्व संत साहित्य टीम</p>
-        <img
-          src="/images/logo.jpg"
-          alt="SantVani Logo"
-          className="h-10 w-auto object-contain"
-        />
+        // <img
+        //   src="/images/logo.jpg"
+        //   alt="SantVani Logo"
+        //   className="h-10 w-auto object-contain"
+        // />
       </div>
     `,
     });
