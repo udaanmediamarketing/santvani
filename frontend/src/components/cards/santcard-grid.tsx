@@ -18,7 +18,7 @@ export default function NewSantGrid({
   if (posts.length < 5) return null;
 
   return (
-  <div className="max-w-5xl mx-auto px-3 py-12">
+  <div className="max-w-5xl mx-auto px-2 py-2 mt-10 border-2 border-gray-200">
     <div
       className="
         grid
@@ -37,7 +37,7 @@ export default function NewSantGrid({
         content={posts[0]?.content}
         category={posts[0]?.category}
         date={formatDate(posts[0]?.created_at ?? '')}
-        className="lg:col-start-1 lg:row-start-1 h-[180px]"
+        className="lg:col-start-1 lg:row-start-1 h-[200px]"
       />
 
       {/* Center column – spans 2 rows */}
@@ -50,7 +50,7 @@ export default function NewSantGrid({
         category={posts[2]?.category}
         date={formatDate(posts[2]?.created_at ?? '')}
         // className="lg:row-span-2"
-        className="lg:col-start-2 lg:row-start-1 lg:row-span-2 mt-1 h-[360px]"
+        className="lg:col-start-2 lg:row-start-1 lg:row-span-2 mt-1 h-[400px]"
       />
 
       {/* Right column – row 1 */}
@@ -62,7 +62,7 @@ export default function NewSantGrid({
         content={posts[3]?.content}
         category={posts[3]?.category}
         date={formatDate(posts[3]?.created_at ?? "")}
-        className="lg:col-start-3 lg:row-start-1 h-[180px]"
+        className="lg:col-start-3 lg:row-start-1 h-[200px]"
       />
 
       {/* Left column – row 2 */}
@@ -74,7 +74,7 @@ export default function NewSantGrid({
         content={posts[1]?.content}
         category={posts[1]?.category}
         date={formatDate(posts[1]?.created_at ?? "")}
-        className="lg:col-start-1 lg:row-start-2 h-[180px]"
+        className="lg:col-start-1 lg:row-start-2 h-[200px]"
       />
 
       {/* Right column – row 2 */}
@@ -86,7 +86,7 @@ export default function NewSantGrid({
         content={posts[4]?.content}
         category={posts[4]?.category}
         date={formatDate(posts[4]?.created_at ?? "")}
-        className="lg:col-start-3 lg:row-start-2 h-[180px]"
+        className="lg:col-start-3 lg:row-start-2 h-[200px]"
       />
     </div>
   </div>
