@@ -11,9 +11,11 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { Calendar } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Post } from '../types/post';
-import CategoryList from './category-list';
+// import CategoryList from './category-list';
+import CategorySidebar from './category-sidebar';
+import LabelSidebar from './labels-sidebar';
 
 function getYoutubeEmbedUrl(url?: string) {
   const match = url?.match(
@@ -27,9 +29,10 @@ export default function QuarterColumn({
 }: {
   posts: Post[];
 }) {
+  const router = useRouter();
 
-  function handleCategorySelect(category: string): void | Promise<void> {
-    throw new Error('Function not implemented.');
+  function handleCategorySelect(category: string): void {
+    router.push(`/category/${encodeURIComponent(category)}`);
   }
 
   return (
@@ -86,7 +89,7 @@ export default function QuarterColumn({
                 className="flex gap-3 group"
               >
                 {/* Thumbnail */}
-                <div className="relative w-28 h-20 shrink-0 overflow-hidden aspect-video bg-neutral-200">
+                {/* <div className="relative w-28 h-20 shrink-0 overflow-hidden aspect-video bg-neutral-200">
                   {post.image_url && (
                     <Image
                       src={post.image_url}
@@ -104,8 +107,27 @@ export default function QuarterColumn({
                       allowFullScreen
                     />
                   )}
-                </div>
+                </div> */}
+                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200 self-stretch">
+  {post.image_url && (
+    <Image
+      src={post.image_url}
+      alt={post.title}
+      fill
+      sizes="112px"
+      className="object-cover w-full h-full"
+    />
+  )}
 
+  {!post.image_url && embedUrl && (
+    <iframe
+      src={embedUrl}
+      title={post.title}
+      className="absolute inset-0 w-full h-full"
+      allowFullScreen
+    />
+  )}
+</div>
                 {/* Content */}
                 <div className="flex flex-col gap-1">
                   <span className="bg-orange-600 text-white text-xs font-semibold px-2 py-0.5 w-fit">
@@ -127,23 +149,15 @@ export default function QuarterColumn({
             );
           })}
       </section>
+
+      <div className="w-80 bg-neutral-200"> 
+        <LabelSidebar onSelectCategory={handleCategorySelect} />
+      </div>
+
     {/* Category List */}
-              <div
-                className="
-            w-44
-            [&_div]:flex
-            [&_div]:flex-col
-            [&_div]:gap-2
-            [&_button]:bg-black
-            [&_button]:p-0
-            [&_button]:text-right
-            [&_button]:text-sm
-            [&_button]:text-orange-300
-            hover:[&_button]:text-white-100
-          "
-              >
-                <CategoryList onSelectCategory={handleCategorySelect} />
-              </div>
+              <div className="w-80 bg-neutral-200"> 
+  <CategorySidebar onSelectCategory={handleCategorySelect} />
+</div>
             </div>
 
   );

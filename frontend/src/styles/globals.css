@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Ensure the document takes full height and hides horizontal overflow */
+html, body {
+  margin: 0;
+  padding: 0;
+}

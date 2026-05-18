@@ -154,9 +154,6 @@ export default function Home({
   const handleSearch = async () => {
 
     try {
-      console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
-      console.log('Full URL:', `${process.env.NEXT_PUBLIC_API_URL}/api/posts/list-all-posts`)
-
       const res = await fetch(
         
         `${apiUrl}/api/posts/list-all-posts`
@@ -191,219 +188,91 @@ export default function Home({
 
 
   return (
-    <>
-      {/* MAIN CONTENT */}
-      <div className="px-4 sm:px-6 lg:px-10 py-6 text-center space-y-12 bg-[#def1de] min-h-screen">
-        {/* Welcome Section */}
-        <div className="flex flex-col items-center justify-center px-4 py-0  border-b border-[#f97316]">
-
-          {/* Quote */}
-          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-3">
-            <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
-            <p>|| तेथ शब्दब्रह्म कवळले ||</p>
-          </div>
-
-          {/* Logo + Title (Side by Side) */}
-          <div className="flex items-center gap-3">
-
-            <Image
-              src="/images/logo1.png"
-              alt="विश्व संत साहित्य लोगो"
-              width={110}
-              height={110}
-              className="object-contain"
-              priority
-            />
-
-            <h1 className="mr-30 text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
-              विश्व संत साहित्य
-            </h1>
-
-          </div>
-
-        </div>
-        {/* 🏷️ Category List (Simple Horizontal Style) */}
-        <div
-          className="
+    <div className="flex flex-col min-h-screen bg-[#def1de] overflow-x-hidden">
+  {/* MAIN CONTENT WRAPPER */}
+  <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 text-center">
     
-    flex
-    justify-center
-    [&_div]:flex
-    [&_div]:flex-wrap
-    [&_div]:gap-6
-    [&_button]:bg-transparent
-    [&_button]:px-3
-    [&_button]:py-1
-    [&_button]:text-sm
-    [&_button]:font-medium
-    [&_button]:text-gray-600
-    hover:[&_button]:text-black-500
-  "
-        >
+    {/* Welcome Section */}
+    <section className="flex flex-col items-center justify-center px-4 py-8 border-b border-[#f97316] mb-12">
+      {/* Quote */}
+      <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-6">
+        <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
+        <p>|| तेथ शब्दब्रह्म कवळले ||</p>
+      </div>
+
+      {/* Logo + Title */}
+      <div className="flex items-center gap-3">
+        <Image
+          src="/images/logo1.png"
+          alt="विश्व संत साहित्य लोगो"
+          width={110}
+          height={110}
+          className="object-contain"
+          priority
+        />
+        <h1 className="text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
+          विश्व संत साहित्य
+        </h1>
+      </div>
+    </section>
+
+    {/* 🏷️ Category List */}
+    <div className="flex justify-center mb-12">
+       <div className="flex flex-wrap gap-6 [&_button]:bg-transparent [&_button]:px-3 [&_button]:py-1 [&_button]:text-sm [&_button]:font-medium [&_button]:text-gray-600 hover:[&_button]:text-black">
           <CategoryList />
-        </div>
-        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-          <Navbar posts={posts}/>
-        </div>
+       </div>
+    </div>
 
-        <section>
-          {/* <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#f97316] font-serif mb-6 sm:mb-8 tracking-wider">
-            महाराष्ट्रातील संत
-          </h2> */}
+    {/* Navbar - Full Width Hack */}
+    <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
+      <Navbar posts={posts}/>
+    </div>
 
-          <div className="flex flex-col lg:flex-row gap-2 mt-8">
-            <div className="lg:w-1/3 w-full">
-              <MovingNewsList posts={movingNews} />
-            </div>
-            <div className="lg:w-2/3 w-full">
-              <NewSantGrid posts={posts} />
-            </div>
+    {/* Content Sections */}
+    <div className="space-y-12">
+       <section>
+          <div className="flex flex-col lg:flex-row gap-2">
+            <div className="lg:w-1/3 w-full"><MovingNewsList posts={movingNews} /></div>
+            <div className="lg:w-2/3 w-full"><NewSantGrid posts={posts} /></div>
           </div>
 
-          {/* <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto px-4">
-            {filteredSants.map((sant) => (
-              <SantCard
-                key={sant.name}
-                {...sant}
-                setActiveMenu={setActiveMenu}
-              />
-            ))}
-          </div> */}
-
-          {/* 🔍 Search Bar */}
+          {/* Search Bar */}
           <div className="flex justify-center my-12 px-4">
             <div className="relative w-full max-w-lg">
-              <Search
-                size={20}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-              />
+              <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="संतांचे नाव शोधा (उदा. तुकाराम)"
-                className="w-full pl-12 pr-5 py-3 rounded-full bg-white border-2 border-orange-400 shadow-md focus:outline-none focus:border-orange-600"
+                className="w-full pl-12 pr-5 py-3 rounded-full bg-white border-2 border-orange-400 shadow-md focus:outline-none"
               />
             </div>
           </div>
+       </section>
 
-          {/* 🪟 POPUP MODAL */}
-          {selectedPost && (
-            <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
-              <div className="bg-white max-w-md w-full rounded-xl shadow-lg relative p-6">
-
-                {/* ❌ Close Button */}
-                <button
-                  onClick={() => setSelectedPost(null)}
-                  className="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl"
-                >
-                  ✕
-                </button>
-
-                {/* 📄 Post Content */}
-                <h2 className="text-xl font-bold text-orange-700 mb-2">
-                  {selectedPost.title}
-                </h2>
-
-                {selectedPost.category && (
-                  <p className="text-sm text-gray-500 mb-4">
-                    {selectedPost.category}
-                  </p>
-                )}
-
-                {selectedPost.image_url && (
-                  <img
-                    src={
-                      selectedPost.image_url.startsWith("http")
-                        ? selectedPost.image_url
-                        : `${apiUrl}${selectedPost.image_url}`
-
-                    }
-                    alt={selectedPost.title}
-                    className="w-full h-52 object-cover rounded-lg mb-4"
-                  />
-
-                )}
-
-                {selectedPost.youtube_url && (
-                  <iframe
-                    src={selectedPost.youtube_url}
-                    className="w-full aspect-video rounded-lg"
-                    allowFullScreen
-                  />
-                )}
-              </div>
-            </div>
-          )}
-
-
-
-          {filteredPosts.map((post) => (
-            <div
-              key={post.id}
-              onClick={() => setSelectedPost(post)}
-              className="min-w-[260px] bg-white p-4 rounded-lg shadow cursor-pointer hover:shadow-lg transition"
-            >
-              <h3 className="font-semibold text-orange-700">
-                {post.title}
-              </h3>
-              <p className="text-sm text-gray-500">
-                {post.category}
-              </p>
-            </div>
-          ))}
-
-
-
-          {/* 🏷️ Category Tags */}
-          <CategoryList />
-
-        </section>
-
-        <div>
-          <SantHorizontalGrid cardLayout="column" />
-          <WorldFreshUpdatesKirtan
-            title="World Fresh Updates"
-            posts={kirtanPosts}
-          />
-
-        </div>
-        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
+       <SantHorizontalGrid cardLayout="column" />
+       
+       <div className="flex flex-col lg:flex-row max-w-7xl mx-auto gap-8">
           <div className="w-full lg:w-3/4">
-            <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain'/>
+            <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40"/>
           </div>
-          <div className='w-full lg:w-1/4 '>
+          <div className='w-full lg:w-1/4'>
             <QuarterColumn posts={posts} />
           </div>
+       </div>
 
-        </div>
-        <div>
-          <div className="text-xl font-semibold ">संस्था / केंद्र </div>
+       <div className="pb-12">
+          <div className="text-xl font-semibold mb-4">संस्था / केंद्र</div>
           <OrgGrid orgs={organizations} />
-        </div>
-        {/* <div>
-        <EditorUpdatesSection posts={editorPosts} />
+       </div>
+    </div>
+  </main>
 
-        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
-          <div className="w-full lg:w-3/4">
-            <ReadMoreSection posts={posts} />
-          </div>
-          <QuarterColumn posts={posts} />
-        </div>
-
-        <div>
-          <div className="text-xl font-semibold">संस्था / केंद्र</div>
-          <OrgGrid orgs={organizations} />
-        </div>
-
-        <Footer />
-      </div> */}
-
-
-        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-          <Footer />
-        </div>
-      </div>
-    </>
+  {/* 🏁 FOOTER - No margin-top allowed here */}
+  <footer className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
+    <Footer />
+  </footer>
+</div>
   );
 }
