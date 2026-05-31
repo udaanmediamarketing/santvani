@@ -38,11 +38,11 @@ export default function EditorUpdateCardLayout({
       </div>
 
       {/* BODY */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* LEFT FEATURED */}
         <Link
           href={`/${featured.slug}`}
-          className="relative col-span-2 h-[420px] overflow-hidden group"
+          className="relative w-full h-[380px] overflow-hidden group"
         >
           {/* Media */}
           {featured.image_url && (
