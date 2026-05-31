@@ -113,7 +113,7 @@ export default function Footer({ posts = [] }: FooterProps) {
     {/* MIDDLE SECTION: Reduced pt from 6 to 3, gap to 4, and mb from 6 to 3 */}
     <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 items-start mb-3">
       <div className="flex gap-2 max-w-2xl ml-14">
-        <img src="/path-to-your-logo.png" alt="Logo" className="w-10 h-10 object-contain self-start" />
+        <img src="images/footer_about.png" alt="Logo" className="w-10 h-10 object-contain self-start" />
         <div>
           <h2 className="text-white text-md font-bold uppercase mb-0.5">About Us</h2>
           <p className="text-gray-400 text-md leading-tight line-clamp-2">
@@ -139,7 +139,7 @@ export default function Footer({ posts = [] }: FooterProps) {
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <Link href="/about" className="hover:text-white transition-colors">About</Link>
         <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
-        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
+        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
       </div>
       <p className="text-[12px] mr-30">
        All Right Reserved Copyright © vishwsantsahitya.com {new Date().getFullYear()} 
