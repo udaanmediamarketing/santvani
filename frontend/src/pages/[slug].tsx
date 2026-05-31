@@ -97,7 +97,7 @@ export default function PostPage({ post }: { post: Post | null }) {
   </div>
 
   {/* RIGHT : SIDEBAR */}
-  <div className="w-full md:w-1/4 px-4 py-10">
+  <div className="w-full md:w-[30%] px-4 py-10 ">
     <QuarterColumn posts={[]} />
   </div>
 

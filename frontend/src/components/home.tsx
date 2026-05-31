@@ -155,7 +155,7 @@ export default function Home({
 
     try {
       const res = await fetch(
-        
+
         `${apiUrl}/api/posts/list-all-posts`
       );
       const data = await res.json();
@@ -189,84 +189,85 @@ export default function Home({
 
   return (
     <div className="flex flex-col min-h-screen bg-[#def1de] overflow-x-hidden">
-  {/* MAIN CONTENT WRAPPER */}
-  <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 text-center">
-    
-    {/* Welcome Section */}
-    <section className="flex flex-col items-center justify-center px-4 py-8 border-b border-[#f97316] mb-12">
-      {/* Quote */}
-      <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-6">
-        <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
-        <p>|| तेथ शब्दब्रह्म कवळले ||</p>
-      </div>
+      {/* MAIN CONTENT WRAPPER */}
+      <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 text-center">
 
-      {/* Logo + Title */}
-      <div className="flex items-center gap-3">
-        <Image
-          src="/images/logo1.png"
-          alt="विश्व संत साहित्य लोगो"
-          width={110}
-          height={110}
-          className="object-contain"
-          priority
-        />
-        <h1 className="text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
-          विश्व संत साहित्य
-        </h1>
-      </div>
-    </section>
-
-    {/* 🏷️ Category List */}
-    <div className="flex justify-center mb-12">
-       <div className="flex flex-wrap gap-6 [&_button]:bg-transparent [&_button]:px-3 [&_button]:py-1 [&_button]:text-sm [&_button]:font-medium [&_button]:text-gray-600 hover:[&_button]:text-black">
-          <CategoryList />
-       </div>
-    </div>
-
-    {/* Navbar - Full Width Hack */}
-    <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
-      <Navbar posts={posts}/>
-    </div>
-
-    {/* Content Sections */}
-    <div className="space-y-12">
-       <section>
-          <div className="flex flex-col lg:flex-row gap-2">
-            <div className="lg:w-1/3 w-full"><MovingNewsList posts={movingNews} /></div>
-            <div className="lg:w-2/3 w-full"><NewSantGrid posts={posts} /></div>
+        {/* Welcome Section */}
+        <section className="flex flex-col items-center justify-center px-4 py-8 mb-0">
+          {/* Quote */}
+          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-6">
+            <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
+            <p>|| तेथ शब्दब्रह्म कवळले ||</p>
           </div>
 
-
+          {/* Logo + Title */}
+          <div className="flex items-center gap-3">
+            <Image
+              src="/images/logo1.png"
+              alt="विश्व संत साहित्य लोगो"
+              width={110}
+              height={110}
+              className="object-contain"
+              priority
+            />
+            <h1 className="text-[42px] sm:text-[56px] font-extrabold text-[#f97316] font-serif tracking-wider leading-tight">
+              विश्व संत साहित्य
+            </h1>
+          </div>
         </section>
 
-        <div>
-          {/* <SantHorizontalGrid cardLayout="column" /> */}
-          <WorldFreshUpdatesKirtan
-            title="World Fresh Updates"
-            posts={kirtanPosts}
-          />
 
+        {/* Navbar - Full Width Hack */}
+        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
+          <Navbar posts={posts} />
         </div>
-        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
-          <div className="w-full lg:w-3/4">
-            <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40"/>
-          </div>
-          <div className='w-full lg:w-1/4'>
-            <QuarterColumn posts={posts} />
-          </div>
-       </div>
 
-       <div className="pb-12">
-          <div className="text-xl font-semibold mb-4">संस्था / केंद्र</div>
-          <OrgGrid orgs={organizations} />
-       </div>
+        {/* Content Sections */}
+        <div className="space-y-12">
+          <section>
+            <div className="flex flex-col lg:flex-row gap-2 w-full">
+
+              {/* Left Side - Moving News */}
+              <div className="lg:w-[35%] w-full flex-shrink-0 ml-0 pl-0">
+                <MovingNewsList posts={movingNews} />
+              </div>
+
+              {/* Right Side - Sant Grid */}
+              <div className="lg:flex-1 w-full">
+                <NewSantGrid posts={posts} />
+              </div>
+
+            </div>
+          </section>
+
+          <div>
+            {/* <SantHorizontalGrid cardLayout="column" /> */}
+            <WorldFreshUpdatesKirtan
+              title="World Fresh Updates"
+              posts={kirtanPosts}
+            />
+
+          </div>
+          <div className="flex flex-col lg:flex-row max-w-10xl mx-auto px-2">
+            <div className="w-full lg:w-3/4 border border-gray-300 rounded">
+              <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40" />
+            </div>
+            <div className='w-full lg:w-1/4'>
+              <QuarterColumn posts={posts} />
+            </div>
+          </div>
+
+          <div className="pb-12">
+            <div className="text-xl font-semibold mb-4">संस्था / केंद्र</div>
+            <OrgGrid orgs={organizations} />
+          </div>
+        </div>
+      </main>
+
+      {/* 🏁 FOOTER - No margin-top allowed here */}
+      <footer className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
+        <Footer />
+      </footer>
     </div>
-  </main>
-
-  {/* 🏁 FOOTER - No margin-top allowed here */}
-  <footer className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-    <Footer />
-  </footer>
-</div>
   );
 }
