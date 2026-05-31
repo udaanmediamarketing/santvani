@@ -61,6 +61,20 @@ export default function Home({
     fetchDashboard();
   }, []);
 
+  // Combine all posts for searchable content
+  const allSearchablePosts = [
+    ...posts,
+    ...kirtanPosts,
+    ...editorPosts,
+    ...movingNews,
+  ].reduce((unique: Post[], post) => {
+    // Remove duplicates by id
+    if (!unique.find(p => p.id === post.id)) {
+      unique.push(post);
+    }
+    return unique;
+  }, []);
+
   const sants = [
     {
       name: 'तुकाराम',
@@ -189,7 +203,7 @@ export default function Home({
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#def1de] overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-[#f9f9f9] overflow-x-hidden">
   {/* MAIN CONTENT WRAPPER */}
   <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 text-center">
     
@@ -226,7 +240,7 @@ export default function Home({
 
     {/* Navbar - Full Width Hack */}
     <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
-      <Navbar posts={posts}/>
+      <Navbar posts={allSearchablePosts}/>
     </div>
 
     {/* Content Sections */}
@@ -267,7 +281,7 @@ export default function Home({
 
   {/* 🏁 FOOTER - No margin-top allowed here */}
   <footer className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-    <Footer />
+    <Footer posts={allSearchablePosts}/>
   </footer>
 </div>
   );
