@@ -25,16 +25,16 @@ export default function ReadMorePostCard({ post }: Props) {
   return (
     <Link
       href={`/${post.slug}`}
-      className="flex gap-4 py-5 border-b border-neutral-200"
+      className="flex gap-4 py-5 border-b border-neutral-200 group\"
     >
       {/* LEFT MEDIA */}
-      <div className="relative w-48 h-38 shrink-0 bg-neutral-100 overflow-hidden">
+      <div className="relative w-48 h-38 shrink-0 bg-neutral-100 overflow-hidden group-hover:scale-105 transition-transform\">
         {post.image_url && (
           <Image
             src={post.image_url}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform\"
           />
         )}
 

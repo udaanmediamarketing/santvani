@@ -96,13 +96,13 @@ export default function EditorUpdateCardLayout({
                 className="flex gap-3 group"
               >
                 {/* Thumbnail */}
-                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200">
+                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200 group-hover:scale-105 transition-transform">
                   {post.image_url && (
                     <Image
                       src={post.image_url}
                       alt={post.title}
                       fill
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform"
                     />
                   )}
 

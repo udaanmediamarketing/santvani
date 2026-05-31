@@ -49,13 +49,14 @@ export default function SantCard({
         duration-300
         cursor-pointer
         bg-white
+        group
       "
     >
       <div className="w-full aspect-[4/3] bg-gray-100 flex items-center justify-center">
         <img
           src={image}
           alt={name}
-          className="max-w-full max-h-full object-contain"
+          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
         />
       </div>
 

@@ -202,14 +202,14 @@ export default function QuarterColumn({
                     />
                   )}
                 </div> */}
-                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200 self-stretch">
+                <div className="relative w-28 h-20 shrink-0 overflow-hidden bg-neutral-200 self-stretch group-hover:scale-105 transition-transform">
   {post.image_url && (
     <Image
       src={post.image_url}
       alt={post.title}
       fill
       sizes="112px"
-      className="object-cover w-full h-full"
+      className="object-cover w-full h-full group-hover:scale-105 transition-transform"
     />
   )}
 

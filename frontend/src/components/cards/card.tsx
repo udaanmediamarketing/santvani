@@ -78,7 +78,7 @@ export default function DynamicCard({
         > */}
         <div
   className={cn(
-    'relative flex-shrink-0 overflow-hidden bg-gray-100',
+    'relative flex-shrink-0 overflow-hidden bg-gray-100 group',
     imageWidth,
     imageHeight,
   )}
@@ -89,7 +89,7 @@ export default function DynamicCard({
   alt={title}
   fill
   sizes="100vw"
-  className="object-cover"
+  className="object-cover group-hover:scale-105 transition-transform"
 />
           ) : embedUrl ? (
             <iframe
