@@ -18,6 +18,7 @@ import { Search } from "lucide-react";
 import CategoryList from "./category-list";
 import Navbar from "./navbar";
 import SantHorizontalGrid from './cards/horizontal-vertical-cards';
+import EditorUpdatesSection from './editor-layout-posts';
 
 
 
@@ -255,6 +256,7 @@ export default function Home({
        
        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto gap-8">
           <div className="w-full lg:w-3/4">
+            <EditorUpdatesSection posts={editorPosts} />
             <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40"/>
           </div>
           <div className='w-full lg:w-1/4'>

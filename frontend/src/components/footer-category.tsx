@@ -28,6 +28,14 @@ export default function FooterCategory({
   onSelectCategory,
   className,
 }: FooterCategoryProps) {
+  const [animatingId, setAnimatingId] = useState<string | null>(null);
+
+  const handleClick = (category: Category) => {
+    setAnimatingId(category.id);
+    setTimeout(() => setAnimatingId(null), 300);
+    onSelectCategory?.(category.name);
+  };
+
   return (
     <div className={cn("bg-[#1a162e] p-6 font-sans", className)}>
       {/* Header Section */}
@@ -44,11 +52,12 @@ export default function FooterCategory({
         {categories.map((category, index) => (
           <div key={category.id}>
             <button
-              onClick={() => onSelectCategory?.(category.name)}
-              className="w-full flex items-center justify-between py-1 group bg-transparent transition-all duration-300"
+              onClick={() => handleClick(category)}
+              className="w-full flex items-center justify-between py-1 group "
             >
               {/* LEFT SIDE with Slide Animation */}
-              <div className="flex items-center gap-3 transition-transform duration-300 ease-out group-hover:translate-x-3">
+              <div className="flex items-center gap-3 transition-transform duration-300 ease-out group-hover:translate-x-3
+">
                 {/* The » icon in white */}
                 <span className="text-white text-2xl leading-none">
                   »
