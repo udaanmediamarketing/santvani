@@ -33,7 +33,7 @@ export default function SearchModal({
       {/* Modal */}
       <div className="fixed top-20 left-1/2 transform -translate-x-1/2 w-[90%] max-w-3xl bg-white rounded-lg shadow-2xl z-50 max-h-[70vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-800">
             सर्च परिणाम: <span className="text-orange-600">"{query}"</span>
           </h2>
