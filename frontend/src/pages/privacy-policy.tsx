@@ -1,12 +1,15 @@
 import React from "react";
 import Navbar from "../components/navbar";
+import { useAllSearchPosts } from "../hooks/useAllSearchPosts";
 
 export default function PrivacyPolicyPage() {
+  const { posts } = useAllSearchPosts();
+
   return (
 
     <>
       {/* 🔝 Navbar */}
-      <Navbar />
+      <Navbar posts={posts} />
 
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 px-6 py-12">
       <div className="max-w-5xl mx-auto space-y-12">

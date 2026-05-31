@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReadMorePostCard from '../../components/read-more-card';
 import Navbar from '../../components/navbar';
 import { Post } from '../../types/post';
+import { useAllSearchPosts } from '../../hooks/useAllSearchPosts';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,6 +17,7 @@ export default function CategoryPage({ category }: Props) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const { posts: searchPosts } = useAllSearchPosts();
 
   useEffect(() => {
     async function fetchPosts() {
@@ -48,7 +50,7 @@ export default function CategoryPage({ category }: Props) {
 
   return (
     <>
-      <Navbar />
+      <Navbar posts={searchPosts} />
       <section className="w-full border border-neutral-400 p-4 mr-4">
         {loading ? (
           <p className="text-sm text-neutral-500">Loading...</p>
