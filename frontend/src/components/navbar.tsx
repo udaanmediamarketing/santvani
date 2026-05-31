@@ -8,6 +8,7 @@ import UserProfileDropdown from "./userprofile";
 import { useAuth } from "../context/AuthContext";
 import { Post } from "../types/post";
 import PrakashaneHoverCards from './cards/prakashane-hover-cards';
+import { Search } from "lucide-react";
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
 const languages = ["इंग्रजी", "हिंदी", "मराठी"];
@@ -15,7 +16,7 @@ const languages = ["इंग्रजी", "हिंदी", "मराठी"
 // Helper hook for client-only rendering
 const useIsClient = () => {
   return useSyncExternalStore(
-    () => () => {},
+    () => () => { },
     () => true,
     () => false
   );
@@ -31,6 +32,7 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
   const [showSettings, setShowSettings] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [selectedLang, setSelectedLang] = useState("मराठी");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (isClient) {
@@ -40,7 +42,7 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
 
   return (
     <div className="bg-orange-500 shadow-md text-white px-6 py-3 flex justify-between items-center relative">
-      
+
       {/* Logo */}
       <Link href="/" className="flex items-center gap-3">
         <img src="/images/logo.jpg" alt="SantVani Logo" className="h-10" />
@@ -62,8 +64,8 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
 
           {/* Hover Grid */}
           <div className="absolute left-0 mt-2 w-[600px] hidden group-hover:block bg-white shadow-lg p-4 z-50">
-  <PrakashaneHoverCards posts={posts} />
-</div>
+            <PrakashaneHoverCards posts={posts} />
+          </div>
 
         </div>
 
@@ -86,6 +88,20 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
         <Link href="/create-organization">
           <Button variant="secondary">संस्था / केंद्र नोंदवा</Button>
         </Link>
+
+        <div className="relative w-48">
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+          />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="सर्च करा..."
+            className="w-full pl-9 pr-3 py-1.5 rounded-full bg-white text-black border border-orange-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-500 transition-all duration-200"
+          />
+        </div>
 
         {/* Auth UI */}
         {isClient &&

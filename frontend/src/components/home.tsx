@@ -237,24 +237,18 @@ export default function Home({
             <div className="lg:w-2/3 w-full"><NewSantGrid posts={posts} /></div>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex justify-center my-12 px-4">
-            <div className="relative w-full max-w-lg">
-              <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="संतांचे नाव शोधा (उदा. तुकाराम)"
-                className="w-full pl-12 pr-5 py-3 rounded-full bg-white border-2 border-orange-400 shadow-md focus:outline-none"
-              />
-            </div>
-          </div>
-       </section>
 
-       <SantHorizontalGrid cardLayout="column" />
-       
-       <div className="flex flex-col lg:flex-row max-w-7xl mx-auto gap-8">
+        </section>
+
+        <div>
+          {/* <SantHorizontalGrid cardLayout="column" /> */}
+          <WorldFreshUpdatesKirtan
+            title="World Fresh Updates"
+            posts={kirtanPosts}
+          />
+
+        </div>
+        <div className="flex flex-col lg:flex-row max-w-7xl mx-auto px-2">
           <div className="w-full lg:w-3/4">
             <EditorUpdatesSection posts={editorPosts} />
             <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40"/>
