@@ -15,7 +15,6 @@ interface FooterProps {
 
 export default function Footer({ posts = [] }: FooterProps) {
   const [searchText, setSearchText] = useState("");
-  const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
   // Filter posts based on search query
@@ -27,12 +26,7 @@ export default function Footer({ posts = [] }: FooterProps) {
         .includes(searchText.toLowerCase())
     );
 
-  // Auto-open modal when user types
-  useEffect(() => {
-    if (searchText.trim() !== "") {
-      setShowSearchModal(true);
-    }
-  }, [searchText]);
+  // Modal open state derived from `searchText` to avoid setState in effect
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);
@@ -148,9 +142,8 @@ export default function Footer({ posts = [] }: FooterProps) {
 
     {/* Search Modal */}
     <SearchModal
-      isOpen={showSearchModal}
+      isOpen={searchText.trim() !== ""}
       onClose={() => {
-        setShowSearchModal(false);
         setSearchText("");
       }}
       query={searchText}

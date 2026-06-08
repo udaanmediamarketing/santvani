@@ -34,7 +34,6 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedLang, setSelectedLang] = useState("मराठी");
   const [search, setSearch] = useState("");
-  const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -52,12 +51,7 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
         .includes(search.toLowerCase())
     );
 
-  // Open modal when user starts typing
-  useEffect(() => {
-    if (search.trim() !== "") {
-      setShowSearchModal(true);
-    }
-  }, [search]);
+  // Modal open state is derived from `search` value to avoid setState in effect
 
   return (
     <div className="bg-orange-500 shadow-md text-white px-6 py-3 flex justify-between items-center relative">
@@ -141,9 +135,8 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
 
       {/* Search Modal */}
       <SearchModal
-        isOpen={showSearchModal}
+        isOpen={search.trim() !== ""}
         onClose={() => {
-          setShowSearchModal(false);
           setSearch("");
         }}
         query={search}

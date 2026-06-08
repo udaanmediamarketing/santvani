@@ -35,7 +35,7 @@ export default function SearchModal({
         {/* Header */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-800">
-            सर्च परिणाम: <span className="text-orange-600">"{query}"</span>
+            सर्च परिणाम: <span className="text-orange-600">&quot;{query}&quot;</span>
           </h2>
           <button
             onClick={onClose}
@@ -55,7 +55,7 @@ export default function SearchModal({
           ) : results.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 text-lg">
-                "{query}" साठी कोणतेही परिणाम मिळाले नाहीत
+                &quot;{query}&quot; साठी कोणतेही परिणाम मिळाले नाहीत
               </p>
               <p className="text-gray-500 text-sm mt-2">
                 वेगळे शब्द वापरून पुन्हा प्रयत्न करा
