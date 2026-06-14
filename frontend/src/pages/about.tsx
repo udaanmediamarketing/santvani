@@ -1,12 +1,15 @@
 import React from "react";
 import Navbar from "../components/navbar";
+import { useAllSearchPosts } from "../hooks/useAllSearchPosts";
 
 export default function AboutPage() {
+  const { posts } = useAllSearchPosts();
+
   return (
 
       <>
       {/* 🔝 Navbar */}
-      <Navbar />
+      <Navbar posts={posts} />
 
     <div className="min-h-screen px-6 py-12 bg-gradient-to-b from-orange-50 to-white">
       <div className="max-w-5xl mx-auto space-y-12">

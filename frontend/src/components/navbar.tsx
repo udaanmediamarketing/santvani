@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext";
 import { Post } from "../types/post";
 import PrakashaneHoverCards from './cards/prakashane-hover-cards';
 import { Search } from "lucide-react";
+import SearchModal from "./search-modal";
 
 const sants = ["तुकाराम", "एकनाथ", "नामदेव", "ज्ञानेश्वर"];
 const languages = ["इंग्रजी", "हिंदी", "मराठी"];
@@ -33,12 +34,24 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedLang, setSelectedLang] = useState("मराठी");
   const [search, setSearch] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     if (isClient) {
       document.documentElement.classList.toggle("dark", darkMode);
     }
   }, [darkMode, isClient]);
+
+  // Filter posts based on search query
+  const filteredResults = search.trim() === ""
+    ? []
+    : posts.filter((post) =>
+      `${post.title} ${post.category ?? ""}`
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+
+  // Modal open state is derived from `search` value to avoid setState in effect
 
   return (
     <div className="bg-orange-500 shadow-md text-white px-6 py-3 flex justify-between items-center relative">
@@ -119,6 +132,17 @@ const Navbar = ({ posts = [] }: NavbarProps) => {
           ))}
 
       </div>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={search.trim() !== ""}
+        onClose={() => {
+          setSearch("");
+        }}
+        query={search}
+        results={filteredResults}
+        isLoading={searchLoading}
+      />
     </div>
   );
 };

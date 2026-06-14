@@ -61,6 +61,20 @@ export default function Home({
     fetchDashboard();
   }, []);
 
+  // Combine all posts for searchable content
+  const allSearchablePosts = [
+    ...posts,
+    ...kirtanPosts,
+    ...editorPosts,
+    ...movingNews,
+  ].reduce((unique: Post[], post) => {
+    // Remove duplicates by id
+    if (!unique.find(p => p.id === post.id)) {
+      unique.push(post);
+    }
+    return unique;
+  }, []);
+
   const sants = [
     {
       name: 'तुकाराम',
@@ -219,29 +233,28 @@ export default function Home({
 
 
         {/* Navbar - Full Width Hack */}
-        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
-          <Navbar posts={posts} />
+        <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-0">
+          <Navbar posts={allSearchablePosts} />
         </div>
 
         {/* Content Sections */}
-        <div className="space-y-12">
+        <div className="space-y-8">
           <section>
             <div className="flex flex-col lg:flex-row gap-2 w-full -ml-18">
 
               {/* Left Side - Moving News */}
-              <div className="lg:w-[35%] w-full flex-shrink-0 ml-0 pl-0">
+              <div className="lg:w-[35%] w-full flex-shrink-0">
                 <MovingNewsList posts={movingNews} />
               </div>
 
-              {/* Right Side - Sant Grid */}
-              <div className="lg:flex-1 w-full">
+              <div className="lg:w-[69.5%] w-full flex-shrink-0">
                 <NewSantGrid posts={posts} />
               </div>
 
             </div>
           </section>
 
-          <div>
+          <div className="ml-2">
             {/* <SantHorizontalGrid cardLayout="column" /> */}
             <WorldFreshUpdatesKirtan
               title="World Fresh Updates"
@@ -254,7 +267,7 @@ export default function Home({
               <div className="border border-gray-300 rounded">
                 <EditorUpdatesSection posts={editorPosts} />
               </div>
-              <div className="border border-gray-300 rounded">
+              <div className="border border-gray-300 rounded p-3">
                 <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40" />
               </div>
             </div>
@@ -277,7 +290,7 @@ export default function Home({
 
       {/* 🏁 FOOTER - No margin-top allowed here */}
       <footer className="w-screen relative left-1/2 right-1/2 -mx-[50vw]">
-        <Footer />
+        <Footer posts={allSearchablePosts} />
       </footer>
     </div>
   );

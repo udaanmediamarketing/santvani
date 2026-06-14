@@ -1,7 +1,9 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import QuarterColumn from "../components/quater-column";
 import Navbar from "../components/navbar";
+import { useAllSearchPosts } from "../hooks/useAllSearchPosts";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface Post {
@@ -21,10 +23,12 @@ function getYoutubeEmbedUrl(url: string) {
 }
 
 export default function PostPage({ post }: { post: Post | null }) {
+  const { posts } = useAllSearchPosts();
+
   if (!post) {
     return (
       <>
-        <Navbar />
+        <Navbar posts={posts} />
         <div className="text-center py-20">Post not found</div>
       </>);
   }
@@ -35,7 +39,7 @@ export default function PostPage({ post }: { post: Post | null }) {
 
   return (
     <>
-      <Navbar />
+      <Navbar posts={posts} />
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row">
 
   {/* LEFT : POST CONTENT */}

@@ -31,7 +31,7 @@ export default function OrgCard({
   youtubeUrl,
 }: OrgCardProps) {
   return (
-    <Card className="border-2 border-[#f97316] hover:shadow-lg transition bg-white">
+    <Card className="border-2 border-[#f97316] hover:shadow-lg transition bg-white group">
       {/* Media */}
       <div className="relative h-40 bg-orange-50 flex items-center justify-center rounded-t-md">
         {imageUrl ? (
@@ -39,7 +39,7 @@ export default function OrgCard({
             src={imageUrl}
             alt={orgName}
             fill
-            className="object-contain p-2"
+            className="object-contain p-2 group-hover:scale-105 transition-transform"
             sizes="(max-width: 768px) 100vw, 25vw"
           />
         ) : youtubeUrl ? (

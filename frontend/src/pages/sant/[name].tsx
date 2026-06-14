@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ArticleCard from "../../components/articles/article-card";
 import { useAuthFetch } from "../../context/authFetch";
 import Navbar from "../../components/navbar";
+import { useAllSearchPosts } from "../../hooks/useAllSearchPosts";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -36,9 +37,11 @@ export default function SantPage() {
       .finally(() => setLoading(false));
   }, [name]);
 
+  const { posts } = useAllSearchPosts();
+
   return (
     <>
-      <Navbar />
+      <Navbar posts={posts} />
       <div className="p-6 bg-[#def1de] min-h-screen">
         <h1 className="text-center text-4xl font-bold text-[#f97316] font-serif mb-10">
           संत {name}

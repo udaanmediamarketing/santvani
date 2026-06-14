@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import ReadMorePostCard from '../components/read-more-card';
 import { Post } from '../types/post';
 import Navbar from '../components/navbar';
+import { useAllSearchPosts } from '../hooks/useAllSearchPosts';
 
 const POSTS_PER_PAGE = 4;
 
@@ -11,6 +12,7 @@ export default function ReadMoreSection() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const { posts: searchPosts } = useAllSearchPosts();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   if (!apiUrl) {
     throw new Error("NEXT_PUBLIC_API_URL is not defined");
@@ -44,7 +46,7 @@ export default function ReadMoreSection() {
 
   return (
     <>
-      <Navbar />
+      <Navbar posts={searchPosts} />
       <section className="w-full border border-neutral-400 p-4 mr-4">
         {loading ? (
           <p className="text-sm text-neutral-500">Loading...</p>

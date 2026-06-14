@@ -4,9 +4,12 @@ import { useAuth } from "../context/AuthContext";
 import dynamic from "next/dynamic";
 import CreateOrganizationForm from "../components/organizations/org-form";
 import Navbar from "../components/navbar";
+import { useAllSearchPosts } from "../hooks/useAllSearchPosts";
+
 export default function CreateOrganizationPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const { posts } = useAllSearchPosts();
 
   useEffect(() => {
     // If auth is done loading and no user, redirect to login
@@ -22,7 +25,7 @@ export default function CreateOrganizationPage() {
   return (
     <>
       {/* <antNavbar activeMenu="Blogs" onMenuClick={() => {}}/> */}
-      <Navbar />
+      <Navbar posts={posts} />
       <CreateOrganizationForm />
     </>
   );

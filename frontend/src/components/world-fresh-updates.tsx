@@ -26,15 +26,19 @@ export default function WorldFreshUpdateCard({
     : null;
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <Link
+  href={`/${post.slug}`}
+  className="block group"
+>
+
       {/* Media */}
-      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md">
+      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md group">
         {post.image_url && (
           <Image
             src={post.image_url}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform"
             sizes="(max-width: 768px) 100vw, 25vw"
           />
         )}
@@ -74,13 +78,7 @@ export default function WorldFreshUpdateCard({
     </span>
   </div>
 </div>
-
-      {/* Click overlay */}
-      <Link
-        href={`/${post.slug}`}
-        className="absolute inset-0"
-        aria-label={post.title}
-      />
-    </div>
+</Link>
+      
   );
 }

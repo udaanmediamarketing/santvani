@@ -1,14 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Facebook, Instagram, Youtube, X } from "lucide-react";
 import Link from "next/link";
 import FooterCategory from "./footer-category";
 import SantHorizontalGrid from "./cards/horizontal-vertical-cards";
+import SearchModal from "./search-modal";
 import { cn } from "../lib/utils";
+import { Post } from "../types/post";
 
-export default function Footer() {
+interface FooterProps {
+  posts?: Post[];
+}
+
+export default function Footer({ posts = [] }: FooterProps) {
   const [searchText, setSearchText] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Filter posts based on search query
+  const filteredResults = searchText.trim() === ""
+    ? []
+    : posts.filter((post) =>
+      `${post.title} ${post.category ?? ""}`
+        .toLowerCase()
+        .includes(searchText.toLowerCase())
+    );
+
+  // Modal open state derived from `searchText` to avoid setState in effect
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);
@@ -121,6 +139,17 @@ export default function Footer() {
        All Right Reserved Copyright © vishwsantsahitya.com {new Date().getFullYear()} 
       </p>
     </div>
+
+    {/* Search Modal */}
+    <SearchModal
+      isOpen={searchText.trim() !== ""}
+      onClose={() => {
+        setSearchText("");
+      }}
+      query={searchText}
+      results={filteredResults}
+      isLoading={searchLoading}
+    />
   </footer>
 );
 }

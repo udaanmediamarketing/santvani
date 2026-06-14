@@ -36,7 +36,7 @@ export function NewSantCard({
   return (
 
 <Card
-  className={`relative overflow-hidden shadow-xl border-0 bg-black w-[100%] ${className}`}
+  className={`relative overflow-hidden shadow-xl border-0 bg-black w-[100%] group ${className}`}
 >
   {/* IMAGE */}
   {imageSrc && (
@@ -46,7 +46,7 @@ export function NewSantCard({
       fill
       priority={false}
       sizes="(max-width: 768px) 100vw, 33vw"
-      className="object-cover z-0"
+      className="object-cover z-0 group-hover:scale-105 transition-transform"
     />
   )}
 
