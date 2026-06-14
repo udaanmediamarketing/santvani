@@ -189,14 +189,14 @@ export default function Home({
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#def1de] overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-white overflow-x-hidden">
       {/* MAIN CONTENT WRAPPER */}
       <main className="flex-grow px-4 sm:px-6 lg:px-10 py-6 text-center">
 
         {/* Welcome Section */}
         <section className="flex flex-col items-center justify-center px-4 py-8 mb-0">
           {/* Quote */}
-          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-6">
+          <div className="text-center text-[#9a3412] font-serif text-lg sm:text-xl leading-relaxed mb-4">
             <p>|| विश्व स्नेह का ध्यान धरे | सबका सब सम्मान करे ||</p>
             <p>|| तेथ शब्दब्रह्म कवळले ||</p>
           </div>
@@ -226,7 +226,7 @@ export default function Home({
         {/* Content Sections */}
         <div className="space-y-12">
           <section>
-            <div className="flex flex-col lg:flex-row gap-2 w-full">
+            <div className="flex flex-col lg:flex-row gap-2 w-full -ml-18">
 
               {/* Left Side - Moving News */}
               <div className="lg:w-[35%] w-full flex-shrink-0 ml-0 pl-0">
