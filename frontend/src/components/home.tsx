@@ -240,7 +240,7 @@ export default function Home({
         {/* Content Sections */}
         <div className="space-y-12">
           <section>
-            <div className="flex flex-col lg:flex-row gap-2 w-full">
+            <div className="flex flex-col lg:flex-row gap-2 w-full -ml-20">
 
               {/* Left Side - Moving News */}
               <div className="lg:w-[35%] w-full flex-shrink-0 ml-0 pl-0">
