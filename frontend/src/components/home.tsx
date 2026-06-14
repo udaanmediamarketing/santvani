@@ -248,14 +248,14 @@ export default function Home({
               </div>
 
               {/* Right Side - Sant Grid */}
-              <div className="lg:flex-1 w-full">
+              <div className="lg:flex-[69.9%] w-full flex-shrink-0">
                 <NewSantGrid posts={posts} />
               </div>
 
             </div>
           </section>
 
-          <div>
+          <div className="ml-2">
             {/* <SantHorizontalGrid cardLayout="column" /> */}
             <WorldFreshUpdatesKirtan
               title="World Fresh Updates"
