@@ -179,7 +179,7 @@ export default function QuarterColumn({
             return (
               <Link
                 key={post.id}
-                href={`/posts/${post.slug}`}
+                href={`/${post.slug}`}
                 className="flex gap-3 group"
               >
                 {/* Thumbnail */}

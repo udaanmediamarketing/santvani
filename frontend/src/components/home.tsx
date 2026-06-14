@@ -233,7 +233,7 @@ export default function Home({
 
 
     {/* Navbar - Full Width Hack */}
-    <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-12">
+    <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] mb-0">
       <Navbar posts={allSearchablePosts}/>
     </div>
 
@@ -268,7 +268,7 @@ export default function Home({
               <div className="border border-gray-300 rounded">
                 <EditorUpdatesSection posts={editorPosts} />
               </div>
-              <div className="border border-gray-300 rounded">
+              <div className="border border-gray-300 rounded p-3">
                 <SantHorizontalGrid cardLayout="row" bgWhite={true} imageFit='contain' desc={true} imageWidth="w-60" imageHeight="h-40" />
               </div>
             </div>
