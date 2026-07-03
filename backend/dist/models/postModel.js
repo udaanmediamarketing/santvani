@@ -54,6 +54,15 @@ export const getPostById = async (id) => {
     const result = await pool.query(`SELECT * FROM articles WHERE id = $1 LIMIT 1`, [id]);
     return result.rows.length ? result.rows[0] : null;
 };
+export const updatePost = async (id, fields) => {
+    const result = await pool.query(`UPDATE articles
+     SET title = $1, category = $2, santname = $3, content = $4,
+         image_url = $5, youtube_url = $6, slug = $7, updated_at = NOW()
+     WHERE id = $8
+     RETURNING *`, [fields.title, fields.category, fields.santname, fields.content,
+        fields.image_url, fields.youtube_url, fields.slug, id]);
+    return result.rows[0] || null;
+};
 export const updatePostStatus = async (postId, status) => {
     const query = `
     UPDATE articles

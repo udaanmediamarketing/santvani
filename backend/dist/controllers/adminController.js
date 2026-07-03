@@ -1,8 +1,8 @@
 import { listPendingUsers, approveUserById, rejectUserById, } from "../models/userModel.js";
-import { getPendingPosts, } from "../models/postModel.js";
+import { getPendingPosts, getPostById, updatePost, updatePostStatus, } from "../models/postModel.js";
 import { getPendingOrgs, updateOrgStatus } from "../models/orgModel.js";
 import { sendSignupApprovalEmail, sendSignUpRejectionEmail } from "../utils/emailTemplates.js";
-import { updatePostStatus } from "../models/postModel.js";
+import { parseFormData } from "../utils/formidableParser.js";
 export const getPendingUsersController = async (req, res) => {
     try {
         const users = await listPendingUsers();
@@ -157,6 +157,57 @@ export const rejectOrgController = async (req, res) => {
     catch (error) {
         console.error(error);
         res.status(500).json({ error: "Server error" });
+    }
+};
+export const getAdminPostController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const post = await getPostById(id);
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        return res.status(200).json({ post });
+    }
+    catch (error) {
+        console.error("Error fetching post:", error);
+        return res.status(500).json({ error: "Server error" });
+    }
+};
+export const editPostController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(400).json({ error: "User id is not present" });
+        }
+        const parsedData = await parseFormData(req, res, userId);
+        if (!parsedData)
+            return;
+        let image_url = parsedData.image_url;
+        if (!image_url) {
+            const existing = await getPostById(id);
+            image_url = existing?.image_url || null;
+        }
+        const updated = await updatePost(id, {
+            title: parsedData.title,
+            category: parsedData.category,
+            santname: parsedData.santname,
+            content: parsedData.content,
+            image_url,
+            youtube_url: parsedData.youtube_url,
+            slug: parsedData.slug,
+        });
+        if (!updated) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        return res.status(200).json({
+            message: "Post updated successfully",
+            post: updated,
+        });
+    }
+    catch (error) {
+        console.error("Error editing post:", error);
+        return res.status(500).json({ error: "Server error" });
     }
 };
 //# sourceMappingURL=adminController.js.map
