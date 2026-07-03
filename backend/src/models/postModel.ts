@@ -113,6 +113,30 @@ export const getPostById = async (id: string): Promise<PostRow | null> => {
   return result.rows.length ? (result.rows[0] as PostRow) : null;
 };
 
+export const updatePost = async (
+  id: string,
+  fields: {
+    title: string;
+    category?: string | null;
+    santname?: string | null;
+    content?: string | null;
+    image_url?: string | null;
+    youtube_url?: string | null;
+    slug: string;
+  }
+): Promise<PostRow | null> => {
+  const result = await pool.query(
+    `UPDATE articles
+     SET title = $1, category = $2, santname = $3, content = $4,
+         image_url = $5, youtube_url = $6, slug = $7, updated_at = NOW()
+     WHERE id = $8
+     RETURNING *`,
+    [fields.title, fields.category, fields.santname, fields.content,
+     fields.image_url, fields.youtube_url, fields.slug, id]
+  );
+  return result.rows[0] || null;
+};
+
 export const updatePostStatus = async (
   postId: string,
   status: "published" | "rejected"

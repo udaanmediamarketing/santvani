@@ -38,7 +38,7 @@ export function AdminTopNav({ active, onLogout }: Props) {
         <button
           onClick={() => router.push("/admin/manage-orgs")}
           className={`px-5 py-2 rounded-lg font-medium ${
-            active === "posts"
+            active === "organizations"
               ? "bg-blue-600 text-white"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
