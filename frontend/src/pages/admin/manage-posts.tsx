@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { AdminTopNav } from "../../components/admin-navbar";
 import { slugify } from "@/src/lib/helper";
+import Image from "next/image";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Post = {
@@ -162,13 +163,15 @@ export default function ManagePosts() {
       const data = await res.json();
       const post = data.post;
 
+      const resolvedImageUrl = post.image_url || post.imageUrl || null;
+
       setEditingPost({
         id: post.id,
         title: post.title || "",
         santname: post.santname || "",
         category: post.category || "",
         content: post.content || "",
-        image_url: post.image_url || null,
+        image_url: resolvedImageUrl,
         youtube_url: post.youtube_url || "",
         slug: post.slug || "",
       });
@@ -177,10 +180,10 @@ export default function ManagePosts() {
         santname: post.santname || "",
         category: post.category || "",
         content: post.content || "",
-        youtubeUrl: post.youtube_url || "",
+        youtubeUrl: post.youtubeUrl || "",
       });
       setEditImageFile(null);
-      setEditImagePreview(post.image_url || null);
+      setEditImagePreview(resolvedImageUrl);
       setShowEditModal(true);
     } catch (error) {
       toast.error("Failed to load post for editing");
@@ -500,13 +503,25 @@ export default function ManagePosts() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Image
                 </label>
-                {editImagePreview && (
+                {editImagePreview ? (
                   <div className="mb-2 relative inline-block">
-                    <img
-                      src={editImagePreview}
-                      alt="Preview"
-                      className="h-32 rounded-lg object-cover border"
-                    />
+                    <div className="relative h-32 w-48 rounded-lg border overflow-hidden">
+                      {editImagePreview.startsWith("data:") ? (
+                        <img
+                          src={editImagePreview}
+                          alt="Preview"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <Image
+                          src={editImagePreview}
+                          alt="Preview"
+                          fill
+                          className="object-cover"
+                          sizes="192px"
+                        />
+                      )}
+                    </div>
                     <button
                       type="button"
                       onClick={removeEditImage}
@@ -514,6 +529,10 @@ export default function ManagePosts() {
                     >
                       ✕
                     </button>
+                  </div>
+                ) : (
+                  <div className="mb-2 h-32 w-48 rounded-lg border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-gray-400 text-sm">
+                    No image uploaded
                   </div>
                 )}
                 <input
