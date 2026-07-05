@@ -159,10 +159,13 @@ export default function ManagePosts() {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      console.log("Fetch post response:", res);
       if (!res.ok) throw new Error("Failed to fetch post");
       const data = await res.json();
+      console.log("Fetched post data:", data);
       const post = data.post;
-
+      console.log("Fetched post:", post);
       const resolvedImageUrl = post.image_url || post.imageUrl || null;
 
       setEditingPost({
@@ -185,10 +188,17 @@ export default function ManagePosts() {
       setEditImageFile(null);
       setEditImagePreview(resolvedImageUrl);
       setShowEditModal(true);
-    } catch (error) {
-      console.log("Error fetching post for editing:", error);
-      toast.error("Failed to load post for editing");
-    }
+    // } catch (error) {
+    //   console.log("Error fetching post for editing:", error);
+    //   toast.error("Failed to load post for editing");
+    // }
+    }catch (error) {
+  console.error("Error fetching post for editing:", error);
+  const errorMessage = error instanceof Error ? error.message : "Failed to load post for editing";
+  console.error("Message:", errorMessage);
+
+  toast.error(errorMessage);
+}
   };
 
   const handleEditChange = (
