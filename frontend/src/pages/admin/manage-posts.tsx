@@ -186,6 +186,7 @@ export default function ManagePosts() {
       setEditImagePreview(resolvedImageUrl);
       setShowEditModal(true);
     } catch (error) {
+      console.log("Error fetching post for editing:", error);
       toast.error("Failed to load post for editing");
     }
   };
