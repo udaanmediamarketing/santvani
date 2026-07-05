@@ -226,13 +226,16 @@ interface AuthRequest extends Request {
 export const getAdminPostController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    console.log(`[getAdminPost] Fetching post with id: ${id}`);
     const post = await getPostById(id);
     if (!post) {
+      console.warn(`[getAdminPost] Post not found for id: ${id}`);
       return res.status(404).json({ error: "Post not found" });
     }
+    console.log(`[getAdminPost] Post found: ${post.title} (status: ${post.status})`);
     return res.status(200).json({ post });
   } catch (error) {
-    console.error("Error fetching post:", error);
+    console.error("[getAdminPost] Error fetching post:", error);
     return res.status(500).json({ error: "Server error" });
   }
 };

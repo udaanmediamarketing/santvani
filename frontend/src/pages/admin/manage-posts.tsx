@@ -10,7 +10,7 @@ import Image from "next/image";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 type Post = {
-  id: number;
+  id: string;
   title: string;
   santname?: string;
   category?: string;
@@ -41,7 +41,7 @@ export default function ManagePosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRejectModal, setShowRejectModal] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -109,7 +109,7 @@ export default function ManagePosts() {
   }, [fetchPosts]);
 
   const updateStatus = async (
-    id: number,
+    id: string,
     status: "published" | "rejected"
   ) => {
     try {
@@ -152,7 +152,7 @@ export default function ManagePosts() {
     setSelectedPostId(null);
   };
 
-  const openEditModal = async (postId: number) => {
+  const openEditModal = async (postId: string) => {
     try {
       const res = await fetch(`${apiUrl}/api/admin/post/${postId}`, {
         headers: {
