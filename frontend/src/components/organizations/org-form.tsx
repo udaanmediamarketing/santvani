@@ -311,7 +311,7 @@ if (data.image && data.image.length > 0) {
             placeholder="https://www.youtube.com/watch?v=XXXX"
             {...register("youtubeUrl", {
               pattern: {
-                value: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,
+                value: /^(https?:\/\/)?((www|m)\.)?(youtube\.com\/(watch\?v=|embed\/|shorts\/)|youtu\.be\/)[\w-]+/,
                 message: "वैध YouTube लिंक द्या",
               },
             })}

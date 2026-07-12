@@ -14,6 +14,7 @@ export interface ParsedOrganizationFormData {
   pincode: string | null;
   headName: string;
   email: string | null;
+  youtubeUrl: string | null;
   imageUrl: string | null;
   userId: string;
 }
@@ -69,6 +70,7 @@ export async function parseOrganizationFormData(
       const orgType = getField("orgType");
       const address = getField("address");
       const pincode = getField("pincode");
+      const youtubeUrl = getField("youtubeUrl");
       /* ---------------- IMAGE UPLOAD ---------------- */
       let imageUrl: string | null = null;
 
@@ -106,6 +108,7 @@ export async function parseOrganizationFormData(
         pincode,
         headName,
         email,
+        youtubeUrl,
         imageUrl,
         userId,
       });

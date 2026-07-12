@@ -10,6 +10,7 @@ export interface OrganizationRow {
   pincode: string | null;
   head_name: string;
   email: string;
+  youtube_url: string | null;
   image_url: string | null;
   status: string;
   author_id: string;
@@ -25,6 +26,7 @@ export const createOrganization = async (
   pincode: string | null,
   headName: string,
   email: string,
+  youtubeUrl: string | null,
   imageUrl: string | null,
   author_id: string
 ): Promise<OrganizationRow> => {
@@ -39,11 +41,12 @@ export const createOrganization = async (
       pincode,
       head_name,
       email,
+      youtube_url,
       image_url,
       status,
       author_id
     )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'pending', $10)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'pending', $11)
     RETURNING *
     `,
     [
@@ -55,6 +58,7 @@ export const createOrganization = async (
       pincode,
       headName,
       email,
+      youtubeUrl,
       imageUrl,
       author_id
     ]

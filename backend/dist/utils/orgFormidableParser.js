@@ -45,6 +45,7 @@ export async function parseOrganizationFormData(req, res, userId) {
             const orgType = getField("orgType");
             const address = getField("address");
             const pincode = getField("pincode");
+            const youtubeUrl = getField("youtubeUrl");
             /* ---------------- IMAGE UPLOAD ---------------- */
             let imageUrl = null;
             const fileKey = Object.keys(files)[0];
@@ -75,6 +76,7 @@ export async function parseOrganizationFormData(req, res, userId) {
                 pincode,
                 headName,
                 email,
+                youtubeUrl,
                 imageUrl,
                 userId,
             });

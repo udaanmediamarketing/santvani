@@ -31,8 +31,9 @@ export const createOrganizationController = async (
       pincode,
       headName,
       email,
+      youtubeUrl,
       imageUrl,
-      
+
     } = req.body;
 
     const author_id = (req as AuthRequest).user?.id;
@@ -49,6 +50,7 @@ export const createOrganizationController = async (
       pincode ?? null,
       headName,
       email,
+      youtubeUrl ?? null,
       imageUrl ?? null,
       author_id,
     );

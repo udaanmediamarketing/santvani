@@ -10,12 +10,12 @@ export const listOrgs = async (req, res) => {
 };
 export const createOrganizationController = async (req, res) => {
     try {
-        const { orgType, orgName, address, city, state, pincode, headName, email, imageUrl, } = req.body;
+        const { orgType, orgName, address, city, state, pincode, headName, email, youtubeUrl, imageUrl, } = req.body;
         const author_id = req.user?.id;
         if (!author_id) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        const organization = await createOrganization(orgType ?? null, orgName, address ?? null, city, state, pincode ?? null, headName, email, imageUrl ?? null, author_id);
+        const organization = await createOrganization(orgType ?? null, orgName, address ?? null, city, state, pincode ?? null, headName, email, youtubeUrl ?? null, imageUrl ?? null, author_id);
         res.status(201).json({
             message: "संस्था यशस्वीरित्या तयार झाली",
             organization,

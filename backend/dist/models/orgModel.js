@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-export const createOrganization = async (orgType, orgName, address, city, state, pincode, headName, email, imageUrl, author_id) => {
+export const createOrganization = async (orgType, orgName, address, city, state, pincode, headName, email, youtubeUrl, imageUrl, author_id) => {
     const result = await pool.query(`
     INSERT INTO organizations (
       org_type,
@@ -10,11 +10,12 @@ export const createOrganization = async (orgType, orgName, address, city, state,
       pincode,
       head_name,
       email,
+      youtube_url,
       image_url,
       status,
       author_id
     )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'pending', $10)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'pending', $11)
     RETURNING *
     `, [
         orgType,
@@ -25,6 +26,7 @@ export const createOrganization = async (orgType, orgName, address, city, state,
         pincode,
         headName,
         email,
+        youtubeUrl,
         imageUrl,
         author_id
     ]);

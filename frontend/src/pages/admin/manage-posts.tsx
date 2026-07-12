@@ -160,12 +160,9 @@ export default function ManagePosts() {
         },
       });
 
-      console.log("Fetch post response:", res);
       if (!res.ok) throw new Error("Failed to fetch post");
       const data = await res.json();
-      console.log("Fetched post data:", data);
       const post = data.post;
-      console.log("Fetched post:", post);
       const resolvedImageUrl = post.image_url || post.imageUrl || null;
 
       setEditingPost({
@@ -183,7 +180,7 @@ export default function ManagePosts() {
         santname: post.santname || "",
         category: post.category || "",
         content: post.content || "",
-        youtubeUrl: post.youtubeUrl || "",
+        youtubeUrl: post.youtube_url || post.youtubeUrl || "",
       });
       setEditImageFile(null);
       setEditImagePreview(resolvedImageUrl);
