@@ -19,7 +19,7 @@ router.put("/reject-user/:id", authenticate, authorizeAdmin, rejectUserControlle
 router.get("/pending-posts", authenticate, authorizeAdmin, getPendingPostsController);
 router.put("/publish-post/:id", authenticate, authorizeAdmin, publishPostController);
 router.put("/reject-post/:id", authenticate, authorizeAdmin, rejectPostController);
-router.get("/post/:id", authenticate, authorizeAdmin, getAdminPostController);
+router.get("/get-post/:id", authenticate, authorizeAdmin, getAdminPostController);
 router.put("/edit-post/:id", authenticate, authorizeAdmin, async (req: Request, res: Response) => {
   const userId = (req as AuthRequest).user?.id;
   if (!userId) {

@@ -154,7 +154,7 @@ export default function ManagePosts() {
 
   const openEditModal = async (postId: string) => {
     try {
-      const res = await fetch(`${apiUrl}/api/admin/post/${postId}`, {
+      const res = await fetch(`${apiUrl}/api/admin/get-post/${postId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
